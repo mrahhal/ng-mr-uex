@@ -16,10 +16,12 @@
     "node_modules",
     "bower_components",
     "package.json",
+    "dist-temp",
+    "test",
+    "demo",
     ".bowerrc",
     "gulpfile.js",
-    "karma.conf.js",
-    "test"
+    "karma.conf.js"
   ],
   "devDependencies": {
     "angular-mocks": ">=1.3.0",
