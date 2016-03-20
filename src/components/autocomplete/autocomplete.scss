@@ -1,0 +1,34 @@
+uex-autocomplete {
+  display: inline-block;
+}
+
+.uex-autocomplete {
+  display: block;
+  position: relative;
+
+  > input {
+    max-width: none;
+  }
+
+  > .uex-autocomplete-list {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background: white;
+    z-index: 100;
+    border: 1px solid $color-border;
+    border-radius: 2px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+
+    > .uex-autocomplete-item {
+      padding: 5px;
+      cursor: pointer;
+
+      &.active {
+        background: $brand-primary;
+        color: white;
+      }
+    }
+  }
+}
