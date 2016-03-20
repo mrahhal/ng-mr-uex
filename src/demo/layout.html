@@ -1,0 +1,66 @@
+<!doctype html>
+<html ng-app="app">
+  <head>
+    <meta charset="utf-8"/>
+    <title>demo</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1"/>
+
+    <script src="/bower_components/jquery/dist/jquery.js"></script>
+    <script src="/bower_components/angular/angular.js"></script>
+    <script src="/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="/bower_components/clipboard/dist/clipboard.js"></script>
+    <script src="/dist-temp/ng-mr-uex.js"></script>
+    <script src="/demo/demo.js"></script>
+
+    <link href="/dist-temp/ng-mr-uex.css" rel="stylesheet">
+    <link href="/demo/demo.css" rel="stylesheet">
+
+    <script>
+      angular.module('app').config(function ($stateProvider, $urlRouterProvider, $urlMatcherFactoryProvider, $locationProvider) {
+        $locationProvider.html5Mode({enabled: true, requireBase: false, rewriteLinks: true});
+        $urlMatcherFactoryProvider.defaultSquashPolicy('slash');
+
+        $stateProvider.state('home', {
+          url: '/',
+          templateUrl: '/src/demo/home.html'
+        }).state('components', {
+          url: '/components',
+          abstract: true,
+          template: '<ui-view />'
+        })<% components.forEach(function(component){ %>
+        .state('components.<%= component.name %>', {
+          url: '/<%= component.name %>',
+          templateUrl: 'component-<%= component.name %>',
+          data: {
+            name: '<%= component.name %>'
+          }
+        })<% }); %>;
+      }).run(function ($templateCache) {
+        <% components.forEach(function(component){ %>
+        $templateCache.put('component-<%= component.name %>', '<%- component.html %>');
+        <% }); %>
+      });
+    </script>
+
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="left-nav">
+      <a ui-sref="home" class="pivot-item" ui-sref-active="active">Home</a>
+      <% components.forEach(function(component){ %>
+        <a class="pivot-item component-item" ui-sref="components.<%= component.name %>" ui-sref-active="active">
+          <%= component.name %>
+        </a>
+      <% }); %>
+    </div>
+    <div id="main-content">
+      <header ng-bind="headerValue"></header>
+      <ui-view></ui-view>
+    </div>
+  </body>
+</html>
