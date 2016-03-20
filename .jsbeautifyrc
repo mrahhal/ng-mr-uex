@@ -1,0 +1,17 @@
+{
+  "preserve_newlines": true,
+  "max_preserve_newlines": 2,
+  "end_with_newline": true,
+  "js": {
+    "preserve_newlines": true,
+    "max_preserve_newlines": 2,
+    "space_after_anon_function": true,
+    "end_with_newline": true
+  },
+  "css": {
+    "preserve_newlines": true,
+    "max_preserve_newlines": 2,
+    "newline_between_rules": true,
+    "end_with_newline": true
+  }
+}
