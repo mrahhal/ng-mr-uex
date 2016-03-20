@@ -1,0 +1,28 @@
+<style>
+  .section {
+    display: inline-block;
+    margin: 20px;
+  }
+</style>
+
+<div ng-controller="uexSelectCtrl as vm">
+  <section>
+    <header>Basic</header>
+    <uex-select exp="item in items as item.name" ng-model="vm.selected1" title="Selected" class="select-check">
+      {{item.name}}
+      <uex-icon icon="check" ng-if="$selected"/>
+    </uex-select>
+  </section>
+  <section>
+    <header>Async</header>
+    <uex-select exp="item in getItems(q) as item.name" ng-model="vm.selected2" title="Selected">
+      {{item.name}}
+    </uex-select>
+  </section>
+  <section>
+    <header>Simple select</header>
+    <uex-select exp="item in ['Foo', 'Bar', 'Baz']" ng-model="vm.selected3" title="Selected">
+      <uex-select-simple>{{item}}</uex-select-simple>
+    </uex-select>
+  </section>
+</div>
