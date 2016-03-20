@@ -1,0 +1,31 @@
+<div class="component-icon-page">
+  <section ng-controller="iconCtrl">
+    <header>Icons</header>
+    <div class="icons">
+      <uex-icon ng-repeat="icon in icons"
+                icon="{{icon.name}}"
+                tooltip="n, {{icon.id}}"
+                data-clipboard-text="{{icon.name}}" />
+    </div>
+  </section>
+  <section>
+    <header>Flexible icons</header>
+    <h5 class="uex-flexible-wrapper">
+      <uex-icon icon="close"></uex-icon>
+      h5
+    </h5>
+    <h4 class="uex-flexible-wrapper">
+      <uex-icon icon="close"></uex-icon>
+      h4
+    </h4>
+    <h3 class="uex-flexible-wrapper">
+      <uex-icon icon="close"></uex-icon>
+      h3
+    </h3>
+    <h2 class="uex-flexible-wrapper">
+      <uex-icon icon="close"></uex-icon>
+      h2
+    </h2>
+  </section>
+
+</div>
