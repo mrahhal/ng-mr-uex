@@ -1,0 +1,31 @@
+@function rem($multiplier) {
+  $font-size: 10px;
+  @return $multiplier * $font-size;
+}
+
+// variables
+@import "sass/variables.scss";
+
+// components
+@import "../components/*/*.scss";
+
+.right {
+  float: right !important;
+}
+
+.btn-plain {
+  background: transparent;
+  padding: 0 !important;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.btn-plain.btn-dim {
+  opacity: 0.7;
+
+  &:hover {
+    opacity: 1;
+  }
+}
