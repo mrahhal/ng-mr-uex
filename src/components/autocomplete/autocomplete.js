@@ -115,18 +115,19 @@
 					return html;
 				}
 				return '\
-					<div class="uex-autocomplete">\
-						<input type="text" ng-model="$uexAutocompleteCtrl.text" ng-keydown="keydown($event)" >\
-						<div class="uex-autocomplete-list" ng-if="$uexAutocompleteCtrl.items.length > 0">\
-							<div class="uex-autocomplete-item"\
-								 ng-repeat="item in $uexAutocompleteCtrl.items"\
-								 ng-click="$uexAutocompleteCtrl.select(item)"\
-								 ng-class="{ active: $index == $uexAutocompleteCtrl.activeIndex }"\
-								 ng-mouseover="$uexAutocompleteCtrl.mouseover(item, $index)"\
-								 uex-alias="item {{::$uexAutocompleteCtrl.keyName}}">' + getItemTemplate() + '\
-							</div>\
-						</div>\
-					</div>';
+<div class="uex-autocomplete">\
+	<input type="text" ng-model="$uexAutocompleteCtrl.text" ng-keydown="keydown($event)" >\
+	<div class="uex-autocomplete-list" ng-if="$uexAutocompleteCtrl.items.length > 0">\
+		<div class="uex-autocomplete-item"\
+			 ng-repeat="item in $uexAutocompleteCtrl.items"\
+			 ng-click="$uexAutocompleteCtrl.select(item)"\
+			 ng-class="{ active: $index == $uexAutocompleteCtrl.activeIndex }"\
+			 ng-mouseover="$uexAutocompleteCtrl.mouseover(item, $index)"\
+			 uex-alias="item {{::$uexAutocompleteCtrl.keyName}}">' +
+			 getItemTemplate() + '\
+		</div>\
+	</div>\
+</div>';
 			},
 			require: ['uexAutocomplete', 'ngModel'],
 			scope: true,
