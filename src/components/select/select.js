@@ -72,11 +72,12 @@
 	</div>\
 </div>',
 			controller: function ($scope) {
+				var ctrl = this;
 				var scopes = [];
 				this.$populateScope = function (scope) {
 					var item = scope.item;
 					scopes.push(scope);
-					if (item && item === $scope.selected) {
+					if (item && ctrl.track(item) === ctrl.track($scope.selected)) {
 						scope.$selected = true;
 					} else if (item) {
 						scope.$selected = false;
@@ -140,7 +141,7 @@
 					return options.asFn($scope, locals);
 				};
 
-				var track = function (item) {
+				var track = ctrl.track = function (item) {
 					if (options.trackFn === angular.noop) return item;
 					var locals = {};
 					locals[keyName] = item;
