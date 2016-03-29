@@ -191,8 +191,9 @@ uex-select.north {
       position: fixed;
       bottom: 0;
       left: 0;
-      width: initial;
       right: 0;
+      top: initial;
+      width: initial;
       display: block;
       transition: transform cubic-bezier(.2,.3,.25,.9) 0.2s;
       transform: translateY(200%);
