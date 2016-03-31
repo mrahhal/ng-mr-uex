@@ -68,7 +68,8 @@ uex-select {
     flex-flow: row nowrap;
     align-items: center; }
     .uex-select > .button > .text {
-      padding: 5px; }
+      padding: 5px;
+      padding-right: 0; }
     .uex-select > .button > uex-icon {
       margin-right: 2px; }
     .uex-select > .button:hover {
@@ -176,8 +177,9 @@ uex-select.north .uex-select-content {
     position: fixed;
     bottom: 0;
     left: 0;
-    width: initial;
     right: 0;
+    top: initial;
+    width: initial;
     display: block;
     transition: transform cubic-bezier(0.2, 0.3, 0.25, 0.9) 0.2s;
     transform: translateY(200%); }
