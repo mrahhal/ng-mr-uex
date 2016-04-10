@@ -1,0 +1,16 @@
+.uex-p-running, .uex-p-success, .uex-p-error {
+  opacity: 0;
+  transition: opacity linear .1s;
+
+  &.uex-p-on {
+    opacity: 1;
+  }
+}
+
+.uex-p-success {
+  color: $brand-primary;
+}
+
+.uex-p-error {
+  color: $brand-danger;
+}
