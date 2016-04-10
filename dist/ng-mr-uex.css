@@ -50,6 +50,18 @@ uex-icon[flexible] {
   display: flex;
   align-items: center; }
 
+.uex-p-running, .uex-p-success, .uex-p-error {
+  opacity: 0;
+  transition: opacity linear .1s; }
+  .uex-p-running.uex-p-on, .uex-p-success.uex-p-on, .uex-p-error.uex-p-on {
+    opacity: 1; }
+
+.uex-p-success {
+  color: #3F51B5; }
+
+.uex-p-error {
+  color: #d9534f; }
+
 uex-select {
   display: inline-block; }
 
