@@ -5,22 +5,29 @@
 
 	function pCtrl($scope, $q, $timeout) {
 		var ctrl = this;
-		this.shouldError = false;
 
-		$scope.submit = function () {
-			return $timeout(2000);
-		};
-
-		$scope.submit2 = function () {
+		var defer = function (shouldError) {
 			var deferred = $q.defer();
 			$timeout(function () {
-				if (ctrl.shouldError) {
+				if (shouldError) {
 					deferred.reject();
 				} else {
 					deferred.resolve();
 				}
 			}, 2000);
 			return deferred.promise;
+		};
+
+		$scope.submit1 = function () {
+			return $timeout(2000);
+		};
+
+		$scope.submit2 = function () {
+			return defer(ctrl.shouldError);
+		};
+
+		$scope.submit3 = function () {
+			return defer(ctrl.shouldError2);
 		};
 	}
 })();

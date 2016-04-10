@@ -1,8 +1,14 @@
 (function () {
 	'use strict';
 
-	angular.module('mr.uex').directive('uexP', uexP);
-	angular.module('mr.uex').directive('uexPSrc', uexPSrc);
+	angular
+		.module('mr.uex')
+		.directive('uexP', uexP)
+		.directive('uexPSrc', uexPSrc)
+		.directive('uexPRunning', uexPRunning)
+		.directive('uexPSuccess', uexPSuccess)
+		.directive('uexPError', uexPError)
+		.directive('uexPBtn', uexPBtn);
 
 	function uexP($parse) {
 		return {
@@ -34,7 +40,7 @@
 				};
 			}
 
-			var interpolate = function(name, interval) {
+			var interpolate = function (name, interval) {
 				ctrl[name] = true;
 				var p = ctrl.$$promises[name] = $timeout(function () {
 					if (ctrl.$$promises[name] === p) {
@@ -88,6 +94,58 @@
 				var event = determineEvent($element, $attrs.uexPSrc);
 				$element.on(event, function (e) {
 					$scope.$apply(ctrl.run.call(ctrl, e));
+				});
+			}
+		};
+	}
+
+	function uexPCommon(kind) {
+		return {
+			restrict: 'A',
+			require: '^uexP',
+			link: function ($scope, $element, $attrs, ctrl) {
+				$element.addClass('uex-p-' + kind);
+				$scope.$watch(function () {
+					return ctrl['$' + kind];
+				}, function (n, o) {
+					if (n) {
+						$element.addClass('uex-p-on');
+					} else {
+						$element.removeClass('uex-p-on');
+					}
+				});
+			}
+		};
+	}
+
+	function uexPRunning() {
+		return uexPCommon('running');
+	}
+
+	function uexPSuccess() {
+		return uexPCommon('success');
+	}
+
+	function uexPError() {
+		return uexPCommon('error');
+	}
+
+	function uexPBtn() {
+		return {
+			restrict: 'A',
+			require: '^uexP',
+			link: function ($scope, $element, $attrs, ctrl) {
+				var isOneTime = $attrs.uexPBtn === 'onetime';
+				$scope.$watch(function () {
+					return ctrl.$running;
+				}, function (n, o) {
+					if (n) {
+						$element.attr('disabled', 'disabled');
+					} else {
+						if (ctrl.$error || !isOneTime) {
+							$element.removeAttr('disabled');
+						}
+					}
 				});
 			}
 		};
