@@ -47,13 +47,13 @@
 		<span class="text">\
 			{{title}}\
 		</span>\
-		<uex-icon icon="chevron-bottom" />\
+		<uex-icon icon="chevron-bottom"></uex-icon>\
 	</button>\
-	<uex-icon icon="close" class="btn-plain btn-dim tooltipped tooltipped-e" aria-label="Clear" ng-if="selected" ng-click="clear()" />\
+	<uex-icon icon="close" class="btn-plain btn-dim tooltipped tooltipped-e" aria-label="Clear" ng-if="selected" ng-click="clear()"></uex-icon>\
 	<div class="uex-select-content">\
 		<header>\
 			<div>{{::header}}</div>\
-			<uex-icon icon="close" class="btn-plain btn-dim" ng-click="close()" />\
+			<uex-icon icon="close" class="btn-plain btn-dim" ng-click="close()"></uex-icon>\
 		</header>\
 		<div>\
 			<div class="uex-select-filters" ng-if="::asyncMode">\
