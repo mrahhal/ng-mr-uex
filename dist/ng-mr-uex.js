@@ -212,49 +212,6 @@ angular
 (function () {
 	'use strict';
 
-	angular.module('mr.uex').directive('uexAlias', uexAlias);
-
-	function uexAlias() {
-		return {
-			restrict: 'A',
-			link: function ($scope, $element, $attrs) {
-				var expr = $attrs.uexAlias,
-					parts = expr.split(' '),
-					source = parts[0],
-					dest = parts[1];
-
-				$scope.$watch(function () {
-					return $scope.$eval(source);
-				}, function (value) {
-					$scope[dest] = value;
-				});
-			}
-		};
-	}
-})();
-
-(function () {
-	'use strict';
-
-	angular.module('mr.uex').directive('uexFocus', uexFocus);
-
-	function uexFocus($timeout) {
-		return {
-			restrict: 'A',
-			link: function ($scope, $element, $attrs) {
-				$scope.$on('uex.focus', function () {
-					$timeout(function () {
-						$element.focus();
-					});
-				});
-			}
-		};
-	}
-})();
-
-(function () {
-	'use strict';
-
 	angular.module('mr.uex').provider('uexIcons', uexIconsProvider);
 	angular.module('mr.uex').directive('uexIcon', uexIcon);
 
@@ -385,6 +342,49 @@ angular
 				var content = wrap(icon.svg, icon.viewBox);
 				$element.empty();
 				$element.append(content);
+			}
+		};
+	}
+})();
+
+(function () {
+	'use strict';
+
+	angular.module('mr.uex').directive('uexAlias', uexAlias);
+
+	function uexAlias() {
+		return {
+			restrict: 'A',
+			link: function ($scope, $element, $attrs) {
+				var expr = $attrs.uexAlias,
+					parts = expr.split(' '),
+					source = parts[0],
+					dest = parts[1];
+
+				$scope.$watch(function () {
+					return $scope.$eval(source);
+				}, function (value) {
+					$scope[dest] = value;
+				});
+			}
+		};
+	}
+})();
+
+(function () {
+	'use strict';
+
+	angular.module('mr.uex').directive('uexFocus', uexFocus);
+
+	function uexFocus($timeout) {
+		return {
+			restrict: 'A',
+			link: function ($scope, $element, $attrs) {
+				$scope.$on('uex.focus', function () {
+					$timeout(function () {
+						$element.focus();
+					});
+				});
 			}
 		};
 	}
@@ -593,13 +593,13 @@ angular
 		<span class="text">\
 			{{title}}\
 		</span>\
-		<uex-icon icon="chevron-bottom" />\
+		<uex-icon icon="chevron-bottom"></uex-icon>\
 	</button>\
-	<uex-icon icon="close" class="btn-plain btn-dim tooltipped tooltipped-e" aria-label="Clear" ng-if="selected" ng-click="clear()" />\
+	<uex-icon icon="close" class="btn-plain btn-dim tooltipped tooltipped-e" aria-label="Clear" ng-if="selected" ng-click="clear()"></uex-icon>\
 	<div class="uex-select-content">\
 		<header>\
 			<div>{{::header}}</div>\
-			<uex-icon icon="close" class="btn-plain btn-dim" ng-click="close()" />\
+			<uex-icon icon="close" class="btn-plain btn-dim" ng-click="close()"></uex-icon>\
 		</header>\
 		<div>\
 			<div class="uex-select-filters" ng-if="::asyncMode">\
