@@ -1,6 +1,6 @@
 (function (window, angular, $, undefined) {
 angular
-	.module('mr.uex', []);
+	.module('mr.uex', ['ngAnimate']);
 
 (function () {
 	'use strict';
@@ -395,14 +395,27 @@ angular
 
 	angular
 		.module('mr.uex')
+		.provider('uexP', uexPProvider)
 		.directive('uexP', uexP)
 		.directive('uexPSrc', uexPSrc)
 		.directive('uexPRunning', uexPRunning)
 		.directive('uexPSuccess', uexPSuccess)
 		.directive('uexPError', uexPError)
+		.directive('uexPStatus', uexPStatus)
 		.directive('uexPBtn', uexPBtn);
 
-	function uexP($parse) {
+	function uexPProvider() {
+		this.opts = {
+			successInterval: 1000,
+			errorInterval: 1000
+		};
+
+		this.$get = function () {
+			return this.opts;
+		};
+	}
+
+	function uexP($parse, uexP) {
 		return {
 			restrict: 'A',
 			scope: true,
@@ -447,9 +460,9 @@ angular
 					promise = p;
 					running(true);
 					promise.then(function () {
-						interpolate('$success', ctrl.$$options.successInterval || 1000);
+						interpolate('$success', ctrl.$$options.successInterval || uexP.successInterval);
 					}, function () {
-						interpolate('$error', ctrl.$$options.errorInterval || 1000);
+						interpolate('$error', ctrl.$$options.errorInterval || uexP.errorInterval);
 					});
 					promise.finally(function () {
 						if (p !== promise) return;
@@ -461,7 +474,7 @@ angular
 
 		function link($scope, $element, $attrs, ctrl) {
 			ctrl.$$fn = $parse($attrs.uexP);
-			ctrl.$$options = $scope.$eval($attrs.uexPOptions) || {};
+			ctrl.$$options = $scope.$eval($attrs.uexPOpts) || {};
 
 			if ($element.is('form') && $attrs.uexPSrc === undefined) {
 				$element.on('submit', function (e) {
@@ -495,16 +508,15 @@ angular
 		return {
 			restrict: 'A',
 			require: '^uexP',
+			scope: {},
+			transclude: true,
+			template: '<div class="uex-p-' + kind + '" ng-show="shown" ng-transclude></div>',
 			link: function ($scope, $element, $attrs, ctrl) {
 				$element.addClass('uex-p-' + kind);
 				$scope.$watch(function () {
 					return ctrl['$' + kind];
 				}, function (n, o) {
-					if (n) {
-						$element.addClass('uex-p-on');
-					} else {
-						$element.removeClass('uex-p-on');
-					}
+					$scope.shown = !!n;
 				});
 			}
 		};
@@ -520,6 +532,40 @@ angular
 
 	function uexPError() {
 		return uexPCommon('error');
+	}
+
+	function uexPStatus() {
+		return {
+			restrict: 'EA',
+			scope: {},
+			template: '<span ng-show="success || error" class="uex-p-status" ng-class="classes">{{text}}</span>',
+			require: '^uexP',
+			link: function ($scope, $element, $attrs, ctrl) {
+				var successText = $attrs.success || 'Success',
+					errorText = $attrs.error || 'Error';
+				$scope.classes = '';
+
+				$scope.$watch(function () {
+					return ctrl.$success;
+				}, function (n, o) {
+					$scope.success = n;
+					if (n) {
+						$scope.classes = 'uex-p-success';
+						$scope.text = successText;
+					}
+				});
+
+				$scope.$watch(function () {
+					return ctrl.$error;
+				}, function (n, o) {
+					$scope.error = n;
+					if (n) {
+						$scope.classes = 'uex-p-error';
+						$scope.text = errorText;
+					}
+				});
+			}
+		};
 	}
 
 	function uexPBtn() {
