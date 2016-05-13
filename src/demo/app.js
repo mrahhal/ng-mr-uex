@@ -4,3 +4,7 @@ window.get = function (name, element) {
 };
 
 angular.module('app', ['ui.router', 'mr.uex']);
+
+angular.module('app').config(function (uexPProvider) {
+	uexPProvider.opts.successInterval = 3000;
+});

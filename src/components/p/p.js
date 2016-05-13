@@ -3,6 +3,7 @@
 
 	angular
 		.module('mr.uex')
+		.provider('uexP', uexPProvider)
 		.directive('uexP', uexP)
 		.directive('uexPSrc', uexPSrc)
 		.directive('uexPRunning', uexPRunning)
@@ -11,7 +12,18 @@
 		.directive('uexPStatus', uexPStatus)
 		.directive('uexPBtn', uexPBtn);
 
-	function uexP($parse) {
+	function uexPProvider() {
+		this.opts = {
+			successInterval: 1000,
+			errorInterval: 1000
+		};
+
+		this.$get = function () {
+			return this.opts;
+		};
+	}
+
+	function uexP($parse, uexP) {
 		return {
 			restrict: 'A',
 			scope: true,
@@ -56,9 +68,9 @@
 					promise = p;
 					running(true);
 					promise.then(function () {
-						interpolate('$success', ctrl.$$options.successInterval || 1000);
+						interpolate('$success', ctrl.$$options.successInterval || uexP.successInterval);
 					}, function () {
-						interpolate('$error', ctrl.$$options.errorInterval || 1000);
+						interpolate('$error', ctrl.$$options.errorInterval || uexP.errorInterval);
 					});
 					promise.finally(function () {
 						if (p !== promise) return;
