@@ -1,2 +1,2 @@
 angular
-	.module('mr.uex', []);
+	.module('mr.uex', ['ngAnimate']);

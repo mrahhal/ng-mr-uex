@@ -12,7 +12,7 @@
   </section>
   <section>
     <header>Options</header>
-    <form uex-p="submit2()" uex-p-options="{ successInterval: 500, errorInterval: 1000 }">
+    <form uex-p="submit2()" uex-p-opts="{ successInterval: 2000, errorInterval: 1000 }">
       <div uex-p-running>
         Running...
       </div>
@@ -22,6 +22,7 @@
       <div uex-p-error>
         Error!!
       </div>
+      <uex-p-status success="Success!!"></uex-p-status>
       <div class="form-group">
         <input type="checkbox" name="cb" ng-model="vm.shouldError"> Should error
       </div>

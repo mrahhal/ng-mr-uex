@@ -8,6 +8,7 @@
 		.directive('uexPRunning', uexPRunning)
 		.directive('uexPSuccess', uexPSuccess)
 		.directive('uexPError', uexPError)
+		.directive('uexPStatus', uexPStatus)
 		.directive('uexPBtn', uexPBtn);
 
 	function uexP($parse) {
@@ -69,7 +70,7 @@
 
 		function link($scope, $element, $attrs, ctrl) {
 			ctrl.$$fn = $parse($attrs.uexP);
-			ctrl.$$options = $scope.$eval($attrs.uexPOptions) || {};
+			ctrl.$$options = $scope.$eval($attrs.uexPOpts) || {};
 
 			if ($element.is('form') && $attrs.uexPSrc === undefined) {
 				$element.on('submit', function (e) {
@@ -103,16 +104,15 @@
 		return {
 			restrict: 'A',
 			require: '^uexP',
+			scope: {},
+			transclude: true,
+			template: '<div class="uex-p-' + kind + '" ng-show="shown" ng-transclude></div>',
 			link: function ($scope, $element, $attrs, ctrl) {
 				$element.addClass('uex-p-' + kind);
 				$scope.$watch(function () {
 					return ctrl['$' + kind];
 				}, function (n, o) {
-					if (n) {
-						$element.addClass('uex-p-on');
-					} else {
-						$element.removeClass('uex-p-on');
-					}
+					$scope.shown = !!n;
 				});
 			}
 		};
@@ -128,6 +128,40 @@
 
 	function uexPError() {
 		return uexPCommon('error');
+	}
+
+	function uexPStatus() {
+		return {
+			restrict: 'EA',
+			scope: {},
+			template: '<span ng-show="success || error" class="uex-p-status" ng-class="classes">{{text}}</span>',
+			require: '^uexP',
+			link: function ($scope, $element, $attrs, ctrl) {
+				var successText = $attrs.success || 'Success',
+					errorText = $attrs.error || 'Error';
+				$scope.classes = '';
+
+				$scope.$watch(function () {
+					return ctrl.$success;
+				}, function (n, o) {
+					$scope.success = n;
+					if (n) {
+						$scope.classes = 'uex-p-success';
+						$scope.text = successText;
+					}
+				});
+
+				$scope.$watch(function () {
+					return ctrl.$error;
+				}, function (n, o) {
+					$scope.error = n;
+					if (n) {
+						$scope.classes = 'uex-p-error';
+						$scope.text = errorText;
+					}
+				});
+			}
+		};
 	}
 
 	function uexPBtn() {
