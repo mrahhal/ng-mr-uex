@@ -43,11 +43,8 @@
 			transclude: true,
 			template: '\
 <div class="uex-select" ng-class="{open: isOpen}">\
-	<button type="button" class="button" ng-click="toggle()">\
-		<span class="text">\
-			{{title}}\
-		</span>\
-		<uex-icon icon="chevron-bottom"></uex-icon>\
+	<button class="button has-caret" ng-click="toggle()">\
+		{{title}}\
 	</button>\
 	<uex-icon icon="close" class="btn-plain btn-dim tooltipped tooltipped-e" aria-label="Clear" ng-if="selected" ng-click="clear()"></uex-icon>\
 	<div class="uex-select-content">\

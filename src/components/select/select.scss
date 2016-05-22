@@ -12,16 +12,8 @@ uex-select {
     outline: none;
     background: none;
     border: 1px solid $color-border;
-    padding: 0;
+    padding: 5px;
     cursor: pointer;
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-
-    > .text {
-      padding: 5px;
-      padding-right: 0;
-    }
 
     > uex-icon {
       margin-right: 2px;
@@ -85,7 +77,8 @@ uex-select {
             border-color: $color-border-focus;
           }
 
-          &:focus, &:active {
+          &:active,
+          &:focus {
             border-color: $brand-primary;
           }
         }
@@ -184,7 +177,6 @@ uex-select.north {
     display: block;
   }
 }
-
 @media (max-width: $layout-bp-xs) {
   .uex-select {
     .uex-select-content {
@@ -216,6 +208,7 @@ uex-select.north {
 uex-select {
   uex-select-simple {
     display: flex;
+
     > .uex-select-simple-content {
       flex: 1;
     }
