@@ -635,7 +635,7 @@ angular
 			transclude: true,
 			template: '\
 <div class="uex-select" ng-class="{open: isOpen}">\
-	<button class="button has-caret" ng-click="toggle()">\
+	<button type="button" class="button has-caret" ng-click="toggle()">\
 		{{title}}\
 	</button>\
 	<uex-icon icon="close" class="btn-plain btn-dim tooltipped tooltipped-e" aria-label="Clear" ng-if="selected" ng-click="clear()"></uex-icon>\
