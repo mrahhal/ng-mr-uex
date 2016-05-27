@@ -6,6 +6,7 @@
 
 	function uexIconsProvider() {
 		/* jshint validthis:true */
+		var self = this;
 
 		var icons = [{
 			id: 'add,plus',
@@ -76,8 +77,9 @@
 			svg: '<path d="M7.406 15.422l-1.406-1.406 6-6 6 6-1.406 1.406-4.594-4.594z"/>'
 		}];
 
-		this.addIcon = function (icon) {
-			icons.push(icon);
+		this.add = function (icon) {
+			icons.unshift(icon);
+			return self;
 		};
 
 		this.$get = function () {
@@ -128,7 +130,7 @@
 					icon = findIconById(icon.ref);
 				}
 
-				var content = wrap(icon.svg, icon.viewBox);
+				var content = wrap(icon.svg, icon.viewBox || icon.viewbox);
 				$element.empty();
 				$element.append(content);
 			}
