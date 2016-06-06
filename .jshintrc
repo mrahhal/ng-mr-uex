@@ -29,5 +29,7 @@
   "undef": true,
   "expr": true,
   "boss": true,
-  "laxbreak": true
+  "laxbreak": true,
+  "esversion": 6,
+  "-W082": true
 }
