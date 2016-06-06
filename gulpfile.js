@@ -5,6 +5,7 @@ var insert = require('gulp-insert');
 var cssmin = require('gulp-cssmin');
 var sass = require('gulp-sass');
 var sassGlob = require('gulp-sass-glob');
+var babel = require("gulp-babel");
 var ngAnnotate = require('gulp-ng-annotate');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
@@ -21,6 +22,7 @@ function compileJs(dir) {
 		.pipe(concat('ng-mr-uex.js'))
 		.pipe(insert.wrap('(function (window, angular, $, undefined) {\n', '\n})(window, window.angular, window.jQuery);'))
 		.pipe(gulp.dest(dir))
+		.pipe(babel())
 		.pipe(ngAnnotate())
 		.pipe(uglify())
 		.pipe(rename({
