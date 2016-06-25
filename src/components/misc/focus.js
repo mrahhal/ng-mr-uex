@@ -1,4 +1,4 @@
-(function () {
+{
 	'use strict';
 
 	angular.module('mr.uex').directive('uexFocus', uexFocus);
@@ -15,4 +15,4 @@
 			}
 		};
 	}
-})();
+}

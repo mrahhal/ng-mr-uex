@@ -1,4 +1,4 @@
-(function () {
+{
 	'use strict';
 
 	angular.module('mr.uex').provider('uexIcons', uexIconsProvider);
@@ -136,4 +136,4 @@
 			}
 		};
 	}
-})();
+}

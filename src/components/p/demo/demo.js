@@ -1,4 +1,4 @@
-(function () {
+{
 	'use strict';
 
 	angular.module('app').controller('pCtrl', pCtrl);
@@ -30,4 +30,4 @@
 			return defer(ctrl.shouldError2);
 		};
 	}
-})();
+}

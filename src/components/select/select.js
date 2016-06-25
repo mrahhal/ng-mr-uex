@@ -1,4 +1,4 @@
-(function () {
+{
 	'use strict';
 
 	angular.module('mr.uex')
@@ -288,4 +288,4 @@
 				<uex-icon icon="check" ng-if="$selected" />'
 		};
 	}
-})();
+}

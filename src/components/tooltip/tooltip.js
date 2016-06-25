@@ -1,4 +1,4 @@
-(function () {
+{
 	'use strict';
 
 	angular.module('mr.uex').directive('uexTooltip', uexTooltip);
@@ -28,4 +28,4 @@
 			}
 		};
 	}
-})();
+}
