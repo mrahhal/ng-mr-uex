@@ -1,8 +1,10 @@
-{
+(function () {
 	'use strict';
 
-	angular.module('mr.uex').provider('uexIcons', uexIconsProvider);
-	angular.module('mr.uex').directive('uexIcon', uexIcon);
+	angular
+		.module('mr.uex')
+		.provider('uexIcons', uexIconsProvider)
+		.directive('uexIcon', uexIcon);
 
 	function uexIconsProvider() {
 		/* jshint validthis:true */
@@ -136,4 +138,4 @@
 			}
 		};
 	}
-}
+})();

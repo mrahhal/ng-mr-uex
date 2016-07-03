@@ -1,7 +1,9 @@
-{
+(function () {
 	'use strict';
 
-	angular.module('mr.uex').directive('uexAlias', uexAlias);
+	angular
+		.module('mr.uex')
+		.directive('uexAlias', uexAlias);
 
 	function uexAlias() {
 		return {
@@ -20,4 +22,4 @@
 			}
 		};
 	}
-}
+})();

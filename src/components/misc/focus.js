@@ -1,7 +1,9 @@
-{
+(function () {
 	'use strict';
 
-	angular.module('mr.uex').directive('uexFocus', uexFocus);
+	angular
+		.module('mr.uex')
+		.directive('uexFocus', uexFocus);
 
 	function uexFocus($timeout) {
 		return {
@@ -15,4 +17,4 @@
 			}
 		};
 	}
-}
+})();

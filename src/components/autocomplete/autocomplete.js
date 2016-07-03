@@ -1,7 +1,8 @@
-{
+(function () {
 	'use strict';
 
-	angular.module('mr.uex')
+	angular
+		.module('mr.uex')
 		.directive('uexAutocomplete', uexAutocomplete);
 
 	function uexAutocompleteCtrl($scope, $attrs, $parse, $q) {
@@ -203,4 +204,4 @@
 			}
 		};
 	}
-}
+})();

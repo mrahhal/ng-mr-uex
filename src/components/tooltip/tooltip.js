@@ -1,7 +1,9 @@
-{
+(function () {
 	'use strict';
 
-	angular.module('mr.uex').directive('uexTooltip', uexTooltip);
+	angular
+		.module('mr.uex')
+		.directive('uexTooltip', uexTooltip);
 
 	function uexTooltip() {
 		function extractPlacement(v) {
@@ -28,4 +30,4 @@
 			}
 		};
 	}
-}
+})();

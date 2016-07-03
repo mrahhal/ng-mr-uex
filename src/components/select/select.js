@@ -1,7 +1,8 @@
-{
+(function () {
 	'use strict';
 
-	angular.module('mr.uex')
+	angular
+		.module('mr.uex')
 		.directive('uexSelectTransclude', uexSelectTransclude)
 		.directive('uexSelect', uexSelect)
 		.directive('uexSelectSimple', uexSelectSimple);
@@ -288,4 +289,4 @@
 				<uex-icon icon="check" ng-if="$selected" />'
 		};
 	}
-}
+})();

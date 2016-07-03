@@ -1,4 +1,4 @@
-{
+(function () {
 	'use strict';
 
 	angular.module('app').controller('uexAutocompleteCtrl', function ($scope, $timeout, $q) {
@@ -23,4 +23,4 @@
 		};
 	});
 
-}
+})();

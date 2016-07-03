@@ -1,4 +1,4 @@
-{
+(function () {
 	'use strict';
 
 	angular.module('app').controller('uexSelectCtrl', function ($scope, $timeout, $q) {
@@ -20,5 +20,4 @@
 			}, 2000);
 		};
 	});
-
-}
+})();

@@ -1,4 +1,4 @@
-{
+(function () {
 	'use strict';
 
 	function process(icons) {
@@ -22,4 +22,4 @@
 			}
 		});
 	});
-}
+})();

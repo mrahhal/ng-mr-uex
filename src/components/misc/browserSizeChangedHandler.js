@@ -1,7 +1,9 @@
-{
+(function () {
 	'use strict';
 
-	angular.module('mr.uex').factory('browserSizeChangedHandler', browserSizeChangedHandler);
+	angular
+		.module('mr.uex')
+		.factory('browserSizeChangedHandler', browserSizeChangedHandler);
 
 	function now() {
 		return +new Date();
@@ -76,4 +78,4 @@
 			}
 		};
 	}
-}
+})();

@@ -1,7 +1,9 @@
-{
+(function () {
 	'use strict';
 
-	angular.module('app').controller('pCtrl', pCtrl);
+	angular
+		.module('app')
+		.controller('pCtrl', pCtrl);
 
 	function pCtrl($scope, $q, $timeout) {
 		var ctrl = this;
@@ -30,4 +32,4 @@
 			return defer(ctrl.shouldError2);
 		};
 	}
-}
+})();
