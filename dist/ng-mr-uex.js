@@ -2,10 +2,11 @@
 angular
 	.module('mr.uex', ['ngAnimate']);
 
-{
+(function () {
 	'use strict';
 
-	angular.module('mr.uex')
+	angular
+		.module('mr.uex')
 		.directive('uexAutocomplete', uexAutocomplete);
 
 	function uexAutocompleteCtrl($scope, $attrs, $parse, $q) {
@@ -207,13 +208,15 @@ angular
 			}
 		};
 	}
-}
+})();
 
-{
+(function () {
 	'use strict';
 
-	angular.module('mr.uex').provider('uexIcons', uexIconsProvider);
-	angular.module('mr.uex').directive('uexIcon', uexIcon);
+	angular
+		.module('mr.uex')
+		.provider('uexIcons', uexIconsProvider)
+		.directive('uexIcon', uexIcon);
 
 	function uexIconsProvider() {
 		/* jshint validthis:true */
@@ -347,12 +350,14 @@ angular
 			}
 		};
 	}
-}
+})();
 
-{
+(function () {
 	'use strict';
 
-	angular.module('mr.uex').directive('uexAlias', uexAlias);
+	angular
+		.module('mr.uex')
+		.directive('uexAlias', uexAlias);
 
 	function uexAlias() {
 		return {
@@ -371,12 +376,14 @@ angular
 			}
 		};
 	}
-}
+})();
 
-{
+(function () {
 	'use strict';
 
-	angular.module('mr.uex').factory('browserSizeChangedHandler', browserSizeChangedHandler);
+	angular
+		.module('mr.uex')
+		.factory('browserSizeChangedHandler', browserSizeChangedHandler);
 
 	function now() {
 		return +new Date();
@@ -451,12 +458,14 @@ angular
 			}
 		};
 	}
-}
+})();
 
-{
+(function () {
 	'use strict';
 
-	angular.module('mr.uex').directive('uexFocus', uexFocus);
+	angular
+		.module('mr.uex')
+		.directive('uexFocus', uexFocus);
 
 	function uexFocus($timeout) {
 		return {
@@ -470,9 +479,9 @@ angular
 			}
 		};
 	}
-}
+})();
 
-{
+(function () {
 	'use strict';
 
 	angular
@@ -670,12 +679,13 @@ angular
 			}
 		};
 	}
-}
+})();
 
-{
+(function () {
 	'use strict';
 
-	angular.module('mr.uex')
+	angular
+		.module('mr.uex')
 		.directive('uexSelectTransclude', uexSelectTransclude)
 		.directive('uexSelect', uexSelect)
 		.directive('uexSelectSimple', uexSelectSimple);
@@ -962,12 +972,14 @@ angular
 				<uex-icon icon="check" ng-if="$selected" />'
 		};
 	}
-}
+})();
 
-{
+(function () {
 	'use strict';
 
-	angular.module('mr.uex').directive('uexTooltip', uexTooltip);
+	angular
+		.module('mr.uex')
+		.directive('uexTooltip', uexTooltip);
 
 	function uexTooltip() {
 		function extractPlacement(v) {
@@ -994,6 +1006,6 @@ angular
 			}
 		};
 	}
-}
+})();
 
 })(window, window.angular, window.jQuery);
