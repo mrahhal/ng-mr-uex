@@ -46,7 +46,7 @@
 			'<div class="uex-modal-wrapper">\
 				<div class="uex-modal-container">\
 					<div class="uex-modal-header">\
-						<button type="button" class="uex-modal-close" ng-click="$modalInstance.dismiss()">\
+						<button type="button" class="uex-modal-close" ng-click="$modal.dismiss()">\
 							<uex-icon icon="close"></uex-icon>\
 						</button>\
 						<h2>{{::title}}</h2>\
@@ -83,7 +83,7 @@
 
 			$compile($element)(angular.extend(scope, {
 				title: options.title || 'Modal',
-				$modalInstance: instance
+				$modal: instance
 			}, options.locals || {}));
 
 			instances.push(instance);

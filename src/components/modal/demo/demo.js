@@ -2,14 +2,14 @@
 	'use strict';
 
 	var c = 0;
-	
+
 	angular
 		.module('app')
 		.controller('modalCtrl', modalCtrl)
 		.component('modalComp', {
 			template: '<button type="button" ng-click="$ctrl.go()">Go</button><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1>',
 			bindings: {
-				modalInstance: '<'
+				$modal: '<'
 			},
 			controller: function ($scope, modal) {
 				this.go = () => {
@@ -17,7 +17,7 @@
 					modal({
 						scope: $scope,
 						title: '' + c + '.',
-						template: '<modal-comp modal-instance="$modalInstance"></modal-comp>'
+						template: '<modal-comp $modal="$modal"></modal-comp>'
 					});
 				};
 			}
