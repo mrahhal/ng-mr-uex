@@ -12,5 +12,7 @@ $layout-bp-sm: 960px !default;
 $layout-bp-md: 1280px !default;
 $layout-bp-lg: 1920px !default;
 
+$layout-bp-xp-max: $layout-bp-xs - 1;
+
 // sizes
 $icon-size: rem(2.000) !default;

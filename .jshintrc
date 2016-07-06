@@ -12,7 +12,8 @@
     "should": false,
     "module": false,
     "window": false,
-    "$": false
+    "$": false,
+    "document": false
   },
   "camelcase": true,
   "eqeqeq": true,

@@ -1,0 +1,141 @@
+.uex-modal-bd {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 10000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity linear 0.1s;
+  @media (max-width: $layout-bp-xp-max) {
+    transition: none;
+    display: none;
+  }
+}
+
+body.uex-modal-active {
+  overflow: hidden!important;
+  @media (min-width: $layout-bp-sm) {
+    margin-right: 25px;
+  }
+
+  .uex-modal-bd {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.uex-modal-wrapper {
+  z-index: 10001;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow-y: scroll;
+  transition: opacity linear 0.1s;
+  @media (max-width: $layout-bp-xp-max) {
+    overflow: hidden;
+  }
+}
+
+.uex-modal-wrapper.inactive {
+  opacity: 0;
+  @media (max-width: $layout-bp-xp-max) {
+    opacity: 1;
+  }
+}
+
+.uex-modal-wrapper.ng-enter {
+  opacity: 0;
+
+  .uex-modal-container {
+    transform: translateY(-100%);
+  }
+}
+
+.uex-modal-wrapper.ng-enter.ng-enter-active {
+  opacity: 1;
+
+  .uex-modal-container {
+    transform: translateY(0);
+  }
+}
+
+.uex-modal-wrapper.ng-leave {
+  opacity: 1;
+}
+
+.uex-modal-wrapper.ng-leave.ng-leave-active {
+  opacity: 0;
+}
+
+.uex-modal-inner-bd {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.uex-modal-container {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  width: 600px;
+  margin: 20px auto;
+  border-radius: 5px;
+  overflow: hidden;
+  transition: transform ease-out 0.1s;
+}
+
+.uex-modal-header {
+  background: #eee;
+  border-bottom: #ddd;
+
+  h2 {
+    font-weight: normal;
+    margin: 0;
+    padding: 10px;
+    overflow: hidden;
+  }
+}
+
+.uex-modal-close {
+  opacity: 0.4;
+  border: none;
+  float: right;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  margin-top: 11px;
+  margin-right: 5px;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.uex-modal-content {
+  padding: 10px;
+  background: white;
+  height: 100%;
+  overflow-y: auto;
+}
+
+@media (max-width: $layout-bp-xp-max) {
+  .uex-modal-container {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+    display: flex;
+    flex-flow: column nowrap;
+  }
+
+  .uex-modal-content {
+    flex: 1;
+  }
+}
