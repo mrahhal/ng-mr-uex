@@ -12,6 +12,12 @@
 
 		function listenToEvents() {
 			$rootScope.$on('uex-modal-bd.clicked', handleBdClicked);
+			$body.on('keydown', e => {
+				if (!e.isDefaultPrevented() && e.which === 27) {
+					e.preventDefault();
+					dismissTopModal();
+				}
+			});
 		}
 
 		function ensure() {
@@ -37,6 +43,7 @@
 			}
 
 			var top = instances[instances.length - 1];
+			top.scope.$applyAsync();
 			top.dismiss();
 		}
 
