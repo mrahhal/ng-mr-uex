@@ -5,7 +5,7 @@
 		.module('mr.uex')
 		.factory('modal', modal);
 
-	function modal($rootScope, $compile, $controller, $animate) {
+	function modal($rootScope, $compile, $controller, $animate, $templateRequest, $q) {
 		var instances = [],
 			$body,
 			$bd;
@@ -55,46 +55,59 @@
 				</div>\
 			</div>';
 
+		function getTemplatePromise(options) {
+			return options.template ? $q.when(options.template) :
+				$templateRequest(angular.isFunction(options.templateUrl) ?
+					options.templateUrl() : options.templateUrl);
+		}
+
 		var func = options => {
 			var scope = options.scope || $rootScope.$new();
 			var $element = $(getModalContainerTemplate());
-			$element.find('.uex-modal-content').html(options.template);
 
-			var instance = {
-				element: $element,
-				dismiss: () => {
-					var i = instances.indexOf(instance);
-					instances.splice(i, 1);
-					var leaving = $animate.leave($element);
+			// Support options.component?
+			var templatePromise = getTemplatePromise(options);
+			templatePromise.then(template => {
+				$element.find('.uex-modal-content').html(template);
 
-					if (instances.length === 0) {
+				var instance = {
+					element: $element,
+					dismiss: () => {
+						var i = instances.indexOf(instance);
+						instances.splice(i, 1);
+						var leaving = $animate.leave($element);
+
+						if (instances.length === 0) {
 							leaving.then(() => {
 								$body.removeClass('uex-modal-active');
 							});
-					} else {
-						instances[instances.length - 1].active(true);
+						} else {
+							instances[instances.length - 1].active(true);
+						}
+					},
+					active: value => {
+						if (value) instance.element.removeClass('inactive');
+						else instance.element.addClass('inactive');
 					}
-				},
-				active: value => {
-					if (value) instance.element.removeClass('inactive');
-					else instance.element.addClass('inactive');
+				};
+
+				$compile($element)(angular.extend(scope, {
+					title: options.title || 'Modal',
+					$modal: instance
+				}, options.locals || {}));
+
+				instances.push(instance);
+				if (instances.length !== 1) {
+					for (var i = 0; i < instances.length - 1; i++) {
+						instances[i].active(false);
+					}
 				}
-			};
 
-			$compile($element)(angular.extend(scope, {
-				title: options.title || 'Modal',
-				$modal: instance
-			}, options.locals || {}));
-
-			instances.push(instance);
-			if (instances.length !== 1) {
-				for (var i = 0; i < instances.length - 1; i++) {
-					instances[i].active(false);
-				}
-			}
-
-			$body.addClass('uex-modal-active');
-			$animate.enter($element, $body, $body.children().last());
+				$body.addClass('uex-modal-active');
+				$animate.enter($element, $body, $body.children().last());
+			}, () => {
+				scope.$destroy();
+			});
 		};
 
 		return func;
