@@ -124,6 +124,10 @@ body.uex-modal-active {
   overflow-y: auto;
 }
 
+modal {
+  display: none;
+}
+
 @media (max-width: $layout-bp-xp-max) {
   .uex-modal-container {
     width: 100%;

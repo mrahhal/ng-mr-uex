@@ -30,5 +30,9 @@
 				template: '<modal-comp modal-instance="modalInstance"></modal-comp>'
 			});
 		};
+
+		this.go2 = () => {
+			this.m.open();
+		};
 	}
 })();

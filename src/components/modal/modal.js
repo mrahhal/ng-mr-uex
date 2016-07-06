@@ -62,41 +62,56 @@
 		}
 
 		var func = options => {
-			var scope = options.scope || $rootScope.$new();
+			var scope = (options.scope || $rootScope).$new();
 			var $element = $(getModalContainerTemplate());
+
+			var destroyAndClean = instance => {
+				instance.scope.$destroy;
+				var delegates = instance._delegates;
+				for (var i = 0; i < delegates.length; i++) {
+					delegates[i]();
+				}
+			};
+
+			var instance = {
+				_delegates: [],
+				scope: scope,
+				element: $element,
+				dismiss: () => {
+					var i = instances.indexOf(instance);
+					instances.splice(i, 1);
+					var leaving = $animate.leave($element);
+
+					if (instances.length === 0) {
+						leaving.then(() => {
+							$body.removeClass('uex-modal-active');
+							destroyAndClean(instance);
+						});
+					} else {
+						instances[instances.length - 1].active(true);
+						destroyAndClean(instance);
+					}
+				},
+				active: value => {
+					if (value) instance.element.removeClass('inactive');
+					else instance.element.addClass('inactive');
+				},
+				onDismiss: action => {
+					instance._delegates.push(action);
+				}
+			};
+			instances.push(instance);
 
 			// Support options.component?
 			var templatePromise = getTemplatePromise(options);
 			templatePromise.then(template => {
 				$element.find('.uex-modal-content').html(template);
 
-				var instance = {
-					element: $element,
-					dismiss: () => {
-						var i = instances.indexOf(instance);
-						instances.splice(i, 1);
-						var leaving = $animate.leave($element);
-
-						if (instances.length === 0) {
-							leaving.then(() => {
-								$body.removeClass('uex-modal-active');
-							});
-						} else {
-							instances[instances.length - 1].active(true);
-						}
-					},
-					active: value => {
-						if (value) instance.element.removeClass('inactive');
-						else instance.element.addClass('inactive');
-					}
-				};
-
 				$compile($element)(angular.extend(scope, {
 					title: options.title || 'Modal',
 					$modal: instance
 				}, options.locals || {}));
 
-				instances.push(instance);
 				if (instances.length !== 1) {
 					for (var i = 0; i < instances.length - 1; i++) {
 						instances[i].active(false);
@@ -108,6 +123,8 @@
 			}, () => {
 				scope.$destroy();
 			});
+
+			return instance;
 		};
 
 		return func;
