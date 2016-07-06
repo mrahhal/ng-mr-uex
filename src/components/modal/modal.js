@@ -66,7 +66,7 @@
 			var $element = $(getModalContainerTemplate());
 
 			var destroyAndClean = instance => {
-				instance.scope.$destroy;
+				instance.scope.$destroy();
 				var delegates = instance._delegates;
 				for (var i = 0; i < delegates.length; i++) {
 					delegates[i]();
@@ -121,7 +121,7 @@
 				$body.addClass('uex-modal-active');
 				$animate.enter($element, $body, $body.children().last());
 			}, () => {
-				scope.$destroy();
+				destroyAndClean(instance);
 			});
 
 			return instance;
