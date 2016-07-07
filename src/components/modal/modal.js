@@ -134,6 +134,78 @@
 			return instance;
 		};
 
+		func.confirm = () => {
+			var options = {
+				title: 'Confirm',
+				template: 'Are you sure?',
+				danger: false,
+				yesText: 'Yes',
+				noText: 'Cancel',
+				info: false
+			};
+
+			var ret = {
+				open: scope => {
+					var deferred = $q.defer();
+					var instance = func({
+						title: options.title,
+						scope: angular.extend(scope, {
+							danger: options.danger,
+							yesText: options.yesText,
+							noText: options.noText,
+							info: options.info,
+							resolve: () => {
+								deferred.resolve();
+								instance.dismiss();
+							}
+						}),
+						template:
+							'<div class="uex-modal-t-confirm">\
+								<div class="uex-modal-t-confirm-content">' +
+								options.template + '\
+								</div>\
+								<div class="uex-modal-t-confirm-actions">\
+									<button type="button" class="btn btn-default no-btn" ng-click="$modal.dismiss()" ng-if="::!info">{{::noText}}</button>\
+									<button type="button" class="btn yes-btn" ng-click="resolve()" ng-class="{danger: danger, \'btn-danger\': danger, \'btn-primary\': !danger}">{{::yesText}}</button>\
+								</div>\
+							</div>'
+					});
+					instance.onDismiss(() => deferred.reject());
+					return deferred.promise;
+				},
+				title: v => {
+					options.title = v;
+					return ret;
+				},
+				danger: () => {
+					options.danger = true;
+					return ret;
+				},
+				yes: v => {
+					options.yesText = v;
+					return ret;
+				},
+				no: v => {
+					options.noText = v;
+					return ret;
+				},
+				text: v => {
+					options.template = v;
+					return ret;
+				},
+				info: () => {
+					options.info = true;
+					return ret;
+				}
+			};
+
+			return ret;
+		};
+
+		func.info = () => {
+			return func.confirm().info().title('Info').yes('OK');
+		};
+
 		return func;
 	}
 })();

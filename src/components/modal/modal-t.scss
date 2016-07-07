@@ -1,0 +1,19 @@
+.uex-modal-t-confirm {
+}
+
+.uex-modal-t-confirm-content {
+}
+
+.uex-modal-t-confirm-actions {
+  margin: -10px;
+  margin-top: 10px;
+  // border-top: 1px solid $color-border;
+  padding: 10px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+
+  .yes-btn {
+    margin-left: 5px;
+  }
+}

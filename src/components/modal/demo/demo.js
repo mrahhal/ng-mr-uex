@@ -34,5 +34,15 @@
 		this.go2 = () => {
 			this.m.open();
 		};
+
+		this.goConfirm = () => {
+			modal.confirm().title('Are').danger().open($scope)
+				.then(() => console.log('ok'), () => console.log('no'));
+		};
+
+		this.goInfo = () => {
+			modal.info().title('Make sure to').open($scope)
+				.then(() => console.log('ok'), () => console.log('no'));
+		};
 	}
 })();
