@@ -15,7 +15,8 @@
 				title: '@'
 			},
 			controllerAs: '$ctrl',
-			controller: function ($scope, $element, $transclude) {
+			controller: function ($scope, $element, $transclude, $attrs) {
+				var classes = $attrs.classes;
 				this.delegate = {
 					open: () => {
 						var scope = $scope.$new();
@@ -23,6 +24,7 @@
 							var instance = modal({
 								scope: scope,
 								title: this.title,
+								classes: classes,
 								template: clone
 							});
 							instance.onDismiss(() => {

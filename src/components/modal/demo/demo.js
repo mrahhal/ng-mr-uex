@@ -27,6 +27,7 @@
 		this.go = () => {
 			modal({
 				scope: $scope,
+				classes: 'modal-foo',
 				template: '<modal-comp modal-instance="modalInstance"></modal-comp>'
 			});
 		};

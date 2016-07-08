@@ -49,8 +49,11 @@
 
 		ensure();
 
-		var getModalContainerTemplate = () =>
-			'<div class="uex-modal-wrapper">\
+		var getWrapperClasses = options =>
+			options.classes ? ' ' + options.classes : '';
+
+		var getModalContainerTemplate = options =>
+			'<div class="uex-modal-wrapper' + getWrapperClasses(options) +'">\
 				<div class="uex-modal-container">\
 					<div class="uex-modal-header">\
 						<button type="button" class="uex-modal-close" ng-click="$modal.dismiss()">\
@@ -70,7 +73,7 @@
 
 		var func = options => {
 			var scope = (options.scope || $rootScope).$new();
-			var $element = $(getModalContainerTemplate());
+			var $element = $(getModalContainerTemplate(options));
 
 			var destroyAndClean = instance => {
 				instance.scope.$destroy();
@@ -191,6 +194,10 @@
 				},
 				text: v => {
 					options.template = v;
+					return ret;
+				},
+				classes: v => {
+					options.classes = v;
 					return ret;
 				},
 				info: () => {
