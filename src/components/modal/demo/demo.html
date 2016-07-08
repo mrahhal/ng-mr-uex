@@ -5,12 +5,20 @@
     <button ng-click="vm.go2()">Go2</button>
     <button ng-click="vm.goConfirm()">Go Confirm</button>
     <button ng-click="vm.goInfo()">Go Info</button>
+    <button ng-click="vm.c1.open()">Go Custom 1</button>
+    <button ng-click="vm.c2.open()">Go Custom 2</button>
     <h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1>
     <modal delegate="vm.m" title="Foo title" classes="modal-bar">
       Foo
       <div ng-repeat="v in [1,2,3]">
         {{v}}
       </div>
+    </modal>
+    <modal delegate="vm.c1" title="Custom Modal 1" classes="modal-c-1">
+      Foo
+    </modal>
+    <modal delegate="vm.c2" title="Custom Modal 2" classes="modal-c-2">
+      Foo
     </modal>
   </section>
 

@@ -54,22 +54,20 @@ body.uex-modal-active {
   .uex-modal-container {
     transform: translateY(-30px);
   }
-}
 
-.uex-modal.ng-enter.ng-enter-active {
-  opacity: 1;
+  &.ng-enter-active {
+    opacity: 1;
 
-  .uex-modal-container {
-    transform: translateY(0);
+    .uex-modal-container {
+      transform: translateY(0);
+    }
   }
 }
 
 .uex-modal.ng-leave {
-  opacity: 1;
-}
-
-.uex-modal.ng-leave.ng-leave-active {
-  opacity: 0;
+  &.ng-leave-active {
+    opacity: 0;
+  }
 }
 
 .uex-modal-inner-bd {

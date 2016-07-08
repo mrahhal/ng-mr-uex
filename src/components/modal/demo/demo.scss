@@ -1,0 +1,45 @@
+.uex-modal.modal-c-1.ng-enter {
+  transition-duration: 0.2s;
+
+  .uex-modal-container {
+    transition: transform ease-out 0.2s;
+    transform: rotateZ(-30deg);
+  }
+
+  &.ng-enter-active {
+    .uex-modal-container {
+      transform: rotateZ(0);
+    }
+  }
+}
+
+.uex-modal.modal-c-1.ng-leave {
+  transition-duration: 0.2s;
+
+  .uex-modal-container {
+    transition: transform ease-in 0.3s;
+  }
+
+  &.ng-leave-active {
+    .uex-modal-container {
+      transform: scale(0);
+    }
+  }
+}
+
+.uex-modal.modal-c-2 {
+  .uex-modal-container {
+    border-radius: 0;
+  }
+
+  .uex-modal-header {
+    background: #9C27B0;
+    color: white;
+  }
+
+  .uex-modal-close {
+    uex-icon {
+      color: white;
+    }
+  }
+}
