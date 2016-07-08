@@ -71,6 +71,13 @@
 					options.templateUrl() : options.templateUrl);
 		}
 
+		// options:
+		//   scope
+		//   template - templateUrl
+		//   title
+		//   classes
+		//   locals
+		//
 		var func = options => {
 			var scope = (options.scope || $rootScope).$new();
 			var $element = $(getModalContainerTemplate(options));
