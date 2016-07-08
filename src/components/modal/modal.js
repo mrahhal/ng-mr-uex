@@ -53,7 +53,7 @@
 			options.classes ? ' ' + options.classes : '';
 
 		var getModalContainerTemplate = options =>
-			'<div class="uex-modal-wrapper' + getWrapperClasses(options) +'">\
+			'<div class="uex-modal' + getWrapperClasses(options) +'">\
 				<div class="uex-modal-container">\
 					<div class="uex-modal-header">\
 						<button type="button" class="uex-modal-close" ng-click="$modal.dismiss()">\
