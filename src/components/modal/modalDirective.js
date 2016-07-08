@@ -3,7 +3,7 @@
 
 	angular
 		.module('mr.uex')
-		.directive('modal', modal);
+		.directive('uexModal', modal);
 
 	function modal(modal) {
 		return {
