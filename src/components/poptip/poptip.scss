@@ -1,0 +1,62 @@
+.uex-poptip {
+  position: absolute;
+  pointer-events: none;
+
+  strong {
+    color: #fff;
+  }
+
+  &.ng-enter-prepare {
+    opacity: 0;
+  }
+
+  &.ng-enter {
+    transition: opacity linear .1s;
+    opacity: 0;
+
+    &.ng-enter-active {
+      opacity: 1;
+    }
+  }
+
+  &.ng-leave {
+    transition: opacity linear .1s;
+    opacity: 1;
+
+    &.ng-leave-active {
+      opacity: 0;
+    }
+  }
+}
+
+.uex-poptip-content {
+  background: black;
+  color: #e9e9e9;
+  border-radius: 4px;
+  font-size: 11px;
+  padding: 10px;
+}
+
+.uex-poptip-arrow {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 5px solid transparent;
+}
+
+.uex-poptip.uex-poptip-p-top .uex-poptip-arrow {
+  border-top-color: black;
+  bottom: -10px;
+}
+.uex-poptip.uex-poptip-p-right .uex-poptip-arrow {
+  border-right-color: black;
+  left: -10px;
+}
+.uex-poptip.uex-poptip-p-bottom .uex-poptip-arrow {
+  border-bottom-color: black;
+  top: -10px;
+}
+.uex-poptip.uex-poptip-p-left .uex-poptip-arrow {
+  border-left-color: black;
+  right: -10px;
+}

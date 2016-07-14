@@ -1,0 +1,50 @@
+#demo-poptip-page {
+  [uex-poptip-target] {
+    background: #eee;
+    display: inline-block;
+    padding: 3px;
+  }
+}
+
+.uex-poptip.poptip-c1 {
+  .uex-poptip-content {
+    background: #4285f4;
+  }
+}
+
+.uex-poptip.poptip-c1.uex-poptip-p-top .uex-poptip-arrow {
+  border-top-color: #4285f4;
+}
+
+.uex-poptip.poptip-c1.uex-poptip-p-right .uex-poptip-arrow {
+  border-right-color: #4285f4;
+}
+
+.uex-poptip.poptip-c1.uex-poptip-p-bottom .uex-poptip-arrow {
+  border-bottom-color: #4285f4;
+}
+
+.uex-poptip.poptip-c1.uex-poptip-p-left .uex-poptip-arrow {
+  border-left-color: #4285f4;
+}
+
+.uex-poptip.poptip-c2 {
+  &.ng-enter {
+    transition: opacity linear .1s, transform ease-out .1s;
+    transition-delay: .2s;
+    transform: scale(.5) rotateZ(-30deg);
+
+    &.ng-enter-active {
+      transform: scale(1) rotateZ(0);
+    }
+  }
+
+  &.ng-leave {
+    transition: opacity linear .1s, transform ease-in .1s;
+    transform: scale(1);
+
+    &.ng-leave-active {
+      transform: scale(.5);
+    }
+  }
+}
