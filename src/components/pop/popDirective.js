@@ -50,34 +50,54 @@
 				popContainer: '^uexPopContainer'
 			},
 			bindToController: {
-				delegate: '=',
+				delegate: '=?',
 				placement: '@',
 				align: '@',
-				classes: '@'
+				classes: '@',
+				on: '@'
 			},
 			controllerAs: '$ctrl',
 			controller: function ($scope, $element, $transclude) {
 				var target;
+
+				this.on = this.on || 'click';
+
+				var showPop = () => {
+					var scope = $scope.$new();
+					$transclude(scope, clone => {
+						var instance = pop({
+							scope: scope,
+							target: target,
+							placement: this.placement,
+							align: this.align,
+							classes: this.classes,
+							template: clone
+						});
+						instance.onDismiss(() => {
+							scope.$destroy();
+						});
+					});
+				};
+
 				this.$onInit = () => {
 					target = this.popContainer.getTarget();
+
+					if (this.on === 'click') {
+						target.on('click', () => {
+							showPop();
+							$scope.$applyAsync();
+						});
+					} else if (this.on === 'hover') {
+						target.on('mouseenter', () => {
+							showPop();
+							$scope.$applyAsync();
+						});
+					}
 				};
 
 				this.delegate = {
 					open: () => {
-						var scope = $scope.$new();
-						$transclude(scope, clone => {
-							var instance = pop({
-								scope: scope,
-								target: target,
-								placement: this.placement,
-								align: this.align,
-								classes: this.classes,
-								template: clone
-							});
-							instance.onDismiss(() => {
-								scope.$destroy();
-							});
-						});
+						showPop();
 					}
 				};
 			}
