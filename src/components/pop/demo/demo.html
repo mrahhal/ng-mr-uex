@@ -1,0 +1,28 @@
+<section ng-controller="popCtrl as $ctrl">
+  <div uex-pop-container>
+    <button type="button" uex-pop-target ng-click="$ctrl.p1.open()">Go1</button>
+    <button type="button" uex-pop-target ng-click="$ctrl.p2.open()">Go2</button>
+    <h1>foo</h1><h1>foo</h1><h1>foo</h1><h1>foo</h1><h1>foo</h1><h1>foo</h1><h1>foo</h1><h1>foo</h1><h1>foo</h1><h1>foo</h1><h1>foo</h1><h1>foo</h1>
+    <uex-pop delegate="$ctrl.p1" placement="bottom" align="center">
+      <div>This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 </div>
+      <div>This is 2</div>
+      <div>This is 2</div>
+      <div>This is 2</div>
+      <h1>This is 2</h1>
+      <div>This is 2</div>
+      <div>This is 2</div>
+      <h1>This is 2</h1>
+      <div>This is 2</div>
+      <div>This is 2</div>
+    </uex-pop>
+    <uex-pop delegate="$ctrl.p2" placement="right" align="center" classes="pop-menu">
+      <ul>
+        <li>Something 1</li>
+        <li>Something 2</li>
+        <li>Something 3</li>
+        <li>Something 4</li>
+      </ul>
+    </uex-pop>
+  </div>
+
+</section>

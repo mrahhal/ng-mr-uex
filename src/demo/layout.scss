@@ -1,5 +1,9 @@
 $brand-primary: #3F51B5;
 
+* {
+  box-sizing: border-box;
+}
+
 #left-nav {
   width: 200px;
   position: fixed;
