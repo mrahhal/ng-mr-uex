@@ -61,6 +61,10 @@
 		}
 
 		function computeOffset(context, options) {
+			options.placement = options.placement || 'bottom';
+			options.align = options.align || 'start';
+			options.offset = options.offset || 5;
+
 			var placement = options.placement,
 				align = options.align,
 				o = options.offset,

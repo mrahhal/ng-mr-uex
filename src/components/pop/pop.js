@@ -68,10 +68,6 @@
 			var scope = (options.scope || $rootScope).$new();
 			var $element = $(getPopTemplate(options));
 
-			options.placement = options.placement || 'bottom';
-			options.align = options.align || 'start';
-			options.offset = options.offset || 5;
-
 			if (_instance) {
 				_instance.dismiss();
 			}
@@ -106,14 +102,16 @@
 					var target = instance.target,
 						pop = instance.pop;
 
-					options.target = target;
-					options.element = pop;
-					options.margin = 5;
+					var o = angular.extend(options, {
+						target: target,
+						element: pop,
+						margin: 5
+					});
 
 					if (stub) {
-						options.stub = true;
+						o.stub = true;
 					}
-					var context = positioner(options);
+					var context = positioner(o);
 					if (options.onPosition) {
 						options.onPosition(context);
 					}

@@ -4,6 +4,10 @@ $brand-primary: #3F51B5;
   box-sizing: border-box;
 }
 
+body {
+  font-family: 'Open Sans', Helvetica, sans-serif !important;
+}
+
 #left-nav {
   width: 200px;
   position: fixed;
