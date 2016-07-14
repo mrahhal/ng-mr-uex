@@ -5,9 +5,8 @@
 		.module('mr.uex')
 		.factory('pop', pop);
 
-	function pop($rootScope, $compile, $animate, $templateRequest, $q, $timeout, positioningThrottler, positioner) {
+	function pop($rootScope, $compile, $animate, $templateRequest, $q, positioningThrottler, positioner) {
 		var _instance,
-			$window,
 			$body;
 
 		function listenToEvents() {
@@ -32,7 +31,6 @@
 				return;
 			}
 
-			$window = $(window);
 			$body = $(document.body); //jshint ignore: line
 			listenToEvents();
 		}
