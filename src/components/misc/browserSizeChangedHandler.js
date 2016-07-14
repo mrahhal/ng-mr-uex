@@ -31,15 +31,32 @@
 			};
 		};
 
-		var processHandlers = () => {
+		function handlerSatisfies(events, e) {
+			if (!events) {
+				return true;
+			}
+			var type = e.type,
+				found = false;
+			for (var i = 0; i < events.length; i++) {
+				if (events[i] === type) found = true;
+			}
+			return found;
+		}
+
+		var processHandlers = e => {
 			var context = getContext();
 			for (var i = 0; i < handlers.length; i++) {
-				var handler = handlers[i];
+				var composite = handlers[i],
+					handler = composite.handler,
+					events = composite.events;
+				if (e && !handlerSatisfies(events, e))  {
+					continue;
+				}
 				handler(context);
 			}
 		};
 
-		var tick = function () {
+		var tick = function (e) {
 			if (typeof lastDuration !== 'undefined' && lastDuration > 16) {
 				lastDuration = Math.min(lastDuration - 16, 250);
 
@@ -57,7 +74,7 @@
 			}
 
 			lastCall = now();
-			processHandlers();
+			processHandlers(e);
 			lastDuration = now() - lastCall;
 		};
 
@@ -69,8 +86,11 @@
 		});
 
 		return {
-			subscribe: handler => {
-				handlers.push(handler);
+			subscribe: (handler, events) => {
+				if (angular.isString(events)) {
+					events = [events];
+				}
+				handlers.push({handler: handler, events: events});
 				processHandlers();
 				return () => {
 					remove(handlers, handler);
