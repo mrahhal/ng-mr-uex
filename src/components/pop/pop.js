@@ -5,7 +5,7 @@
 		.module('mr.uex')
 		.factory('pop', pop);
 
-	function pop($rootScope, $compile, $animate, $templateRequest, $q, $timeout, browserSizeChangedHandler, positioner) {
+	function pop($rootScope, $compile, $animate, $templateRequest, $q, $timeout, positioningThrottler, positioner) {
 		var _instance,
 			$window,
 			$body;
@@ -17,7 +17,7 @@
 					dismiss();
 				}
 			});
-			browserSizeChangedHandler.subscribe(context => {
+			positioningThrottler.subscribe(context => {
 				if (_instance) _instance.position();
 			});
 		}

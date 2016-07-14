@@ -3,7 +3,7 @@
 
 	angular
 		.module('mr.uex')
-		.factory('browserSizeChangedHandler', browserSizeChangedHandler);
+		.factory('positioningThrottler', positioningThrottler);
 
 	function now() {
 		return +new Date();
@@ -14,7 +14,7 @@
 		array.splice(index, 1);
 	}
 
-	function browserSizeChangedHandler() {
+	function positioningThrottler() {
 		var handlers = [],
 			$window = $(window),
 			lastCall = null,
