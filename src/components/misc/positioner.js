@@ -28,34 +28,34 @@
 			return result;
 		}
 
-		function computeLeftForVertical(tp, pp, offset, align) {
+		function computeLeftForVertical(tp, ep, offset, align) {
 			switch (align) {
 				case 'start':
 					offset.left = tp.left;
 					break;
 
 				case 'center':
-					offset.left = tp.left + (tp.width / 2) - (pp.width / 2);
+					offset.left = tp.left + (tp.width / 2) - (ep.width / 2);
 					break;
 
 				case 'end':
-					offset.left = tp.left + tp.width - pp.width;
+					offset.left = tp.left + tp.width - ep.width;
 					break;
 			}
 		}
 
-		function computeTopForHorizontal(tp, pp, offset, align) {
+		function computeTopForHorizontal(tp, ep, offset, align) {
 			switch (align) {
 				case 'start':
 					offset.top = tp.top;
 					break;
 
 				case 'center':
-					offset.top = tp.top + (tp.height / 2) - (pp.height / 2);
+					offset.top = tp.top + (tp.height / 2) - (ep.height / 2);
 					break;
 
 				case 'end':
-					offset.top = tp.top + tp.height - pp.height;
+					offset.top = tp.top + tp.height - ep.height;
 					break;
 			}
 		}
@@ -64,7 +64,7 @@
 			var placement = options.placement,
 				align = options.align,
 				o = options.offset,
-				pp = context.pp,
+				ep = context.ep,
 				tp = context.tp;
 
 			var offset = {
@@ -74,23 +74,23 @@
 
 			switch (placement) {
 				case 'top':
-					offset.top = tp.top - pp.height - o;
-					computeLeftForVertical(tp, pp, offset, align);
+					offset.top = tp.top - ep.height - o;
+					computeLeftForVertical(tp, ep, offset, align);
 					break;
 
 				case 'right':
 					offset.left = tp.left + tp.width + o;
-					computeTopForHorizontal(tp, pp, offset, align);
+					computeTopForHorizontal(tp, ep, offset, align);
 					break;
 
 				case 'bottom':
 					offset.top = tp.top + tp.height + o;
-					computeLeftForVertical(tp, pp, offset, align);
+					computeLeftForVertical(tp, ep, offset, align);
 					break;
 
 				case 'left':
-					offset.left = tp.left - pp.width - o;
-					computeTopForHorizontal(tp, pp, offset, align);
+					offset.left = tp.left - ep.width - o;
+					computeTopForHorizontal(tp, ep, offset, align);
 					break;
 			}
 
@@ -108,13 +108,13 @@
 				};
 
 			// Coarse left
-			if (offset.left + context.pp.width > gp.width) {
-				offset.left -= offset.left + context.pp.width - gp.width;
+			if (offset.left + context.ep.width > gp.width) {
+				offset.left -= offset.left + context.ep.width - gp.width;
 			}
 
 			// Coarse top
-			if (offset.top + context.pp.height > gp.height) {
-				offset.top -= offset.top + context.pp.height - gp.height;
+			if (offset.top + context.ep.height > gp.height) {
+				offset.top -= offset.top + context.ep.height - gp.height;
 			}
 
 			// Coarse negatives
@@ -149,22 +149,22 @@
 				width: target.outerWidth(),
 				height: target.outerHeight()
 			};
-			var pp = {};
+			var ep = {};
 			measuring(options, el => {
-				pp.width = el.outerWidth();
-				pp.height = el.outerHeight();
+				ep.width = el.outerWidth();
+				ep.height = el.outerHeight();
 			});
 			var context = {
 				target: target,
 				element: element,
 				tp: tp,
-				pp: pp
+				ep: ep
 			};
 			var offset = computeOffset(context, options);
 			context.offset = offset;
 			coarseOffset(context, options);
-			context.pp.left = offset.left;
-			context.pp.top = offset.top;
+			context.ep.left = offset.left;
+			context.ep.top = offset.top;
 
 			return context;
 		};
