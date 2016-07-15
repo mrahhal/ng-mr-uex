@@ -1,22 +1,23 @@
 <section ng-controller="popCtrl as $ctrl">
   <div>
     <button type="button" uex-pop-container uex-pop-target>
-      Go1
+      Pop 1
       <uex-pop delegate="$ctrl.p1" on="click" placement="bottom" align="center">
-        <div>This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 This is 1 </div>
-        <div>This is 2</div>
-        <div>This is 2</div>
-        <div>This is 2</div>
-        <h1>This is 2</h1>
-        <div>This is 2</div>
-        <div>This is 2</div>
-        <h1>This is 2</h1>
-        <div>This is 2</div>
-        <div>This is 2</div>
+        <div>foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo
+        </div>
+        <div>foo</div>
+        <div>foo</div>
+        <div>foo</div>
+        <h1>foo</h1>
+        <div>foo</div>
+        <div>foo</div>
+        <h1>foo</h1>
+        <h2>foo</h2>
+        <div>foo</div>
       </uex-pop>
     </button>
     <button type="button" uex-pop-container uex-pop-target>
-      Go2
+      Pop 2
       <uex-pop placement="right" align="start" class="pop-menu">
         <ul style="list-style:none">
           <li>Something 1</li>
@@ -27,6 +28,21 @@
         </ul>
       </uex-pop>
     </button>
-    <h1>foo</h1><h1>foo</h1><h1>foo</h1><h1>foo</h1><h1>foo</h1><h1>foo</h1><h1>foo</h1><h1>foo</h1><h1>foo</h1><h1>foo</h1><h1>foo</h1><h1>foo</h1>
+    <h1 ng-repeat="v in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]">
+      <div style="display:inline-block;cursor:pointer" uex-pop-container uex-pop-target>
+        foo {{v}}
+        <uex-pop placement="right" align="center" class="pop-menu-item">
+          <ul class="pop-menu">
+            <li>Something 1</li>
+            <li>Something 2</li>
+            <li>Something 3</li>
+            <li>Something 4</li>
+            <li>
+              <a class="plain" ng-click="$ctrl.delete(v)">Delete - {{v}}</a>
+            </li>
+          </ul>
+        </uex-pop>
+      </div>
+    </h1>
   </div>
 </section>

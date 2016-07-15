@@ -1,19 +1,38 @@
-<div class="component-modal-page">
-
-  <section ng-controller="modalCtrl as vm">
-    <button ng-click="vm.go()">Go</button>
-    <button ng-click="vm.go2()">Go2</button>
-    <button ng-click="vm.goConfirm()">Go Confirm</button>
-    <button ng-click="vm.goInfo()">Go Info</button>
-    <button ng-click="vm.c1.open()">Go Custom 1</button>
-    <button ng-click="vm.c2.open()">Go Custom 2</button>
-    <h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1><h1>asd</h1>
+<div id="component-modal-page" ng-controller="modalCtrl as vm">
+  <section>
+    <header>Basic</header>
+    <button ng-click="vm.open1()">Modal 1</button>
+    <button ng-click="vm.open2()">Modal 2</button>
+    <button ng-click="vm.confirm()">Modal Confirm</button>
+    <button ng-click="vm.info()">Modal Info</button>
     <uex-modal delegate="vm.m" title="Foo title" class="modal-bar">
       Foo
       <div ng-repeat="v in [1,2,3]">
         {{v}}
       </div>
     </uex-modal>
+  </section>
+  <section>
+    <header>Custom</header>
+    <button ng-click="vm.c1.open()">Custom 1</button>
+    <button ng-click="vm.c2.open()">Custom 2</button>
+    <h1>foo</h1>
+    <h1>foo</h1>
+    <h1>foo</h1>
+    <h1>foo</h1>
+    <h1>foo</h1>
+    <h1>foo</h1>
+    <h1>foo</h1>
+    <h1>foo</h1>
+    <h1>foo</h1>
+    <h1>foo</h1>
+    <h1>foo</h1>
+    <h1>foo</h1>
+    <h1>foo</h1>
+    <h1>foo</h1>
+    <h1>foo</h1>
+    <h1>foo</h1>
+    <h1>foo</h1>
     <uex-modal delegate="vm.c1" title="Custom Modal 1" class="modal-c-1">
       Foo
     </uex-modal>
@@ -21,5 +40,4 @@
       Foo
     </uex-modal>
   </section>
-
 </div>

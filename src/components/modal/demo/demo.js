@@ -24,7 +24,7 @@
 		});
 
 	function modalCtrl($scope, $q, $timeout, modal) {
-		this.go = () => {
+		this.open1 = () => {
 			modal({
 				scope: $scope,
 				classes: 'modal-foo',
@@ -32,16 +32,16 @@
 			});
 		};
 
-		this.go2 = () => {
+		this.open2 = () => {
 			this.m.open();
 		};
 
-		this.goConfirm = () => {
+		this.confirm = () => {
 			modal.confirm().title('Are').danger().open($scope)
 				.then(() => console.log('ok'), () => console.log('no'));
 		};
 
-		this.goInfo = () => {
+		this.info = () => {
 			modal.info().title('Make sure to').open($scope)
 				.then(() => console.log('ok'), () => console.log('no'));
 		};

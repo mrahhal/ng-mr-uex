@@ -16,3 +16,17 @@
     }
   }
 }
+
+ul.pop-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    cursor: pointer;
+
+    &:hover {
+      background: #e1e1e1;
+    }
+  }
+}
