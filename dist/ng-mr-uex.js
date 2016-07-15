@@ -383,7 +383,231 @@ angular
 
 	angular
 		.module('mr.uex')
-		.factory('browserSizeChangedHandler', browserSizeChangedHandler);
+		.directive('uexFocus', uexFocus);
+
+	function uexFocus($timeout) {
+		return {
+			restrict: 'A',
+			link: function ($scope, $element, $attrs) {
+				$scope.$on('uex.focus', function () {
+					$timeout(function () {
+						$element.focus();
+					});
+				});
+			}
+		};
+	}
+})();
+
+(function () {
+	'use strict';
+
+	angular
+		.module('mr.uex')
+		.factory('positioner', positioner);
+
+	function positioner() {
+		var $window,
+			$body;
+
+		function ensure() {
+			if ($window) return;
+
+			$window = $(window);
+			$body = $(document.body);
+		}
+
+		ensure();
+
+		function measure(element, fn) {
+			var el = element.clone(false);
+			el.css('visibility', 'hidden');
+			el.css('position', 'absolute');
+			$body.append(el);
+			var result = fn(el);
+			el.remove();
+			return result;
+		}
+
+		function computeLeftForVertical(tp, ep, offset, align) {
+			switch (align) {
+				case 'start':
+					offset.left = tp.left;
+					break;
+
+				case 'center':
+					offset.left = tp.left + (tp.width / 2) - (ep.width / 2);
+					break;
+
+				case 'end':
+					offset.left = tp.left + tp.width - ep.width;
+					break;
+			}
+		}
+
+		function computeTopForHorizontal(tp, ep, offset, align) {
+			switch (align) {
+				case 'start':
+					offset.top = tp.top;
+					break;
+
+				case 'center':
+					offset.top = tp.top + (tp.height / 2) - (ep.height / 2);
+					break;
+
+				case 'end':
+					offset.top = tp.top + tp.height - ep.height;
+					break;
+			}
+		}
+
+		function computeOffset(context, options) {
+			var placement = options.placement,
+				align = options.align,
+				o = options.offset,
+				ep = context.ep,
+				tp = context.tp;
+
+			var offset = {
+				top: 0,
+				left: 0
+			};
+
+			switch (placement) {
+				case 'top':
+					offset.top = tp.top - ep.height - o;
+					computeLeftForVertical(tp, ep, offset, align);
+					break;
+
+				case 'right':
+					offset.left = tp.left + tp.width + o;
+					computeTopForHorizontal(tp, ep, offset, align);
+					break;
+
+				case 'bottom':
+					offset.top = tp.top + tp.height + o;
+					computeLeftForVertical(tp, ep, offset, align);
+					break;
+
+				case 'left':
+					offset.left = tp.left - ep.width - o;
+					computeTopForHorizontal(tp, ep, offset, align);
+					break;
+			}
+
+			return offset;
+		}
+
+		function coarseOffset(context, options) {
+			var offset = context.offset,
+				margin = options.margin || 0,
+				scrollTop = $window.scrollTop(),
+				gp = {
+					left: margin,
+					top: margin,
+					width: $window.width() - margin * 2,
+					height: $window.height() - margin * 2
+				};
+
+			// Coarse left
+			if (offset.left + context.ep.width > gp.width) {
+				offset.left -= offset.left + context.ep.width - gp.width;
+			}
+
+			// Coarse top
+			if (offset.top + context.ep.height > gp.height + scrollTop) {
+				offset.top -= offset.top + context.ep.height - gp.height - scrollTop;
+			}
+
+			// Coarse negatives
+			if (offset.left < gp.left) offset.left = gp.left;
+			if (offset.top < gp.top + scrollTop) offset.top = gp.top + scrollTop;
+
+			// Set maxWidth
+			offset.maxWidth = gp.width;
+
+			// Set maxHeight
+			offset.maxHeight = gp.height;
+		}
+
+		function measuring(options, fn) {
+			if (options.stub === true) {
+				measure(options.element, fn);
+			} else if (options.stub) {
+				fn(options.stub);
+			} else {
+				fn(options.element);
+			}
+		}
+
+		// target: the target element
+		// element: the element to be positioned
+		// placement: top, right, bottom, left
+		// align: start, center, end
+		// margin: the margin from the outer window
+		// offset: the offset from the target
+		// stub: true to stub the element before measuring, or the stub element itself
+		//
+		var func = options => {
+			options.placement = options.placement || 'bottom';
+			options.align = options.align || 'start';
+			options.margin = options.margin || 5;
+			options.offset = options.offset || 5;
+
+			var target = options.target,
+				element = options.element,
+				targetOffset = target.offset();
+
+			var tp = {
+				top: targetOffset.top,
+				left: targetOffset.left,
+				width: target.outerWidth(),
+				height: target.outerHeight()
+			};
+			var ep = {};
+			measuring(options, el => {
+				ep.width = el.outerWidth();
+				ep.height = el.outerHeight();
+			});
+			var context = {
+				target: target,
+				element: element,
+				tp: tp,
+				ep: ep
+			};
+			var offset = computeOffset(context, options);
+			context.offset = offset;
+			coarseOffset(context, options);
+			context.ep.left = offset.left;
+			context.ep.top = offset.top;
+
+			return context;
+		};
+
+		func.apply = (context) => {
+			var element = context.element,
+				offset = context.offset;
+
+			element.css('top', offset.top);
+			element.css('left', offset.left);
+			if (offset.maxWidth) {
+				element.css('max-width', offset.maxWidth);
+			}
+			if (offset.maxHeight) {
+				element.css('max-height', offset.maxHeight);
+			}
+		};
+
+		return func;
+	}
+})();
+
+(function () {
+	'use strict';
+
+	angular
+		.module('mr.uex')
+		.factory('positioningThrottler', positioningThrottler);
 
 	function now() {
 		return +new Date();
@@ -394,7 +618,7 @@ angular
 		array.splice(index, 1);
 	}
 
-	function browserSizeChangedHandler() {
+	function positioningThrottler() {
 		var handlers = [],
 			$window = $(window),
 			lastCall = null,
@@ -411,15 +635,32 @@ angular
 			};
 		};
 
-		var processHandlers = () => {
+		function handlerSatisfies(events, e) {
+			if (!events) {
+				return true;
+			}
+			var type = e.type,
+				found = false;
+			for (var i = 0; i < events.length; i++) {
+				if (events[i] === type) found = true;
+			}
+			return found;
+		}
+
+		var processHandlers = e => {
 			var context = getContext();
 			for (var i = 0; i < handlers.length; i++) {
-				var handler = handlers[i];
+				var composite = handlers[i],
+					handler = composite.handler,
+					events = composite.events;
+				if (e && !handlerSatisfies(events, e))  {
+					continue;
+				}
 				handler(context);
 			}
 		};
 
-		var tick = function () {
+		var tick = function (e) {
 			if (typeof lastDuration !== 'undefined' && lastDuration > 16) {
 				lastDuration = Math.min(lastDuration - 16, 250);
 
@@ -437,7 +678,7 @@ angular
 			}
 
 			lastCall = now();
-			processHandlers();
+			processHandlers(e);
 			lastDuration = now() - lastCall;
 		};
 
@@ -449,8 +690,11 @@ angular
 		});
 
 		return {
-			subscribe: handler => {
-				handlers.push(handler);
+			subscribe: (handler, events) => {
+				if (angular.isString(events)) {
+					events = [events];
+				}
+				handlers.push({handler: handler, events: events});
 				processHandlers();
 				return () => {
 					remove(handlers, handler);
@@ -465,17 +709,262 @@ angular
 
 	angular
 		.module('mr.uex')
-		.directive('uexFocus', uexFocus);
+		.factory('modal', modal);
 
-	function uexFocus($timeout) {
-		return {
-			restrict: 'A',
-			link: function ($scope, $element, $attrs) {
-				$scope.$on('uex.focus', function () {
-					$timeout(function () {
-						$element.focus();
+	function modal($rootScope, $compile, $controller, $animate, $templateRequest, $q) {
+		var instances = [],
+			$body,
+			$bd;
+
+		function listenToEvents() {
+			$rootScope.$on('uex-modal-bd.clicked', handleBdClicked);
+			$body.on('keydown', e => {
+				if (!e.isDefaultPrevented() && e.which === 27) {
+					e.preventDefault();
+					dismissTopModal();
+				}
+			});
+		}
+
+		function ensure() {
+			if ($body) {
+				return;
+			}
+
+			$body = $(document.body); //jshint ignore: line
+			// The ng-click here might never fire
+			$bd = $('<div class="uex-modal-bd" ng-click="$root.$broadcast(\'uex-modal-bd.clicked\')" />');
+			$compile($bd)($rootScope);
+			$body.append($bd);
+			listenToEvents();
+		}
+
+		function handleBdClicked() {
+			dismissTopModal();
+		}
+
+		function dismissTopModal() {
+			if (instances.length === 0) {
+				return;
+			}
+
+			var top = instances[instances.length - 1];
+			top.scope.$applyAsync();
+			top.dismiss();
+		}
+
+		ensure();
+
+		var getWrapperClasses = options =>
+			options.class ? ' ' + options.class : '';
+
+		var getModalContainerTemplate = options =>
+			'<div class="uex-modal' + getWrapperClasses(options) +'">\
+				<div class="uex-modal-container">\
+					<div class="uex-modal-header">\
+						<button type="button" class="uex-modal-close" ng-click="$modal.dismiss()">\
+							<uex-icon icon="close"></uex-icon>\
+						</button>\
+						<h2>{{::title}}</h2>\
+					</div>\
+					<div class="uex-modal-content"></div>\
+				</div>\
+			</div>';
+
+		function getTemplatePromise(options) {
+			return options.template ? $q.when(options.template) :
+				$templateRequest(angular.isFunction(options.templateUrl) ?
+					options.templateUrl() : options.templateUrl);
+		}
+
+		// options:
+		//   scope
+		//   template - templateUrl
+		//   title
+		//   class
+		//   locals
+		//
+		var func = options => {
+			var scope = (options.scope || $rootScope).$new();
+			var $element = $(getModalContainerTemplate(options));
+
+			var destroyAndClean = instance => {
+				instance.scope.$destroy();
+				var delegates = instance._delegates;
+				for (var i = 0; i < delegates.length; i++) {
+					delegates[i]();
+				}
+			};
+
+			var instance = {
+				_delegates: [],
+				scope: scope,
+				element: $element,
+				dismiss: () => {
+					var i = instances.indexOf(instance);
+					instances.splice(i, 1);
+					var leaving = $animate.leave($element);
+
+					if (instances.length === 0) {
+						leaving.then(() => {
+							$body.removeClass('uex-modal-active');
+							destroyAndClean(instance);
+						});
+					} else {
+						instances[instances.length - 1].active(true);
+						destroyAndClean(instance);
+					}
+				},
+				active: value => {
+					if (value) instance.element.removeClass('inactive');
+					else instance.element.addClass('inactive');
+				},
+				onDismiss: action => {
+					instance._delegates.push(action);
+				}
+			};
+			instances.push(instance);
+
+			// Support options.component?
+			var templatePromise = getTemplatePromise(options);
+			templatePromise.then(template => {
+				$element.find('.uex-modal-content').html(template);
+
+				$compile($element)(angular.extend(scope, {
+					title: options.title || 'Modal',
+					$modal: instance
+				}, options.locals || {}));
+
+				if (instances.length !== 1) {
+					for (var i = 0; i < instances.length - 1; i++) {
+						instances[i].active(false);
+					}
+				}
+
+				$body.addClass('uex-modal-active');
+				$animate.enter($element, $body, $body.children().last());
+			}, () => {
+				destroyAndClean(instance);
+			});
+
+			return instance;
+		};
+
+		func.confirm = () => {
+			var options = {
+				title: 'Confirm',
+				template: 'Are you sure?',
+				danger: false,
+				yesText: 'Yes',
+				noText: 'Cancel',
+				info: false
+			};
+
+			var ret = {
+				open: scope => {
+					var deferred = $q.defer();
+					var instance = func({
+						title: options.title,
+						scope: angular.extend(scope, {
+							danger: options.danger,
+							yesText: options.yesText,
+							noText: options.noText,
+							info: options.info,
+							resolve: () => {
+								deferred.resolve();
+								instance.dismiss();
+							}
+						}),
+						template:
+							'<div class="uex-modal-t-confirm">\
+								<div class="uex-modal-t-confirm-content">' +
+								options.template + '\
+								</div>\
+								<div class="uex-modal-t-confirm-actions">\
+									<button type="button" class="btn btn-default no-btn" ng-click="$modal.dismiss()" ng-if="::!info">{{::noText}}</button>\
+									<button type="button" class="btn yes-btn" ng-click="resolve()" ng-class="{danger: danger, \'btn-danger\': danger, \'btn-primary\': !danger}">{{::yesText}}</button>\
+								</div>\
+							</div>'
 					});
-				});
+					instance.onDismiss(() => deferred.reject());
+					return deferred.promise;
+				},
+				title: v => {
+					options.title = v;
+					return ret;
+				},
+				danger: () => {
+					options.danger = true;
+					return ret;
+				},
+				yes: v => {
+					options.yesText = v;
+					return ret;
+				},
+				no: v => {
+					options.noText = v;
+					return ret;
+				},
+				text: v => {
+					options.template = v;
+					return ret;
+				},
+				classes: v => {
+					options.classes = v;
+					return ret;
+				},
+				info: () => {
+					options.info = true;
+					return ret;
+				}
+			};
+
+			return ret;
+		};
+
+		func.info = () => {
+			return func.confirm().info().title('Info').yes('OK');
+		};
+
+		return func;
+	}
+})();
+
+(function () {
+	"use strict";
+
+	angular
+		.module('mr.uex')
+		.directive('uexModal', modal);
+
+	function modal(modal) {
+		return {
+			restrict: 'E',
+			terminate: true,
+			scope: true,
+			bindToController: {
+				delegate: '='
+			},
+			link: function ($scope, $element) {
+				$element.removeClass();
+				$element.empty();
+			},
+			controllerAs: '$ctrl',
+			controller: function ($scope, $element, $attrs) {
+				var title = $attrs.title,
+					classes = $attrs.class,
+					template = $element.html();
+
+				this.delegate = {
+					open: () => {
+						modal({
+							scope: $scope,
+							title: title,
+							class: classes,
+							template: template
+						});
+					}
+				};
 			}
 		};
 	}
@@ -676,6 +1165,448 @@ angular
 						}
 					}
 				});
+			}
+		};
+	}
+})();
+
+(function () {
+	'use strict';
+
+	angular
+		.module('mr.uex')
+		.factory('pop', pop);
+
+	function pop($rootScope, $compile, $animate, $templateRequest, $q, positioningThrottler, positioner) {
+		var _instance,
+			$body;
+
+		function listenToEvents() {
+			$body.on('keydown', e => {
+				if (!e.isDefaultPrevented() && e.which === 27) {
+					e.preventDefault();
+					dismiss();
+				}
+			});
+			positioningThrottler.subscribe(context => {
+				if (_instance) _instance.position();
+			});
+		}
+
+		function dismiss() {
+			if (_instance) _instance.dismiss();
+			$rootScope.$applyAsync();
+		}
+
+		function ensure() {
+			if ($body) {
+				return;
+			}
+
+			$body = $(document.body); //jshint ignore: line
+			listenToEvents();
+		}
+
+		ensure();
+
+		var getWrapperClasses = options =>
+			options.class ? ' ' + options.class : '';
+
+		var getPopTemplate = options =>
+			'<div class="uex-pop' + getWrapperClasses(options) + '">\
+				<div class="uex-pop-bd" ng-click="$pop.dismiss()"></div>\
+				<div class="uex-pop-content">\
+				</div>\
+			</div>';
+
+		function getTemplatePromise(options) {
+			return options.template ? $q.when(options.template) :
+				$templateRequest(angular.isFunction(options.templateUrl) ?
+					options.templateUrl() : options.templateUrl);
+		}
+
+		function validate(options) {
+			if (!options.template && !options.templateUrl) {
+				throw new Error('template or templateUrl must be provided.');
+			}
+		}
+
+		// options:
+		//   scope
+		//   placement: top, right, bottom, left
+		//   align: start, center, end
+		//   offset
+		//   target
+		//   template - templateUrl
+		//   class
+		//   locals
+		//   onPosition
+		//
+		var func = options => {
+			validate(options);
+			var scope = (options.scope || $rootScope).$new();
+			var $element = $(getPopTemplate(options));
+
+			if (_instance) {
+				_instance.dismiss();
+			}
+
+			var destroyAndClean = instance => {
+				instance.scope.$destroy();
+				instance._disposed = true;
+				var delegates = instance._delegates;
+				for (var i = 0; i < delegates.length; i++) {
+					delegates[i]();
+				}
+
+				if (instance === _instance) _instance = null;
+			};
+
+			var instance = {
+				_delegates: [],
+				scope: scope,
+				element: $element,
+				target: angular.element(options.target),
+				pop: $element,
+				dismiss: () => {
+					$animate.leave($element).then(() => {
+						instance.target.removeClass('uex-pop-open');
+						$body.removeClass('uex-pop-active');
+						destroyAndClean(instance);
+					});
+				},
+				position: stub => {
+					if (instance._disposed) return;
+
+					var target = instance.target,
+						pop = instance.pop;
+
+					var o = angular.extend(options, {
+						target: target,
+						element: pop,
+						margin: 5
+					});
+
+					if (stub) {
+						o.stub = true;
+					}
+					var context = positioner(o);
+					if (options.onPosition) {
+						options.onPosition(context);
+					}
+
+					positioner.apply(context);
+				},
+				onDismiss: action => {
+					instance._delegates.push(action);
+				}
+			};
+			_instance = instance;
+
+			var templatePromise = getTemplatePromise(options);
+			templatePromise.then(template => {
+				$element.find('.uex-pop-content').html(template);
+
+				$compile($element)(angular.extend(scope, {
+					$pop: instance,
+				}, options.locals || {}));
+
+				instance.target.addClass('uex-pop-open');
+				$body.addClass('uex-pop-active');
+				instance.position(true);
+				$animate.enter($element, $body, $body.children().last());
+			}, () => {
+				destroyAndClean(instance);
+			});
+
+			return instance;
+		};
+
+		return func;
+	}
+})();
+
+(function () {
+	'use strict';
+
+	angular
+		.module('mr.uex')
+		.directive('uexPopContainer', popContainer)
+		.directive('uexPopTarget', popTarget)
+		.directive('uexPop', pop);
+
+	function popContainer() {
+		return {
+			restrict: 'A',
+			scope: false,
+			controller: function () {
+				var _targetElement;
+
+				this.registerTarget = targetElement => {
+					_targetElement = targetElement;
+				};
+
+				this.getTarget = () => _targetElement;
+			}
+		};
+	}
+
+	function popTarget() {
+		return {
+			restrict: 'A',
+			scope: false,
+			require: {
+				popContainer: '^uexPopContainer'
+			},
+			bindToController: true,
+			controllerAs: '$uexPopTargetCtrl',
+			controller: function ($element) {
+				this.$onInit = () => {
+					this.popContainer.registerTarget($element);
+				};
+			}
+		};
+	}
+
+	function pop(pop) {
+		return {
+			restrict: 'E',
+			terminate: true,
+			scope: true,
+			require: {
+				popContainer: '^uexPopContainer'
+			},
+			bindToController: {
+				delegate: '=?'
+			},
+			link: function ($scope, $element) {
+				$element.removeClass();
+				$element.empty();
+			},
+			controllerAs: '$uexPopCtrl',
+			controller: function ($scope, $element, $attrs) {
+				var target,
+					classes = $attrs.class,
+					template = $element.html(),
+					on = $attrs.on || 'click';
+
+				var showPop = () => {
+					pop({
+						scope: $scope,
+						target: target,
+						placement: $attrs.placement,
+						align: $attrs.align,
+						class: classes,
+						template: template
+					});
+				};
+
+				this.$onInit = () => {
+					target = this.popContainer.getTarget();
+
+					if (on === 'click') {
+						target.on('click', () => {
+							showPop();
+							$scope.$applyAsync();
+						});
+					} else if (on === 'hover') {
+						target.on('mouseenter', () => {
+							showPop();
+							$scope.$applyAsync();
+						});
+					}
+				};
+
+				this.delegate = {
+					open: () => {
+						showPop();
+					}
+				};
+			}
+		};
+	}
+})();
+
+(function () {
+	'use strict';
+
+	angular
+		.module('mr.uex')
+		.factory('poptip', poptip);
+
+	function poptip($rootScope, $animate, $compile, $timeout, positioner) {
+		var $body;
+
+		function ensure() {
+			if ($body) return;
+
+			$body = $(document.body);
+		}
+
+		ensure();
+
+		var getWrapperClasses = options =>
+			options.class ? ' ' + options.class : '';
+
+		var getPoptipTemplate = options =>
+			'<div class="uex-poptip' + getWrapperClasses(options) + '">\
+				<div class="uex-poptip-arrow"></div>\
+				<div class="uex-poptip-content"></div>\
+			</div>';
+
+		// options:
+		//   scope
+		//   placement: top, right, bottom, left
+		//   align: start, center, end
+		//   offset
+		//   target
+		//   template
+		//   class
+		//   locals
+		//   delay
+		//
+		var func = options => {
+			var scope = options.scope || $rootScope,
+				target = options.target,
+				element = $(getPoptipTemplate(options)),
+				animateEnter,
+				animateLeave,
+				$content = element.find('.uex-poptip-content'),
+				$arrow = element.find('.uex-poptip-arrow');
+
+			options.placement = options.placement || 'bottom';
+			options.align = options.align || 'center';
+			options.delay = options.delay || 0;
+
+			$content.html(options.template);
+			element.addClass('uex-poptip-p-' + options.placement);
+
+			var position = () => {
+				var o = angular.extend(options, {
+					target: target,
+					element: element,
+					margin: 5,
+					stub: true
+				});
+
+				var context = positioner(o);
+				positioner.apply(context);
+
+				var v,
+					ep = context.ep,
+					tp = context.tp;
+				switch (options.placement) {
+					case 'top':
+					case 'bottom':
+						v = tp.left - ep.left + (tp.width / 2) - 5;
+						$arrow.css('left', v + 'px');
+						break;
+
+					case 'right':
+					case 'left':
+						v = tp.top - ep.top + (tp.height / 2) - 5;
+						$arrow.css('top', v + 'px');
+						break;
+				}
+
+				$timeout(() => {
+					animateEnter = $animate.enter(element, $body, $body.children().last());
+				});
+			};
+
+			$compile(element)(angular.extend(scope, {}, options.locals || {}));
+
+			target.on('mouseenter', () => {
+				if (animateLeave)
+					$animate.cancel(animateLeave);
+				position();
+				scope.$applyAsync();
+			});
+			target.on('mouseleave', () => {
+				if (animateEnter)
+					$animate.cancel(animateEnter);
+				animateLeave = $animate.leave(element);
+				scope.$applyAsync();
+			});
+		};
+
+		return func;
+	}
+})();
+
+(function () {
+	'use strict';
+
+	angular
+		.module('mr.uex')
+		.directive('uexPoptipContainer', poptipContainer)
+		.directive('uexPoptipTarget', poptipTarget)
+		.directive('uexPoptip', poptip);
+
+	function poptipContainer() {
+		return {
+			restrict: 'A',
+			scope: false,
+			controller: function () {
+				var _targetElement;
+
+				this.registerTarget = targetElement => {
+					_targetElement = targetElement;
+				};
+
+				this.getTarget = () => _targetElement;
+			}
+		};
+	}
+
+	function poptipTarget() {
+		return {
+			restrict: 'A',
+			scope: false,
+			require: {
+				poptipContainer: '^uexPoptipContainer'
+			},
+			bindToController: true,
+			controllerAs: '$ctrl',
+			controller: function ($element) {
+				this.$onInit = () => {
+					this.poptipContainer.registerTarget($element);
+				};
+			}
+		};
+	}
+
+	function poptip(poptip) {
+		return {
+			restrict: 'E',
+			terminate: true,
+			scope: false,
+			bindToController: true,
+			require: {
+				poptipContainer: '^uexPoptipContainer'
+			},
+			link: function ($scope, $element) {
+				$element.removeClass();
+				$element.empty();
+			},
+			controllerAs: '$ctrl',
+			controller: function ($scope, $element, $attrs, $transclude) {
+				var target,
+					classes = $attrs.class,
+					template = $element.html();
+
+				this.$onInit = () => {
+					target = this.poptipContainer.getTarget();
+
+					poptip({
+						scope: $scope,
+						target: target,
+						placement: $attrs.placement,
+						align: $attrs.align,
+						class: classes,
+						template: template
+					});
+				};
 			}
 		};
 	}
