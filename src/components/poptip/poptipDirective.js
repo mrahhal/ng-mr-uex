@@ -31,7 +31,7 @@
 				poptipContainer: '^uexPoptipContainer'
 			},
 			bindToController: true,
-			controllerAs: '$ctrl',
+			controllerAs: '$uexPoptipTargetCtrl',
 			controller: function ($element) {
 				this.$onInit = () => {
 					this.poptipContainer.registerTarget($element);

@@ -17,7 +17,7 @@
 				$element.removeClass();
 				$element.empty();
 			},
-			controllerAs: '$ctrl',
+			controllerAs: '$uexModalCtrl',
 			controller: function ($scope, $element, $attrs) {
 				var title = $attrs.title,
 					classes = $attrs.class,
