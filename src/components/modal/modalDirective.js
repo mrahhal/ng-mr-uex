@@ -13,10 +13,13 @@
 			bindToController: {
 				delegate: '=',
 				title: '@',
-				classes: '@'
+				class: '@'
 			},
 			controllerAs: '$ctrl',
-			controller: function ($scope, $element, $transclude, $attrs) {
+			controller: function ($scope, $element, $attrs, $transclude) {
+				var classes = $attrs.class;
+				$element.removeClass();
+
 				this.delegate = {
 					open: () => {
 						var scope = $scope.$new();
@@ -24,7 +27,7 @@
 							var instance = modal({
 								scope: scope,
 								title: this.title,
-								classes: this.classes,
+								class: classes,
 								template: clone
 							});
 							instance.onDismiss(() => {

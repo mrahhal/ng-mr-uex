@@ -53,6 +53,8 @@
 			controllerAs: '$ctrl',
 			controller: function ($scope, $element, $attrs, $transclude) {
 				var target;
+				var classes = $attrs.class;
+				$element.removeClass();
 
 				this.$onInit = () => {
 					target = this.poptipContainer.getTarget();
@@ -63,7 +65,7 @@
 							target: target,
 							placement: $attrs.placement,
 							align: $attrs.align,
-							classes: $attrs.classes,
+							class: classes,
 							template: clone
 						});
 					});

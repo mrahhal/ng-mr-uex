@@ -17,7 +17,7 @@
 		ensure();
 
 		var getWrapperClasses = options =>
-			options.classes ? ' ' + options.classes : '';
+			options.class ? ' ' + options.class : '';
 
 		var getPoptipTemplate = options =>
 			'<div class="uex-poptip' + getWrapperClasses(options) + '">\
@@ -32,7 +32,7 @@
 		//   offset
 		//   target
 		//   template
-		//   classes
+		//   class
 		//   locals
 		//   delay
 		//

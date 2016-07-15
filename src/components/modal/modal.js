@@ -50,7 +50,7 @@
 		ensure();
 
 		var getWrapperClasses = options =>
-			options.classes ? ' ' + options.classes : '';
+			options.class ? ' ' + options.class : '';
 
 		var getModalContainerTemplate = options =>
 			'<div class="uex-modal' + getWrapperClasses(options) +'">\
@@ -75,7 +75,7 @@
 		//   scope
 		//   template - templateUrl
 		//   title
-		//   classes
+		//   class
 		//   locals
 		//
 		var func = options => {

@@ -53,12 +53,13 @@
 				delegate: '=?',
 				placement: '@',
 				align: '@',
-				classes: '@',
 				on: '@'
 			},
 			controllerAs: '$ctrl',
-			controller: function ($scope, $element, $transclude) {
-				var target;
+			controller: function ($scope, $element, $attrs, $transclude) {
+				var target,
+					classes = $attrs.class;
+				$element.removeClass();
 
 				this.on = this.on || 'click';
 
@@ -70,7 +71,7 @@
 							target: target,
 							placement: this.placement,
 							align: this.align,
-							classes: this.classes,
+							class: classes,
 							template: clone
 						});
 						instance.onDismiss(() => {
