@@ -61,10 +61,6 @@
 		}
 
 		function computeOffset(context, options) {
-			options.placement = options.placement || 'bottom';
-			options.align = options.align || 'start';
-			options.offset = options.offset || 5;
-
 			var placement = options.placement,
 				align = options.align,
 				o = options.offset,
@@ -143,7 +139,20 @@
 			}
 		}
 
+		// target: the target element
+		// element: the element to be positioned
+		// placement: top, right, bottom, left
+		// align: start, center, end
+		// margin: the margin from the outer window
+		// offset: the offset from the target
+		// stub: true to stub the element before measuring, or the stub element itself
+		//
 		var func = options => {
+			options.placement = options.placement || 'bottom';
+			options.align = options.align || 'start';
+			options.margin = options.margin || 5;
+			options.offset = options.offset || 5;
+
 			var target = options.target,
 				element = options.element,
 				targetOffset = target.offset();
