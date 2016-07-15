@@ -53,7 +53,7 @@
 				$element.removeClass();
 				$element.empty();
 			},
-			controllerAs: '$ctrl',
+			controllerAs: '$uexPoptipCtrl',
 			controller: function ($scope, $element, $attrs, $transclude) {
 				var target,
 					classes = $attrs.class,
