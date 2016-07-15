@@ -7,32 +7,29 @@
 
 	function modal(modal) {
 		return {
-			transclude: true,
-			scope: true,
+			restrict: 'E',
 			terminate: true,
+			scope: true,
 			bindToController: {
-				delegate: '=',
-				title: '@',
-				class: '@'
+				delegate: '='
+			},
+			link: function ($scope, $element) {
+				$element.removeClass();
+				$element.empty();
 			},
 			controllerAs: '$ctrl',
-			controller: function ($scope, $element, $attrs, $transclude) {
-				var classes = $attrs.class;
-				$element.removeClass();
+			controller: function ($scope, $element, $attrs) {
+				var title = $attrs.title,
+					classes = $attrs.class,
+					template = $element.html();
 
 				this.delegate = {
 					open: () => {
-						var scope = $scope.$new();
-						$transclude(scope, clone => {
-							var instance = modal({
-								scope: scope,
-								title: this.title,
-								class: classes,
-								template: clone
-							});
-							instance.onDismiss(() => {
-								scope.$destroy();
-							});
+						modal({
+							scope: $scope,
+							title: title,
+							class: classes,
+							template: template
 						});
 					}
 				};

@@ -53,6 +53,12 @@
 					options.templateUrl() : options.templateUrl);
 		}
 
+		function validate(options) {
+			if (!options.template && !options.templateUrl) {
+				throw new Error('template or templateUrl must be provided.');
+			}
+		}
+
 		// options:
 		//   scope
 		//   placement: top, right, bottom, left
@@ -65,6 +71,7 @@
 		//   onPosition
 		//
 		var func = options => {
+			validate(options);
 			var scope = (options.scope || $rootScope).$new();
 			var $element = $(getPopTemplate(options));
 

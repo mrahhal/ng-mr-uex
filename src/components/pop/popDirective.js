@@ -31,7 +31,7 @@
 				popContainer: '^uexPopContainer'
 			},
 			bindToController: true,
-			controllerAs: '$ctrl',
+			controllerAs: '$uexPopTargetCtrl',
 			controller: function ($element) {
 				this.$onInit = () => {
 					this.popContainer.registerTarget($element);
@@ -42,53 +42,46 @@
 
 	function pop(pop) {
 		return {
-			restrict: 'EA',
+			restrict: 'E',
 			terminate: true,
-			transclude: true,
 			scope: true,
 			require: {
 				popContainer: '^uexPopContainer'
 			},
 			bindToController: {
-				delegate: '=?',
-				placement: '@',
-				align: '@',
-				on: '@'
+				delegate: '=?'
 			},
-			controllerAs: '$ctrl',
-			controller: function ($scope, $element, $attrs, $transclude) {
-				var target,
-					classes = $attrs.class;
+			link: function ($scope, $element) {
 				$element.removeClass();
-
-				this.on = this.on || 'click';
+				$element.empty();
+			},
+			controllerAs: '$uexPopCtrl',
+			controller: function ($scope, $element, $attrs) {
+				var target,
+					classes = $attrs.class,
+					template = $element.html(),
+					on = $attrs.on || 'click';
 
 				var showPop = () => {
-					var scope = $scope.$new();
-					$transclude(scope, clone => {
-						var instance = pop({
-							scope: scope,
-							target: target,
-							placement: this.placement,
-							align: this.align,
-							class: classes,
-							template: clone
-						});
-						instance.onDismiss(() => {
-							scope.$destroy();
-						});
+					pop({
+						scope: $scope,
+						target: target,
+						placement: $attrs.placement,
+						align: $attrs.align,
+						class: classes,
+						template: template
 					});
 				};
 
 				this.$onInit = () => {
 					target = this.popContainer.getTarget();
 
-					if (this.on === 'click') {
+					if (on === 'click') {
 						target.on('click', () => {
 							showPop();
 							$scope.$applyAsync();
 						});
-					} else if (this.on === 'hover') {
+					} else if (on === 'hover') {
 						target.on('mouseenter', () => {
 							showPop();
 							$scope.$applyAsync();
