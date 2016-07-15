@@ -104,9 +104,10 @@
 		function coarseOffset(context, options) {
 			var offset = context.offset,
 				margin = options.margin || 0,
+				scrollTop = $window.scrollTop(),
 				gp = {
 					left: margin,
-					top: $window.scrollTop() + margin,
+					top: margin,
 					width: $window.width() - margin * 2,
 					height: $window.height() - margin * 2
 				};
@@ -117,13 +118,13 @@
 			}
 
 			// Coarse top
-			if (offset.top + context.ep.height > gp.height) {
-				offset.top -= offset.top + context.ep.height - gp.height;
+			if (offset.top + context.ep.height > gp.height + scrollTop) {
+				offset.top -= offset.top + context.ep.height - gp.height - scrollTop;
 			}
 
 			// Coarse negatives
 			if (offset.left < gp.left) offset.left = gp.left;
-			if (offset.top < gp.top) offset.top = gp.top;
+			if (offset.top < gp.top + scrollTop) offset.top = gp.top + scrollTop;
 
 			// Set maxWidth
 			offset.maxWidth = gp.width;
