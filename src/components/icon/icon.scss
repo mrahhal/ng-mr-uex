@@ -1,17 +1,14 @@
 uex-icon {
   display: inline-block;
   fill: currentColor;
-  /*vertical-align: middle;*/
   height: $icon-size;
   width: $icon-size;
 
   > svg {
     pointer-events: none;
     display: block;
-    height: $icon-size;
-    width: $icon-size;
-    /*height: 1em;
-    width: 1em;*/
+    width: 100%;
+    height: 100%;
   }
 }
 

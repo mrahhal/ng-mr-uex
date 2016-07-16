@@ -2,10 +2,12 @@
   <section ng-controller="iconCtrl">
     <header>Icons</header>
     <div class="icons">
-      <uex-icon ng-repeat="icon in icons"
-                icon="{{icon.name}}"
-                uex-tooltip="n, {{icon.id}}"
-                data-clipboard-text="{{icon.name}}" />
+      <uex-icon ng-repeat="icon in ::icons"
+                icon="{{::icon.name}}"
+                uex-poptip-container uex-poptip-target
+                data-clipboard-text="{{::icon.name}}">
+        <uex-poptip class="poptip-nodelay">{{::icon.id}}</uex-poptip>
+      </uex-icon>
     </div>
   </section>
   <section>
