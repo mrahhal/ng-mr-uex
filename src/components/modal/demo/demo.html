@@ -35,6 +35,21 @@
     <h1>foo</h1>
     <uex-modal delegate="vm.c1" title="Custom Modal 1" class="modal-c-1">
       Foo
+      <button type="button" uex-pop-container uex-pop-target>
+        GO
+        <uex-pop>
+          <div>here 1</div>
+          <div>here 2</div>
+          <div>here 3</div>
+          <div>here 4</div>
+        </uex-pop>
+      </button>
+      <button type="button" uex-poptip-container uex-poptip-target>
+        GO
+        <uex-poptip>
+          Here we <strong>go</strong>.
+        </uex-poptip>
+      </button>
     </uex-modal>
     <uex-modal delegate="vm.c2" title="Custom Modal 2" class="modal-c-2">
       Foo
