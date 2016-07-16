@@ -37,17 +37,20 @@
 		//   delay
 		//
 		var func = options => {
+			options.placement = options.placement || 'bottom';
+			options.align = options.align || 'center';
+			options.delay = options.delay || 0;
+			options.trigger = options.trigger || 'hover';
+
 			var scope = options.scope || $rootScope,
 				target = options.target,
 				element = $(getPoptipTemplate(options)),
 				animateEnter,
 				animateLeave,
 				$content = element.find('.uex-poptip-content'),
-				$arrow = element.find('.uex-poptip-arrow');
-
-			options.placement = options.placement || 'bottom';
-			options.align = options.align || 'center';
-			options.delay = options.delay || 0;
+				$arrow = element.find('.uex-poptip-arrow'),
+				eventIn  = options.trigger === 'hover' ? 'mouseenter' : 'focusin',
+				eventOut = options.trigger === 'hover' ? 'mouseleave' : 'focusout';
 
 			$content.html(options.template);
 			element.addClass('uex-poptip-p-' + options.placement);
@@ -103,12 +106,12 @@
 				removeFromDOM();
 			});
 
-			target.on('mouseenter', () => {
+			target.on(eventIn, () => {
 				scope.$apply(() => {
 					addToDOM();
 				});
 			});
-			target.on('mouseleave', () => {
+			target.on(eventOut, () => {
 				scope.$apply(() => {
 					removeFromDOM();
 				});

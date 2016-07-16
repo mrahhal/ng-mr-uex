@@ -1,4 +1,5 @@
 <section id="demo-poptip-page">
+  <header>Basic</header>
   <div uex-poptip-container uex-poptip-target>
     poptip right
     <uex-poptip placement="right" align="center">
@@ -29,4 +30,12 @@
       A collection of components
     </uex-poptip>
   </a>
+</section>
+
+<section>
+  <header>Inputs</header>
+  <div uex-poptip-container>
+    <input type="text" name="name" autocomplete="off" ng-model="$root.$$someValue" uex-poptip-target>
+    <uex-poptip trigger="focus" placement="right" class="{{$root.$$someValue}}">Only a tip!</uex-poptip>
+  </div>
 </section>

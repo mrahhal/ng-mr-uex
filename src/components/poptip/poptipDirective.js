@@ -55,19 +55,17 @@
 			},
 			controllerAs: '$uexPoptipCtrl',
 			controller: function ($scope, $element, $attrs, $transclude) {
-				var target,
-					classes = $attrs.class,
-					template = $element.html();
-
 				this.$onInit = () => {
-					target = this.poptipContainer.getTarget();
+					var target = this.poptipContainer.getTarget(),
+						template = $element.html();
 
 					poptip({
 						scope: $scope,
 						target: target,
 						placement: $attrs.placement,
 						align: $attrs.align,
-						class: classes,
+						class: $attrs.class,
+						trigger: $attrs.trigger,
 						template: template
 					});
 				};
