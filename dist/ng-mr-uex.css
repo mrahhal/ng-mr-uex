@@ -26,16 +26,13 @@ uex-autocomplete {
 uex-icon {
   display: inline-block;
   fill: currentColor;
-  /*vertical-align: middle;*/
   height: 20px;
   width: 20px; }
   uex-icon > svg {
     pointer-events: none;
     display: block;
-    height: 20px;
-    width: 20px;
-    /*height: 1em;
-    width: 1em;*/ }
+    width: 100%;
+    height: 100%; }
 
 .uex-flexible-wrapper > uex-icon,
 uex-icon[flexible] {
@@ -197,8 +194,9 @@ uex-pop {
   border: 1px solid rgba(0, 0, 0, 0.15);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.12);
   border-radius: 6px;
-  z-index: 1042;
-  display: flex; }
+  z-index: 10042;
+  display: flex;
+  flex-flow: column nowrap; }
 
 .uex-pop.ng-enter {
   transition: opacity linear 0.1s;
@@ -227,16 +225,21 @@ uex-pop {
   overflow-y: auto;
   flex: 1; }
 
+.uex-poptip.poptip-nodelay.ng-enter {
+  transition: none; }
+
+.uex-poptip.poptip-nodelay.ng-leave {
+  transition: none; }
+
 uex-poptip {
   display: none; }
 
 .uex-poptip {
   position: absolute;
-  pointer-events: none; }
+  pointer-events: none;
+  z-index: 10042; }
   .uex-poptip strong {
     color: #fff; }
-  .uex-poptip.ng-enter-prepare {
-    opacity: 0; }
   .uex-poptip.ng-enter {
     transition: opacity linear .1s;
     opacity: 0; }

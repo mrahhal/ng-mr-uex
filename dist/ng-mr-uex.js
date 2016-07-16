@@ -720,8 +720,7 @@ angular
 			$rootScope.$on('uex-modal-bd.clicked', handleBdClicked);
 			$body.on('keydown', e => {
 				if (!e.isDefaultPrevented() && e.which === 27) {
-					e.preventDefault();
-					dismissTopModal();
+					dismissTopModal(e);
 				}
 			});
 		}
@@ -743,14 +742,15 @@ angular
 			dismissTopModal();
 		}
 
-		function dismissTopModal() {
+		function dismissTopModal(e) {
 			if (instances.length === 0) {
 				return;
 			}
 
+			e.preventDefault();
 			var top = instances[instances.length - 1];
-			top.scope.$applyAsync();
 			top.dismiss();
+			top.scope.$applyAsync();
 		}
 
 		ensure();
@@ -1184,8 +1184,7 @@ angular
 		function listenToEvents() {
 			$body.on('keydown', e => {
 				if (!e.isDefaultPrevented() && e.which === 27) {
-					e.preventDefault();
-					dismiss();
+					dismiss(e);
 				}
 			});
 			positioningThrottler.subscribe(context => {
@@ -1193,9 +1192,12 @@ angular
 			});
 		}
 
-		function dismiss() {
-			if (_instance) _instance.dismiss();
-			$rootScope.$applyAsync();
+		function dismiss(e) {
+			if (_instance) {
+				e.preventDefault();
+				_instance.dismiss();
+				$rootScope.$applyAsync();
+			}
 		}
 
 		function ensure() {
@@ -1310,6 +1312,10 @@ angular
 				$compile($element)(angular.extend(scope, {
 					$pop: instance,
 				}, options.locals || {}));
+
+				scope.$on('$destroy', () => {
+					instance.dismiss();
+				});
 
 				instance.target.addClass('uex-pop-open');
 				$body.addClass('uex-pop-active');
@@ -1466,17 +1472,20 @@ angular
 		//   delay
 		//
 		var func = options => {
+			options.placement = options.placement || 'bottom';
+			options.align = options.align || 'center';
+			options.delay = options.delay || 0;
+			options.trigger = options.trigger || 'hover';
+
 			var scope = options.scope || $rootScope,
 				target = options.target,
 				element = $(getPoptipTemplate(options)),
 				animateEnter,
 				animateLeave,
 				$content = element.find('.uex-poptip-content'),
-				$arrow = element.find('.uex-poptip-arrow');
-
-			options.placement = options.placement || 'bottom';
-			options.align = options.align || 'center';
-			options.delay = options.delay || 0;
+				$arrow = element.find('.uex-poptip-arrow'),
+				eventIn  = options.trigger === 'hover' ? 'mouseenter' : 'focusin',
+				eventOut = options.trigger === 'hover' ? 'mouseleave' : 'focusout';
 
 			$content.html(options.template);
 			element.addClass('uex-poptip-p-' + options.placement);
@@ -1499,34 +1508,48 @@ angular
 					case 'top':
 					case 'bottom':
 						v = tp.left - ep.left + (tp.width / 2) - 5;
+						if (v < 5) v = 5;
+						if (v > ep.width - 15) v = ep.width - 15;
 						$arrow.css('left', v + 'px');
 						break;
 
 					case 'right':
 					case 'left':
 						v = tp.top - ep.top + (tp.height / 2) - 5;
+						if (v < 5) v = 5;
+						if (v > ep.height - 15) v = ep.height - 15;
 						$arrow.css('top', v + 'px');
 						break;
 				}
 
-				$timeout(() => {
-					animateEnter = $animate.enter(element, $body, $body.children().last());
-				});
+				animateEnter = $animate.enter(element, $body, $body.children().last());
 			};
 
-			$compile(element)(angular.extend(scope, {}, options.locals || {}));
+			$compile(element)(angular.extend(scope, options.locals || {}));
 
-			target.on('mouseenter', () => {
-				if (animateLeave)
-					$animate.cancel(animateLeave);
+			var addToDOM = () => {
+				if (animateLeave) $animate.cancel(animateLeave);
 				position();
-				scope.$applyAsync();
-			});
-			target.on('mouseleave', () => {
-				if (animateEnter)
-					$animate.cancel(animateEnter);
+			};
+
+			var removeFromDOM = () => {
+				if (animateEnter) $animate.cancel(animateEnter);
 				animateLeave = $animate.leave(element);
-				scope.$applyAsync();
+			};
+
+			scope.$on('$destroy', () => {
+				removeFromDOM();
+			});
+
+			target.on(eventIn, () => {
+				scope.$apply(() => {
+					addToDOM();
+				});
+			});
+			target.on(eventOut, () => {
+				scope.$apply(() => {
+					removeFromDOM();
+				});
 			});
 		};
 
@@ -1591,19 +1614,17 @@ angular
 			},
 			controllerAs: '$uexPoptipCtrl',
 			controller: function ($scope, $element, $attrs, $transclude) {
-				var target,
-					classes = $attrs.class,
-					template = $element.html();
-
 				this.$onInit = () => {
-					target = this.poptipContainer.getTarget();
+					var target = this.poptipContainer.getTarget(),
+						template = $element.html();
 
 					poptip({
 						scope: $scope,
 						target: target,
 						placement: $attrs.placement,
 						align: $attrs.align,
-						class: classes,
+						class: $attrs.class,
+						trigger: $attrs.trigger,
 						template: template
 					});
 				};
