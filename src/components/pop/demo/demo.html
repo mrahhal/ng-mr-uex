@@ -38,7 +38,7 @@
             <li>Something 3</li>
             <li>Something 4</li>
             <li>
-              <a class="plain" ng-click="$ctrl.delete(v)">Delete - {{v}}</a>
+              <a class="plain" ng-click="$ctrl.delete(v);$pop.dismiss()">Delete - {{v}}</a>
             </li>
           </ul>
         </uex-pop>
