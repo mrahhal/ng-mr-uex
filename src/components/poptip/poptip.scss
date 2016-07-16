@@ -10,10 +10,6 @@ uex-poptip {
     color: #fff;
   }
 
-  &.ng-enter-prepare {
-    opacity: 0;
-  }
-
   &.ng-enter {
     transition: opacity linear .1s;
     opacity: 0;
