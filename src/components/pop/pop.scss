@@ -10,6 +10,7 @@ uex-pop {
   border-radius: 6px;
   z-index: 1042;
   display: flex;
+  flex-flow: column nowrap;
 }
 
 .uex-pop.ng-enter {
