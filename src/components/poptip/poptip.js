@@ -70,12 +70,16 @@
 					case 'top':
 					case 'bottom':
 						v = tp.left - ep.left + (tp.width / 2) - 5;
+						if (v < 5) v = 5;
+						if (v > ep.width - 15) v = ep.width - 15;
 						$arrow.css('left', v + 'px');
 						break;
 
 					case 'right':
 					case 'left':
 						v = tp.top - ep.top + (tp.height / 2) - 5;
+						if (v < 5) v = 5;
+						if (v > ep.height - 15) v = ep.height - 15;
 						$arrow.css('top', v + 'px');
 						break;
 				}
