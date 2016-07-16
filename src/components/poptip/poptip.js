@@ -85,7 +85,17 @@
 				});
 			};
 
-			$compile(element)(angular.extend(scope, {}, options.locals || {}));
+			$compile(element)(angular.extend(scope, options.locals || {}));
+
+			var removeFromDOM = () => {
+				if (animateEnter)
+					$animate.cancel(animateEnter);
+				animateLeave = $animate.leave(element);
+			};
+
+			scope.$on('$destroy', () => {
+				removeFromDOM();
+			});
 
 			target.on('mouseenter', () => {
 				if (animateLeave)
@@ -94,9 +104,7 @@
 				scope.$applyAsync();
 			});
 			target.on('mouseleave', () => {
-				if (animateEnter)
-					$animate.cancel(animateEnter);
-				animateLeave = $animate.leave(element);
+				removeFromDOM();
 				scope.$applyAsync();
 			});
 		};

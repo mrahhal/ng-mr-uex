@@ -139,6 +139,10 @@
 					$pop: instance,
 				}, options.locals || {}));
 
+				scope.$on('$destroy', () => {
+					instance.dismiss();
+				});
+
 				instance.target.addClass('uex-pop-open');
 				$body.addClass('uex-pop-active');
 				instance.position(true);
