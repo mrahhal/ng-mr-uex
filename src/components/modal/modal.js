@@ -14,8 +14,7 @@
 			$rootScope.$on('uex-modal-bd.clicked', handleBdClicked);
 			$body.on('keydown', e => {
 				if (!e.isDefaultPrevented() && e.which === 27) {
-					e.preventDefault();
-					dismissTopModal();
+					dismissTopModal(e);
 				}
 			});
 		}
@@ -37,14 +36,15 @@
 			dismissTopModal();
 		}
 
-		function dismissTopModal() {
+		function dismissTopModal(e) {
 			if (instances.length === 0) {
 				return;
 			}
 
+			e.preventDefault();
 			var top = instances[instances.length - 1];
-			top.scope.$applyAsync();
 			top.dismiss();
+			top.scope.$applyAsync();
 		}
 
 		ensure();

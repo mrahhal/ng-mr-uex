@@ -12,8 +12,7 @@
 		function listenToEvents() {
 			$body.on('keydown', e => {
 				if (!e.isDefaultPrevented() && e.which === 27) {
-					e.preventDefault();
-					dismiss();
+					dismiss(e);
 				}
 			});
 			positioningThrottler.subscribe(context => {
@@ -21,9 +20,12 @@
 			});
 		}
 
-		function dismiss() {
-			if (_instance) _instance.dismiss();
-			$rootScope.$applyAsync();
+		function dismiss(e) {
+			if (_instance) {
+				e.preventDefault();
+				_instance.dismiss();
+				$rootScope.$applyAsync();
+			}
 		}
 
 		function ensure() {
