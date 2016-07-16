@@ -43,8 +43,7 @@
 				animateEnter,
 				animateLeave,
 				$content = element.find('.uex-poptip-content'),
-				$arrow = element.find('.uex-poptip-arrow'),
-				track = 0;
+				$arrow = element.find('.uex-poptip-arrow');
 
 			options.placement = options.placement || 'bottom';
 			options.align = options.align || 'center';
@@ -85,25 +84,17 @@
 						break;
 				}
 
-				// animateEnter = $animate.enter(element, $body, $body.children().last());
-				$timeout(() => {
-					if (track <= 0) return;
-					animateEnter = $animate.enter(element, $body, $body.children().last());
-				});
+				animateEnter = $animate.enter(element, $body, $body.children().last());
 			};
 
 			$compile(element)(angular.extend(scope, options.locals || {}));
 
 			var addToDOM = () => {
-				track++;
-				if (track <= 0) return;
 				if (animateLeave) $animate.cancel(animateLeave);
 				position();
 			};
 
 			var removeFromDOM = () => {
-				track--;
-				if (track < 0) return;
 				if (animateEnter) $animate.cancel(animateEnter);
 				animateLeave = $animate.leave(element);
 			};
@@ -113,12 +104,14 @@
 			});
 
 			target.on('mouseenter', () => {
-				addToDOM();
-				scope.$applyAsync();
+				scope.$apply(() => {
+					addToDOM();
+				});
 			});
 			target.on('mouseleave', () => {
-				removeFromDOM();
-				scope.$applyAsync();
+				scope.$apply(() => {
+					removeFromDOM();
+				});
 			});
 		};
 
