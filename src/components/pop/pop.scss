@@ -47,3 +47,15 @@ uex-pop {
   overflow-y: auto;
   flex: 1;
 }
+
+// poptip extensions
+
+.uex-poptip.poptip-nodelay {
+  &.ng-enter {
+    transition: none;
+  }
+
+  &.ng-leave {
+    transition: none;
+  }
+}
