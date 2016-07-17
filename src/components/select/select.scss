@@ -27,80 +27,98 @@ uex-select {
       background-color: $color-background;
     }
   }
+}
 
-  .uex-select-content {
-    margin-top: 5px;
-    position: absolute;
-    left: 0;
-    top: 100%;
-    width: 200px;
-    display: none;
-    background: white;
-    z-index: 100;
-    border: 1px solid $color-border;
-    border-radius: 2px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+.uex-pop.uex-select-pop {
+  .uex-pop-content {
+    padding: 0;
+  }
+}
 
-    > header {
-      display: flex;
-      flex-flow: row nowrap;
-      align-items: center;
-      background-color: $color-background;
-      border-bottom: 1px solid $color-border;
+.uex-select-content {
+  width: 200px;
 
-      > div {
-        font-size: 16px;
-        padding: 5px 10px;
-        flex: 1;
-      }
+  > header {
+    background-color: $color-background;
+    border-bottom: 1px solid $color-border;
+    position: relative;
 
-      > uex-icon {
-        margin-right: 2px;
-      }
+    > .header-text {
+      font-size: 16px;
+      padding: 5px 10px;
+      overflow: hidden;
     }
 
-    .uex-select-filters {
-      background-color: $color-background;
-      border-bottom: 1px solid $color-border;
+    > .close-btn {
+      float: right;
+      margin-top: 5px;
+      margin-right: 5px;
+    }
+  }
 
-      .uex-select-filter-container {
-        padding: 5px;
-        display: flex;
+  .uex-select-filters {
+    background-color: $color-background;
+    border-bottom: 1px solid $color-border;
 
-        > input {
-          padding: 2px 4px;
-          flex: 1;
-          outline: none;
-          border: 1px solid $color-border;
+    .uex-select-filter-container {
+      padding: 5px;
+      display: flex;
 
-          &:hover {
-            border-color: $color-border-focus;
-          }
+      > input {
+        padding: 2px 4px;
+        flex: 1;
+        outline: none;
+        border: 1px solid $color-border;
 
-          &:active,
-          &:focus {
-            border-color: $brand-primary;
-          }
+        &:hover {
+          border-color: $color-border-focus;
+        }
+
+        &:active,
+        &:focus {
+          border-color: $brand-primary;
         }
       }
     }
+  }
 
-    .uex-select-loading {
-      text-align: center;
-      padding: 5px;
+  .uex-select-loading {
+    text-align: center;
+    padding: 5px;
+  }
+
+  .uex-select-no-items {
+    padding: 5px;
+    text-align: center;
+    color: $gray-light;
+    font-style: italic;
+  }
+
+  .uex-selected {
+    padding: 5px 10px;
+    cursor: pointer;
+    border-bottom: 1px solid $color-border;
+
+    .icon {
+      width: 20px;
     }
 
-    .uex-select-no-items {
-      padding: 5px;
-      text-align: center;
-      color: $gray-light;
-      font-style: italic;
+    &:hover {
+      background-color: $brand-primary;
+      color: white;
     }
+  }
 
-    .uex-selected {
+  ul.options {
+    max-height: 350px;
+    overflow-y: auto;
+    margin: 0;
+    list-style: none;
+    padding: 0;
+
+    li {
       padding: 5px 10px;
       cursor: pointer;
-      border-bottom: 1px solid $color-border;
 
       .icon {
         width: 20px;
@@ -112,59 +130,30 @@ uex-select {
       }
     }
 
-    ul.options {
-      max-height: 350px;
-      overflow-y: auto;
-      margin: 0;
-      list-style: none;
-      padding: 0;
-
-      li {
-        padding: 5px 10px;
-        cursor: pointer;
-
-        .icon {
-          width: 20px;
-        }
-
-        &:hover {
-          background-color: $brand-primary;
-          color: white;
-        }
-      }
-
-      li:not(:last-of-type) {
-        border-bottom: 1px solid $color-border;
-      }
-    }
-
-    .loading {
-      text-align: center;
-      padding: 10px 0;
-    }
-
-    .selected-item {
-      padding: 5px 10px;
-      margin-bottom: 10px;
-      background-color: $brand-primary;
-      color: white;
-
-      .icon {
-        width: 20px;
-      }
-    }
-
-    .no-items {
-      padding: 15px 10px;
-      text-align: center;
+    li:not(:last-of-type) {
+      border-bottom: 1px solid $color-border;
     }
   }
-}
 
-uex-select.north {
-  .uex-select-content {
-    top: initial;
-    bottom: 100%;
+  .loading {
+    text-align: center;
+    padding: 10px 0;
+  }
+
+  .selected-item {
+    padding: 5px 10px;
+    margin-bottom: 10px;
+    background-color: $brand-primary;
+    color: white;
+
+    .icon {
+      width: 20px;
+    }
+  }
+
+  .no-items {
+    padding: 15px 10px;
+    text-align: center;
   }
 }
 
@@ -172,40 +161,13 @@ uex-select.north {
   .button {
     border-color: $brand-primary;
   }
-
-  .uex-select-content {
-    display: block;
-  }
-}
-@media (max-width: $layout-bp-xs) {
-  .uex-select {
-    .uex-select-content {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      top: initial;
-      width: initial;
-      display: block;
-      transition: transform cubic-bezier(.2,.3,.25,.9) 0.2s;
-      transform: translateY(200%);
-    }
-  }
-
-  .uex-select.open {
-    .uex-select-content {
-      transform: translateY(0);
-    }
-  }
-
-  uex-select.north {
-    .uex-select-content {
-      bottom: 0;
-    }
-  }
 }
 
-uex-select {
+.uex-select-content {
+  display: block;
+}
+
+.uex-pop.uex-select-pop {
   uex-select-simple {
     display: flex;
 
