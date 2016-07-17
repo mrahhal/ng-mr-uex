@@ -3,12 +3,19 @@
 describe('uexSelect', function () {
 	beforeEach(module('mr.uex'));
 
-	function compile(str, scope) {
-		var container;
-		inject(function ($compile) {
-			container = $compile(str)(scope);
-			scope.$apply();
-		});
+	var $controller,
+		$rootElement,
+		$compile;
+
+	beforeEach(inject(function (_$controller_, _$rootElement_, _$compile_) {
+		$controller = _$controller_;
+		$rootElement = _$rootElement_;
+		$compile = _$compile_;
+	}));
+
+	function compile(template, scope) {
+		var container = $compile(template)(scope);
+		scope.$apply();
 		return container;
 	}
 
@@ -65,7 +72,8 @@ describe('uexSelect', function () {
 			var scope = createScope();
 			var template = '<uex-select ng-model="vm.model" exp="item as item.name for item in items"></uex-select>';
 			var $element = compile(template, scope);
-			$element.find('ul > li').first().click();
+			$element.find('.button').click();
+			$(document.body).find('.uex-pop.uex-select-pop ul > li').first().click();
 
 			should.exist(scope.vm.model);
 			scope.vm.model.should.be.exactly(scope.items[0]);
@@ -75,9 +83,11 @@ describe('uexSelect', function () {
 			var scope = createScope();
 			var template = '<uex-select ng-model="vm.model" exp="item as item.name for item in items"><div class="inner" data-id="{{item.id}}">{{item.name}}</div></uex-select>';
 			var $element = compile(template, scope);
-			$element.find('ul > li').first().click();
+			$element.find('.button').click();
+			$(document.body).find('.uex-pop.uex-select-pop ul > li').first().click();
 
-			var $inner = $element.find('ul > li').first().find('.inner');
+			$element.find('.button').click();
+			var $inner = $(document.body).find('.uex-pop.uex-select-pop ul > li').first().find('.inner');
 			$inner.data('id').should.be.exactly(scope.items[0].id);
 			$inner.html().should.be.exactly(scope.items[0].name);
 		});
@@ -89,16 +99,12 @@ describe('uexSelect', function () {
 					<div class="inner" ng-class="{selected: $selected}" data-id="{{item.id}}">{{item.name}}</div>\
 				</uex-select>';
 			var $element = compile(template, scope);
-			$element.find('ul > li').first().click();
+			$element.find('.button').click();
+			$(document.body).find('.uex-pop.uex-select-pop ul > li').first().click();
 
-			var $inner = $element.find('ul > li').first().find('.inner');
+			$element.find('.button').click();
+			var $inner = $(document.body).find('.uex-pop.uex-select-pop ul > li').first().find('.inner');
 			$inner.hasClass('selected').should.be.true();
 		});
-	});
-
-	describe('sync', function () {
-	});
-
-	describe('async', function () {
 	});
 });
