@@ -196,7 +196,8 @@ uex-pop {
   border-radius: 6px;
   z-index: 10042;
   display: flex;
-  flex-flow: column nowrap; }
+  flex-flow: column nowrap;
+  overflow: hidden; }
 
 .uex-pop.ng-enter {
   transition: opacity linear 0.1s;
@@ -300,121 +301,95 @@ uex-select {
       border-color: #3F51B5; }
     .uex-select > .button:active {
       background-color: #f5f5f5; }
-  .uex-select .uex-select-content {
-    margin-top: 5px;
-    position: absolute;
-    left: 0;
-    top: 100%;
-    width: 200px;
-    display: none;
-    background: white;
-    z-index: 100;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 2px;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15); }
-    .uex-select .uex-select-content > header {
-      display: flex;
-      flex-flow: row nowrap;
-      align-items: center;
-      background-color: #f5f5f5;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
-      .uex-select .uex-select-content > header > div {
-        font-size: 16px;
-        padding: 5px 10px;
-        flex: 1; }
-      .uex-select .uex-select-content > header > uex-icon {
-        margin-right: 2px; }
-    .uex-select .uex-select-content .uex-select-filters {
-      background-color: #f5f5f5;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
-      .uex-select .uex-select-content .uex-select-filters .uex-select-filter-container {
-        padding: 5px;
-        display: flex; }
-        .uex-select .uex-select-content .uex-select-filters .uex-select-filter-container > input {
-          padding: 2px 4px;
-          flex: 1;
-          outline: none;
-          border: 1px solid rgba(0, 0, 0, 0.15); }
-          .uex-select .uex-select-content .uex-select-filters .uex-select-filter-container > input:hover {
-            border-color: rgba(0, 0, 0, 0.3); }
-          .uex-select .uex-select-content .uex-select-filters .uex-select-filter-container > input:active, .uex-select .uex-select-content .uex-select-filters .uex-select-filter-container > input:focus {
-            border-color: #3F51B5; }
-    .uex-select .uex-select-content .uex-select-loading {
-      text-align: center;
-      padding: 5px; }
-    .uex-select .uex-select-content .uex-select-no-items {
+
+.uex-pop.uex-select-pop .uex-pop-content {
+  padding: 0; }
+
+.uex-select-content {
+  width: 200px; }
+  .uex-select-content > header {
+    background-color: #f5f5f5;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    position: relative; }
+    .uex-select-content > header > .header-text {
+      font-size: 16px;
+      padding: 5px 10px;
+      overflow: hidden; }
+    .uex-select-content > header > .close-btn {
+      float: right;
+      margin-top: 5px;
+      margin-right: 5px; }
+  .uex-select-content .uex-select-filters {
+    background-color: #f5f5f5;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
+    .uex-select-content .uex-select-filters .uex-select-filter-container {
       padding: 5px;
-      text-align: center;
-      color: #888;
-      font-style: italic; }
-    .uex-select .uex-select-content .uex-selected {
-      padding: 5px 10px;
-      cursor: pointer;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
-      .uex-select .uex-select-content .uex-selected .icon {
-        width: 20px; }
-      .uex-select .uex-select-content .uex-selected:hover {
-        background-color: #3F51B5;
-        color: white; }
-    .uex-select .uex-select-content ul.options {
-      max-height: 350px;
-      overflow-y: auto;
-      margin: 0;
-      list-style: none;
-      padding: 0; }
-      .uex-select .uex-select-content ul.options li {
-        padding: 5px 10px;
-        cursor: pointer; }
-        .uex-select .uex-select-content ul.options li .icon {
-          width: 20px; }
-        .uex-select .uex-select-content ul.options li:hover {
-          background-color: #3F51B5;
-          color: white; }
-      .uex-select .uex-select-content ul.options li:not(:last-of-type) {
-        border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
-    .uex-select .uex-select-content .loading {
-      text-align: center;
-      padding: 10px 0; }
-    .uex-select .uex-select-content .selected-item {
-      padding: 5px 10px;
-      margin-bottom: 10px;
+      display: flex; }
+      .uex-select-content .uex-select-filters .uex-select-filter-container > input {
+        padding: 2px 4px;
+        flex: 1;
+        outline: none;
+        border: 1px solid rgba(0, 0, 0, 0.15); }
+        .uex-select-content .uex-select-filters .uex-select-filter-container > input:hover {
+          border-color: rgba(0, 0, 0, 0.3); }
+        .uex-select-content .uex-select-filters .uex-select-filter-container > input:active, .uex-select-content .uex-select-filters .uex-select-filter-container > input:focus {
+          border-color: #3F51B5; }
+  .uex-select-content .uex-select-loading {
+    text-align: center;
+    padding: 5px; }
+  .uex-select-content .uex-select-no-items {
+    padding: 5px;
+    text-align: center;
+    color: #888;
+    font-style: italic; }
+  .uex-select-content .uex-selected {
+    padding: 5px 10px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
+    .uex-select-content .uex-selected .icon {
+      width: 20px; }
+    .uex-select-content .uex-selected:hover {
       background-color: #3F51B5;
       color: white; }
-      .uex-select .uex-select-content .selected-item .icon {
+  .uex-select-content ul.options {
+    max-height: 350px;
+    overflow-y: auto;
+    margin: 0;
+    list-style: none;
+    padding: 0; }
+    .uex-select-content ul.options li {
+      padding: 5px 10px;
+      cursor: pointer; }
+      .uex-select-content ul.options li .icon {
         width: 20px; }
-    .uex-select .uex-select-content .no-items {
-      padding: 15px 10px;
-      text-align: center; }
-
-uex-select.north .uex-select-content {
-  top: initial;
-  bottom: 100%; }
+      .uex-select-content ul.options li:hover {
+        background-color: #3F51B5;
+        color: white; }
+    .uex-select-content ul.options li:not(:last-of-type) {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
+  .uex-select-content .loading {
+    text-align: center;
+    padding: 10px 0; }
+  .uex-select-content .selected-item {
+    padding: 5px 10px;
+    margin-bottom: 10px;
+    background-color: #3F51B5;
+    color: white; }
+    .uex-select-content .selected-item .icon {
+      width: 20px; }
+  .uex-select-content .no-items {
+    padding: 15px 10px;
+    text-align: center; }
 
 .uex-select.open .button {
   border-color: #3F51B5; }
 
-.uex-select.open .uex-select-content {
+.uex-select-content {
   display: block; }
 
-@media (max-width: 600px) {
-  .uex-select .uex-select-content {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: initial;
-    width: initial;
-    display: block;
-    transition: transform cubic-bezier(0.2, 0.3, 0.25, 0.9) 0.2s;
-    transform: translateY(200%); }
-  .uex-select.open .uex-select-content {
-    transform: translateY(0); }
-  uex-select.north .uex-select-content {
-    bottom: 0; } }
-
-uex-select uex-select-simple {
+.uex-pop.uex-select-pop uex-select-simple {
   display: flex; }
-  uex-select uex-select-simple > .uex-select-simple-content {
+  .uex-pop.uex-select-pop uex-select-simple > .uex-select-simple-content {
     flex: 1; }
 
 .tooltipped {
@@ -570,7 +545,7 @@ uex-select uex-select-simple {
   box-shadow: none; }
 
 .btn-plain.btn-dim {
-  opacity: 0.7; }
+  opacity: 0.6; }
   .btn-plain.btn-dim:hover {
     opacity: 1; }
 

@@ -940,14 +940,10 @@ angular
 	function modal(modal) {
 		return {
 			restrict: 'E',
-			terminate: true,
+			terminal: true,
 			scope: true,
 			bindToController: {
 				delegate: '='
-			},
-			link: function ($scope, $element) {
-				$element.removeClass();
-				$element.empty();
 			},
 			controllerAs: '$uexModalCtrl',
 			controller: function ($scope, $element, $attrs) {
@@ -964,6 +960,11 @@ angular
 							template: template
 						});
 					}
+				};
+
+				this.$postLink = () => {
+					$element.removeClass();
+					$element.empty();
 				};
 			}
 		};
@@ -1377,17 +1378,13 @@ angular
 	function pop(pop) {
 		return {
 			restrict: 'E',
-			terminate: true,
+			terminal: true,
 			scope: true,
 			require: {
 				popContainer: '^uexPopContainer'
 			},
 			bindToController: {
 				delegate: '=?'
-			},
-			link: function ($scope, $element) {
-				$element.removeClass();
-				$element.empty();
 			},
 			controllerAs: '$uexPopCtrl',
 			controller: function ($scope, $element, $attrs) {
@@ -1427,6 +1424,11 @@ angular
 					open: () => {
 						showPop();
 					}
+				};
+
+				this.$postLink = () => {
+					$element.removeClass();
+					$element.empty();
 				};
 			}
 		};
@@ -1602,15 +1604,11 @@ angular
 	function poptip(poptip) {
 		return {
 			restrict: 'E',
-			terminate: true,
+			terminal: true,
 			scope: false,
 			bindToController: true,
 			require: {
 				poptipContainer: '^uexPoptipContainer'
-			},
-			link: function ($scope, $element) {
-				$element.removeClass();
-				$element.empty();
 			},
 			controllerAs: '$uexPoptipCtrl',
 			controller: function ($scope, $element, $attrs, $transclude) {
@@ -1627,6 +1625,11 @@ angular
 						trigger: $attrs.trigger,
 						template: template
 					});
+				};
+
+				this.$postLink = () => {
+					$element.removeClass();
+					$element.empty();
 				};
 			}
 		};
@@ -1645,22 +1648,17 @@ angular
 	function uexSelectTransclude() {
 		return {
 			restrict: 'A',
-			require: '^uexSelect',
-			link: function ($scope, $element, $attrs, ctrl, $transclude) {
+			link: function ($scope, $element, $attrs) {
+				var ctrl = $scope.$uexSelectCtrl;
 				ctrl.$populateScope($scope);
-
-				$transclude($scope, function (clone) {
-					$element.empty();
-					$element.append(clone);
-					$scope.$on('$destroy', function () {
-						ctrl.$removeScope($scope);
-					});
+				$scope.$on('$destroy', function () {
+					ctrl.$removeScope($scope);
 				});
 			}
 		};
 	}
 
-	function uexSelect($parse, $document) {
+	function uexSelect($parse, $compile, $timeout, pop) {
 		function parse(exp) {
 			var match = exp.match(/^\s*([\s\S]+?)\s+in\s+([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+track\s+by\s+([\s\S]+?))?\s*$/);
 
@@ -1674,60 +1672,106 @@ angular
 			return parsed;
 		}
 
+		function validate($attrs) {
+			if (!$attrs.exp) {
+				throw new Error('\'uexSelect\': Attribute \'exp\' is required.');
+			}
+		}
+
+		var getPopTemplate = content =>
+			'<div class="uex-select-content">\
+				<header>\
+					<uex-icon icon="close" class="close-btn btn-plain btn-dim" ng-click="$pop.dismiss()"></uex-icon>\
+					<div class="header-text">{{::$uexSelectCtrl.header}}</div>\
+				</header>\
+				<div>\
+					<div class="uex-select-filters" ng-if="::$uexSelectCtrl.asyncMode">\
+						<div class="uex-select-filter-container">\
+							<input uex-focus type="text" placeholder="Search" ng-model="$uexSelectCtrl.q" ng-model-options="{debounce: 500}" />\
+						</div>\
+					</div>\
+					<div class="uex-select-loading" ng-show="$uexSelectCtrl.loading">\
+						Loading...\
+					</div>\
+					<div class="uex-select-no-items" ng-show="!$uexSelectCtrl.items && !$uexSelectCtrl.loading">Start typing to filter</div>\
+					<ul class="options no-margin">\
+						<li ng-repeat="item in $uexSelectCtrl.items" ng-click="$uexSelectCtrl.select(item)" uex-select-transclude>' + content + '</li>\
+					</ul>\
+				</div>\
+			</div>';
+
+		var getContTemplate = () => '\
+<div class="uex-select" ng-class="{open: $uexSelectCtrl.isOpen}">\
+	<button type="button" class="button has-caret" ng-click="$uexSelectCtrl.open()">\
+		{{$uexSelectCtrl.title}}\
+	</button>\
+	<uex-icon icon="close" class="btn-plain btn-dim" ng-if="$uexSelectCtrl.selected" ng-click="$uexSelectCtrl.clear()"></uex-icon>\
+</div>';
+
 		return {
 			restrict: 'E',
-			transclude: true,
-			template: '\
-<div class="uex-select" ng-class="{open: isOpen}">\
-	<button type="button" class="button has-caret" ng-click="toggle()">\
-		{{title}}\
-	</button>\
-	<uex-icon icon="close" class="btn-plain btn-dim tooltipped tooltipped-e" aria-label="Clear" ng-if="selected" ng-click="clear()"></uex-icon>\
-	<div class="uex-select-content">\
-		<header>\
-			<div>{{::header}}</div>\
-			<uex-icon icon="close" class="btn-plain btn-dim" ng-click="close()"></uex-icon>\
-		</header>\
-		<div>\
-			<div class="uex-select-filters" ng-if="::asyncMode">\
-				<div class="uex-select-filter-container">\
-					<input uex-focus type="text" placeholder="Search" ng-model="$uexSelectCtrl.q" ng-model-options="{debounce: 500}" />\
-				</div>\
-			</div>\
-			<div class="uex-select-loading" ng-show="loading">\
-				Loading...\
-			</div>\
-			<div class="uex-select-no-items" ng-show="!items && !loading">Start typing to filter</div>\
-			<ul class="options no-margin">\
-				<li ng-repeat="item in items" ng-click="select(item)" uex-select-transclude></li>\
-			</ul>\
-		</div>\
-	</div>\
-</div>',
-			controller: function ($scope) {
-				var ctrl = this;
-				var scopes = [];
-				this.$populateScope = function (scope) {
+			terminal: true,
+			scope: true,
+			bindToController: {
+				exp: '@',
+				title: '@',
+				header: '@',
+				class: '@'
+			},
+			require: {
+				uexSelectCtrl: '^uexSelect',
+				ngModelCtrl: '^ngModel'
+			},
+			controllerAs: '$uexSelectCtrl',
+			controller: function ($scope, $element, $attrs) {
+				validate($attrs);
+
+				var scopes = [],
+					originalTitle = this.title,
+					options = parse(this.exp),
+					keyName = options.keyName,
+					asyncMode = this.asyncMode = options.asyncMode,
+					classes = this.class,
+					promise,
+					popInstance;
+
+				var content = $element.html(),
+					$button;
+
+				this.$postLink = () => {
+					$element.empty();
+					var t = $(getContTemplate());
+					$button = t.find('.button');
+					$element.append($compile(t)($scope));
+				};
+
+				if (originalTitle !== undefined) {
+					$element.attr('title', null);
+				}
+
+				this.selected = null;
+
+				this.$populateScope = scope => {
 					var item = scope.item;
 					scopes.push(scope);
-					if (item && ctrl.track(item) === ctrl.track($scope.selected)) {
+					if (item && this.track(item) === this.track(this.selected)) {
 						scope.$selected = true;
 					} else if (item) {
 						scope.$selected = false;
 					}
 					if (item) {
-						scope[this.options.keyName] = item;
+						scope[keyName] = item;
 					}
 				};
 
-				this.$removeScope = function (scope) {
+				this.$removeScope = scope => {
 					var index = scopes.indexOf(scope);
 					if (index >= 0) {
 						scopes.splice(index, 1);
 					}
 				};
 
-				this.$findScope = function (item, resolve, reject) {
+				this.$findScope = (item, resolve, reject) => {
 					for (var i = 0; i < scopes.length; i++) {
 						var scope = scopes[i];
 						if (item === scope.item) {
@@ -1739,102 +1783,82 @@ angular
 						}
 					}
 				};
-			},
-			controllerAs: '$uexSelectCtrl',
-			require: ['uexSelect', 'ngModel'],
-			scope: true,
-			link: function ($scope, $element, $attrs, ctrls, $transclude) {
-				if ($attrs.exp === undefined) {
-					throw new Error('\'uexSelect\': Attribute \'exp\' is required.');
-				}
 
-				var ctrl = ctrls[0],
-					ngModel = ctrls[1];
-
-				var originalTitle = $scope.title = $attrs.title;
-				if ($attrs.title !== undefined) {
-					$element.attr('title', null);
-				}
-
-				$scope.header = $attrs.header;
-				$scope.classes = $attrs.classes;
-
-				$scope.isOpen = false;
-				$scope.selected = null;
-
-				var options = ctrl.options = parse($attrs.exp),
-					keyName = options.keyName,
-					asyncMode = $scope.asyncMode = options.asyncMode,
-					promise;
-
-				var display = function (item) {
+				var display = item => {
 					if (options.asFn === angular.noop) return item;
 					var locals = {};
 					locals[keyName] = item;
 					return options.asFn($scope, locals);
 				};
 
-				var track = ctrl.track = function (item) {
+				this.track = item => {
 					if (options.trackFn === angular.noop) return item;
 					var locals = {};
 					locals[keyName] = item;
 					return options.trackFn($scope, locals);
 				};
 
-				var setTitle = function (title) {
-					$scope.title = title;
+				var setTitle = title => {
+					this.title = title;
 				};
 
-				var resetTitle = function () {
-					$scope.title = originalTitle;
+				var resetTitle = () => {
+					this.title = originalTitle;
 				};
 
-				if (!$scope.header) {
-					$scope.header = angular.copy($scope.title);
+				if (!this.header) {
+					this.header = angular.copy(this.title);
 				}
 
-				$scope.open = function () {
-					$scope.isOpen = true;
+				var createPopTemplate = () => {
+					return getPopTemplate(content);
 				};
 
-				$scope.close = function () {
-					$scope.isOpen = false;
-					if (asyncMode) {
-						$scope.items = null;
+				this.open = () => {
+					this.isOpen = true;
+					popInstance = pop({
+						scope: $scope,
+						target: $button,
+						placement: 'bottom',
+						align: 'start',
+						class: 'uex-select-pop ' + classes,
+						template: createPopTemplate()
+					});
+					popInstance.onDismiss(() => this.isOpen = false);
+				};
+
+				this.close = () => {
+					if (popInstance) popInstance.dismiss();
+					popInstance = null;
+
+					if (this.asyncMode) {
+						this.items = null;
+						this.q = null;
 						promise = null;
-						ctrl.q = null;
 					}
 				};
 
-				$scope.toggle = function () {
-					$scope.isOpen = !$scope.isOpen;
+				this.clear = () => {
+					this.select(null);
 				};
 
-				$scope.$watch('isOpen', function (v) {
-					if (v) {
-						$scope.$broadcast('uex.focus');
-					}
-				});
-
-				$scope.clear = function () {
-					$scope.select(null);
+				this.$onInit = () => {
+					this.ngModelCtrl.$render = () => {
+						var value = this.ngModelCtrl.$viewValue;
+						if (!value) {
+							this.select(null);
+						}
+						this.select(value);
+					};
 				};
 
-				ngModel.$render = function () {
-					var value = ngModel.$viewValue;
-					if (!value) {
-						$scope.select(null);
-					}
-					$scope.select(value);
-				};
-
-				var removeSelected = function (items) {
-					var selected = $scope.selected;
+				var removeSelected = items => {
+					var selected = this.selected;
 					if (!selected) return;
-					var selectedId = track(selected);
-					var index;
+					var selectedId = this.track(selected),
+						index;
 					for (var i = 0; i < items.length; i++) {
-						var id = track(items[i]);
+						var id = this.track(items[i]);
 						if (id === selectedId) {
 							index = i;
 							break;
@@ -1846,71 +1870,57 @@ angular
 				};
 
 				if (asyncMode) {
-					$scope.$watch('$uexSelectCtrl.q', function watchQ(v, old) {
+					$scope.$watch('$uexSelectCtrl.q', (v, old) => {
 						if (v === old || v === null) return;
-						$scope.loading = true;
-						$scope.items = null;
+						this.loading = true;
+						this.items = null;
 						var p = promise = options.inFn($scope, { // jshint ignore:line
 							q: v
 						});
-						p.then(function (d) {
+						p.then(d => {
 							if (p !== promise) return;
 							removeSelected(d);
-							$scope.items = d;
-						}).finally(function () {
-							$scope.loading = false;
+							this.items = d;
+							$timeout(() => {
+								if (popInstance) popInstance.position();
+							});
+						}).finally(() => {
+							this.loading = false;
 						});
 					});
 				} else {
-					$scope.$watchCollection(function watchCollection() {
+					$scope.$watchCollection(() => {
 						return options.inFn($scope);
-					}, function (v, old) {
-						$scope.items = v;
+					}, (v, old) => {
+						this.items = v;
 					});
 				}
 
-				$scope.select = function (item, n) {
-					if (!item && !$scope.selected) return;
-					$scope.selected = item;
+				this.select = (item, n) => {
+					if (!item && !this.selected) return;
+					this.selected = item;
 					var selected = item;
 					if (selected) {
-						ctrl.$findScope(selected, function (scope) {
+						this.$findScope(selected, scope => {
 							scope.$selected = true;
-						}, function (scope) {
+						}, scope => {
 							scope.$selected = false;
 						});
-						ngModel.$setViewValue(selected);
+						this.ngModelCtrl.$setViewValue(selected);
 						setTitle(display(selected));
 					} else {
-						ctrl.$findScope(null, null, function (scope) {
+						this.$findScope(null, null, scope => {
 							scope.$selected = false;
 						});
-						ngModel.$setViewValue(null);
+						this.ngModelCtrl.$setViewValue(null);
 						resetTitle();
 					}
-					ctrl.q = null;
+					this.q = null;
 					if (asyncMode) {
-						$scope.items = null;
+						this.items = null;
 					}
-					$scope.close();
+					this.close();
 				};
-
-				$element.on('keydown', function (e) {
-					if (e.which === 27) {
-						e.preventDefault();
-						$scope.$apply(function () {
-							$scope.close();
-						});
-					}
-				});
-
-				$document.on('click', function (e) {
-					if (!$.contains($element[0], e.target)) {
-						$scope.$apply(function () {
-							$scope.close();
-						});
-					}
-				});
 			}
 		};
 	}
@@ -1921,7 +1931,10 @@ angular
 			transclude: true,
 			template: '\
 				<div class="uex-select-simple-content" ng-transclude></div>\
-				<uex-icon icon="check" ng-if="$selected" />'
+				<uex-icon icon="check" ng-if="$selected"></uex-icon>',
+			link: function ($scope) {
+				$scope.$pop.position();
+			}
 		};
 	}
 })();
