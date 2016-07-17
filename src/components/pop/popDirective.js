@@ -43,7 +43,7 @@
 	function pop(pop) {
 		return {
 			restrict: 'E',
-			terminate: true,
+			terminal: true,
 			scope: true,
 			require: {
 				popContainer: '^uexPopContainer'

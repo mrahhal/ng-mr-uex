@@ -43,7 +43,7 @@
 	function poptip(poptip) {
 		return {
 			restrict: 'E',
-			terminate: true,
+			terminal: true,
 			scope: false,
 			bindToController: true,
 			require: {

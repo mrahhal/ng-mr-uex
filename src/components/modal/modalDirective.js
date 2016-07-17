@@ -8,7 +8,7 @@
 	function modal(modal) {
 		return {
 			restrict: 'E',
-			terminate: true,
+			terminal: true,
 			scope: true,
 			bindToController: {
 				delegate: '='
