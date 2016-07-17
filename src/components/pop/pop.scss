@@ -11,6 +11,7 @@ uex-pop {
   z-index: 10042;
   display: flex;
   flex-flow: column nowrap;
+  overflow: hidden;
 }
 
 .uex-pop.ng-enter {
