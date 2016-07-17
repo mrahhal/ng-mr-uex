@@ -49,10 +49,6 @@
 			require: {
 				poptipContainer: '^uexPoptipContainer'
 			},
-			link: function ($scope, $element) {
-				$element.removeClass();
-				$element.empty();
-			},
 			controllerAs: '$uexPoptipCtrl',
 			controller: function ($scope, $element, $attrs, $transclude) {
 				this.$onInit = () => {
@@ -68,6 +64,11 @@
 						trigger: $attrs.trigger,
 						template: template
 					});
+				};
+
+				this.$postLink = () => {
+					$element.removeClass();
+					$element.empty();
 				};
 			}
 		};

@@ -13,10 +13,6 @@
 			bindToController: {
 				delegate: '='
 			},
-			link: function ($scope, $element) {
-				$element.removeClass();
-				$element.empty();
-			},
 			controllerAs: '$uexModalCtrl',
 			controller: function ($scope, $element, $attrs) {
 				var title = $attrs.title,
@@ -32,6 +28,11 @@
 							template: template
 						});
 					}
+				};
+
+				this.$postLink = () => {
+					$element.removeClass();
+					$element.empty();
 				};
 			}
 		};

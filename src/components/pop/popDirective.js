@@ -51,10 +51,6 @@
 			bindToController: {
 				delegate: '=?'
 			},
-			link: function ($scope, $element) {
-				$element.removeClass();
-				$element.empty();
-			},
 			controllerAs: '$uexPopCtrl',
 			controller: function ($scope, $element, $attrs) {
 				var target,
@@ -93,6 +89,11 @@
 					open: () => {
 						showPop();
 					}
+				};
+
+				this.$postLink = () => {
+					$element.removeClass();
+					$element.empty();
 				};
 			}
 		};
