@@ -4,13 +4,16 @@ describe('uexSelect', function () {
 	beforeEach(module('mr.uex'));
 
 	var $controller,
-		$rootElement,
-		$compile;
+		$document,
+		$compile,
+		$body;
 
-	beforeEach(inject(function (_$controller_, _$rootElement_, _$compile_) {
+	beforeEach(inject(function (_$controller_, _$document_, _$compile_) {
 		$controller = _$controller_;
-		$rootElement = _$rootElement_;
+		$document = _$document_;
 		$compile = _$compile_;
+
+		$body = angular.element($document[0].body);
 	}));
 
 	function compile(template, scope) {
@@ -73,7 +76,7 @@ describe('uexSelect', function () {
 			var template = '<uex-select ng-model="vm.model" exp="item as item.name for item in items"></uex-select>';
 			var $element = compile(template, scope);
 			$element.find('.button').click();
-			$(document.body).find('.uex-pop.uex-select-pop ul > li').first().click();
+			$body.find('.uex-pop.uex-select-pop ul > li').first().click();
 
 			should.exist(scope.vm.model);
 			scope.vm.model.should.be.exactly(scope.items[0]);
@@ -84,10 +87,10 @@ describe('uexSelect', function () {
 			var template = '<uex-select ng-model="vm.model" exp="item as item.name for item in items"><div class="inner" data-id="{{item.id}}">{{item.name}}</div></uex-select>';
 			var $element = compile(template, scope);
 			$element.find('.button').click();
-			$(document.body).find('.uex-pop.uex-select-pop ul > li').first().click();
+			$body.find('.uex-pop.uex-select-pop ul > li').first().click();
 
 			$element.find('.button').click();
-			var $inner = $(document.body).find('.uex-pop.uex-select-pop ul > li').first().find('.inner');
+			var $inner = $body.find('.uex-pop.uex-select-pop ul > li').first().find('.inner');
 			$inner.data('id').should.be.exactly(scope.items[0].id);
 			$inner.html().should.be.exactly(scope.items[0].name);
 		});
@@ -100,10 +103,10 @@ describe('uexSelect', function () {
 				</uex-select>';
 			var $element = compile(template, scope);
 			$element.find('.button').click();
-			$(document.body).find('.uex-pop.uex-select-pop ul > li').first().click();
+			$body.find('.uex-pop.uex-select-pop ul > li').first().click();
 
 			$element.find('.button').click();
-			var $inner = $(document.body).find('.uex-pop.uex-select-pop ul > li').first().find('.inner');
+			var $inner = $body.find('.uex-pop.uex-select-pop ul > li').first().find('.inner');
 			$inner.hasClass('selected').should.be.true();
 		});
 	});
