@@ -9,6 +9,10 @@
 // components
 @import "../components/*/*.scss";
 
+body {
+  margin: 0;
+}
+
 .right {
   float: right !important;
 }
