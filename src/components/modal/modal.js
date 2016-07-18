@@ -155,8 +155,9 @@
 			};
 
 			var ret = {
-				open: scope => {
-					var deferred = $q.defer();
+				open: parentScope => {
+					var deferred = $q.defer(),
+						scope = (parentScope || $rootScope).$new();
 					var instance = func({
 						title: options.title,
 						scope: angular.extend(scope, {
@@ -180,7 +181,10 @@
 								</div>\
 							</div>'
 					});
-					instance.onDismiss(() => deferred.reject());
+					instance.onDismiss(() => {
+						scope.$destroy();
+						deferred.reject();
+					});
 					return deferred.promise;
 				},
 				title: v => {
