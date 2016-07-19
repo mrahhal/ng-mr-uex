@@ -7,11 +7,9 @@
 
 	function modal($rootScope, $compile, $controller, $animate, $templateRequest, $q) {
 		var instances = [],
-			$body,
-			$bd;
+			$body;
 
 		function listenToEvents() {
-			$rootScope.$on('uex-modal-bd.clicked', handleBdClicked);
 			$body.on('keydown', e => {
 				if (!e.isDefaultPrevented() && e.which === 27) {
 					dismissTopModal(e);
@@ -24,16 +22,8 @@
 				return;
 			}
 
-			$body = $(document.body); //jshint ignore: line
-			// The ng-click here might never fire
-			$bd = $('<div class="uex-modal-bd" ng-click="$root.$broadcast(\'uex-modal-bd.clicked\')" />');
-			$compile($bd)($rootScope);
-			$body.append($bd);
+			$body = $(document.body);
 			listenToEvents();
-		}
-
-		function handleBdClicked() {
-			dismissTopModal();
 		}
 
 		function dismissTopModal(e) {
@@ -53,8 +43,8 @@
 			options.class ? ' ' + options.class : '';
 
 		var getModalContainerTemplate = options =>
-			'<div class="uex-modal' + getWrapperClasses(options) +'">\
-				<div class="uex-modal-container">\
+			'<div class="uex-modal' + getWrapperClasses(options) +'" ng-click="!$event.isDefaultPrevented() && $modal.dismiss()">\
+				<div class="uex-modal-container" ng-click="$event.preventDefault()">\
 					<div class="uex-modal-header">\
 						<button type="button" class="uex-modal-close" ng-click="$modal.dismiss()">\
 							<uex-icon icon="close"></uex-icon>\
