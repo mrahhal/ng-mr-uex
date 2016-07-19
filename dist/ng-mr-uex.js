@@ -219,9 +219,6 @@ angular
 		.directive('uexIcon', uexIcon);
 
 	function uexIconsProvider() {
-		/* jshint validthis:true */
-		var self = this;
-
 		var icons = [{
 			id: 'add,plus',
 			svg: '<path d="M18.984 12.984h-6v6h-1.969v-6h-6v-1.969h6v-6h1.969v6h6v1.969z"/>'
@@ -291,14 +288,12 @@ angular
 			svg: '<path d="M7.406 15.422l-1.406-1.406 6-6 6 6-1.406 1.406-4.594-4.594z"/>'
 		}];
 
-		this.add = function (icon) {
+		this.add = icon => {
 			icons.unshift(icon);
-			return self;
+			return this;
 		};
 
-		this.$get = function () {
-			return icons;
-		};
+		this.$get = () => icons;
 	}
 
 	function uexIcon(uexIcons) {
@@ -419,6 +414,14 @@ angular
 
 		ensure();
 
+		function parsePlacement(placement) {
+			var ret = {},
+				arr = placement.split(' ');
+			ret.place = arr[0];
+			ret.align = arr[1];
+			return ret;
+		}
+
 		function measure(element, fn) {
 			var el = element.clone(false);
 			el.css('visibility', 'hidden');
@@ -462,7 +465,7 @@ angular
 		}
 
 		function computeOffset(context, options) {
-			var placement = options.placement,
+			var place = options.place,
 				align = options.align,
 				o = options.offset,
 				ep = context.ep,
@@ -473,7 +476,7 @@ angular
 				left: 0
 			};
 
-			switch (placement) {
+			switch (place) {
 				case 'top':
 					offset.top = tp.top - ep.height - o;
 					computeLeftForVertical(tp, ep, offset, align);
@@ -542,17 +545,21 @@ angular
 
 		// target: the target element
 		// element: the element to be positioned
-		// placement: top, right, bottom, left
-		// align: start, center, end
+		// placement: [top, right, bottom, left] [start, center, end]
 		// margin: the margin from the outer window
 		// offset: the offset from the target
 		// stub: true to stub the element before measuring, or the stub element itself
 		//
 		var func = options => {
-			options.placement = options.placement || 'bottom';
-			options.align = options.align || 'start';
 			options.margin = options.margin || 5;
 			options.offset = options.offset || 5;
+			if (options.placement) {
+				options.placementObject = parsePlacement(options.placement);
+				options.place = options.placementObject.place;
+				options.align = options.placementObject.align;
+			}
+			options.place = options.place || 'bottom';
+			options.align = options.align || 'start';
 
 			var target = options.target,
 				element = options.element,
@@ -597,6 +604,8 @@ angular
 				element.css('max-height', offset.maxHeight);
 			}
 		};
+
+		func.parsePlacement = parsePlacement;
 
 		return func;
 	}
@@ -718,7 +727,9 @@ angular
 		function listenToEvents() {
 			$body.on('keydown', e => {
 				if (!e.isDefaultPrevented() && e.which === 27) {
-					dismissTopModal(e);
+					$rootScope.$apply(() => {
+						dismissTopModal(e);
+					});
 				}
 			});
 		}
@@ -738,7 +749,6 @@ angular
 			e.preventDefault();
 			var top = instances[instances.length - 1];
 			top.dismiss();
-			top.scope.$applyAsync();
 		}
 
 		ensure();
@@ -983,9 +993,7 @@ angular
 			errorInterval: 1000
 		};
 
-		this.$get = function () {
-			return this.opts;
-		};
+		this.$get = () => this.opts;
 	}
 
 	function uexP($parse, uexP) {
@@ -993,21 +1001,24 @@ angular
 			restrict: 'A',
 			scope: true,
 			controller: controller,
-			controllerAs: '$p',
-			link: link
+			controllerAs: '$uexP'
 		};
 
-		function controller($scope, $timeout, $q) {
-			var ctrl = this,
-				promise;
+		function controller($scope, $element, $attrs, $timeout, $q) {
+			var promise,
+				fn = $parse($attrs.uexP),
+				options = $scope.$eval($attrs.uexPOpts) || {},
+				$$promises = {};
 
-			this.$$fn = null;
-			this.$running = false;
-			this.$$promises = {};
+			this.running = false;
+			this.success = false;
+			this.error = false;
 
-			var running = function (value) {
-				ctrl.$running = value;
-			};
+			if ($element.is('form') && $attrs.uexPSrc === undefined) {
+				$element.on('submit', e => {
+					$scope.$apply(this.run(e));
+				});
+			}
 
 			function getLocals(args) {
 				if (!args || args.length === 0) {
@@ -1018,42 +1029,31 @@ angular
 				};
 			}
 
-			var interpolate = function (name, interval) {
-				ctrl[name] = true;
-				var p = ctrl.$$promises[name] = $timeout(function () {
-					if (ctrl.$$promises[name] === p) {
-						ctrl[name] = false;
+			var interpolate = (name, interval) => {
+				this[name] = true;
+				var p = $$promises[name] = $timeout(() => {
+					if ($$promises[name] === p) {
+						this[name] = false;
 					}
 				}, interval);
 			};
 
-			this.run = function () {
-				var p = ctrl.$$fn($scope, getLocals(arguments));
+			this.run = () => {
+				var p = fn($scope, getLocals(arguments));
 				if (p && p.finally) {
 					promise = p;
-					running(true);
-					promise.then(function () {
-						interpolate('$success', ctrl.$$options.successInterval || uexP.successInterval);
-					}, function () {
-						interpolate('$error', ctrl.$$options.errorInterval || uexP.errorInterval);
+					this.running = true;
+					promise.then(() => {
+						interpolate('success', options.successInterval || uexP.successInterval);
+					}, () => {
+						interpolate('error', options.errorInterval || uexP.errorInterval);
 					});
-					promise.finally(function () {
+					promise.finally(() => {
 						if (p !== promise) return;
-						running(false);
+						this.running = false;
 					});
 				}
 			};
-		}
-
-		function link($scope, $element, $attrs, ctrl) {
-			ctrl.$$fn = $parse($attrs.uexP);
-			ctrl.$$options = $scope.$eval($attrs.uexPOpts) || {};
-
-			if ($element.is('form') && $attrs.uexPSrc === undefined) {
-				$element.on('submit', function (e) {
-					$scope.$apply(ctrl.run.call(ctrl, e));
-				});
-			}
 		}
 	}
 
@@ -1070,8 +1070,8 @@ angular
 			scope: false,
 			link: function ($scope, $element, $attrs, ctrl) {
 				var event = determineEvent($element, $attrs.uexPSrc);
-				$element.on(event, function (e) {
-					$scope.$apply(ctrl.run.call(ctrl, e));
+				$element.on(event, e => {
+					$scope.$apply(ctrl.run(e));
 				});
 			}
 		};
@@ -1086,9 +1086,7 @@ angular
 			template: '<div class="uex-p-' + kind + '" ng-show="shown" ng-transclude></div>',
 			link: function ($scope, $element, $attrs, ctrl) {
 				$element.addClass('uex-p-' + kind);
-				$scope.$watch(function () {
-					return ctrl['$' + kind];
-				}, function (n, o) {
+				$scope.$watch(() => ctrl[kind], (n, o) => {
 					$scope.shown = !!n;
 				});
 			}
@@ -1118,9 +1116,7 @@ angular
 					errorText = $attrs.error || 'Error';
 				$scope.classes = '';
 
-				$scope.$watch(function () {
-					return ctrl.$success;
-				}, function (n, o) {
+				$scope.$watch(() => ctrl.success, (n, o) => {
 					$scope.success = n;
 					if (n) {
 						$scope.classes = 'uex-p-success';
@@ -1128,9 +1124,7 @@ angular
 					}
 				});
 
-				$scope.$watch(function () {
-					return ctrl.$error;
-				}, function (n, o) {
+				$scope.$watch(() => ctrl.error, (n, o) => {
 					$scope.error = n;
 					if (n) {
 						$scope.classes = 'uex-p-error';
@@ -1147,13 +1141,11 @@ angular
 			require: '^uexP',
 			link: function ($scope, $element, $attrs, ctrl) {
 				var isOneTime = $attrs.uexPBtn === 'onetime';
-				$scope.$watch(function () {
-					return ctrl.$running;
-				}, function (n, o) {
+				$scope.$watch(() => ctrl.running, (n, o) => {
 					if (n) {
 						$element.attr('disabled', 'disabled');
 					} else {
-						if (ctrl.$error || !isOneTime) {
+						if (ctrl.error || !isOneTime) {
 							$element.removeAttr('disabled');
 						}
 					}
@@ -1226,8 +1218,7 @@ angular
 
 		// options:
 		//   scope
-		//   placement: top, right, bottom, left
-		//   align: start, center, end
+		//   placement: [top, right, bottom, left] [start, center, end]
 		//   offset
 		//   target
 		//   template - templateUrl
@@ -1388,7 +1379,6 @@ angular
 						scope: $scope,
 						target: target,
 						placement: $attrs.placement,
-						align: $attrs.align,
 						class: classes,
 						template: template
 					});
@@ -1454,8 +1444,7 @@ angular
 
 		// options:
 		//   scope
-		//   placement: top, right, bottom, left
-		//   align: start, center, end
+		//   placement: [top, right, bottom, left] [start, center, end]
 		//   offset
 		//   target
 		//   template
@@ -1464,8 +1453,7 @@ angular
 		//   delay
 		//
 		var func = options => {
-			options.placement = options.placement || 'bottom';
-			options.align = options.align || 'center';
+			options.placement = options.placement || 'bottom center';
 			options.delay = options.delay || 0;
 			options.trigger = options.trigger || 'hover';
 
@@ -1495,8 +1483,9 @@ angular
 
 				var v,
 					ep = context.ep,
-					tp = context.tp;
-				switch (options.placement) {
+					tp = context.tp,
+					p = uexPositioner.parsePlacement(options.placement);
+				switch (p.place) {
 					case 'top':
 					case 'bottom':
 						v = tp.left - ep.left + (tp.width / 2) - 5;
@@ -1610,7 +1599,6 @@ angular
 						scope: $scope,
 						target: target,
 						placement: $attrs.placement,
-						align: $attrs.align,
 						class: $attrs.class,
 						trigger: $attrs.trigger,
 						template: template
@@ -1809,8 +1797,7 @@ angular
 					popInstance = uexPop({
 						scope: $scope,
 						target: $button,
-						placement: 'bottom',
-						align: 'start',
+						placement: 'bottom start',
 						class: 'uex-select-pop ' + classes,
 						template: createPopTemplate()
 					});
