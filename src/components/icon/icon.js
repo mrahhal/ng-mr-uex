@@ -7,9 +7,6 @@
 		.directive('uexIcon', uexIcon);
 
 	function uexIconsProvider() {
-		/* jshint validthis:true */
-		var self = this;
-
 		var icons = [{
 			id: 'add,plus',
 			svg: '<path d="M18.984 12.984h-6v6h-1.969v-6h-6v-1.969h6v-6h1.969v6h6v1.969z"/>'
@@ -79,14 +76,12 @@
 			svg: '<path d="M7.406 15.422l-1.406-1.406 6-6 6 6-1.406 1.406-4.594-4.594z"/>'
 		}];
 
-		this.add = function (icon) {
+		this.add = icon => {
 			icons.unshift(icon);
-			return self;
+			return this;
 		};
 
-		this.$get = function () {
-			return icons;
-		};
+		this.$get = () => icons;
 	}
 
 	function uexIcon(uexIcons) {
