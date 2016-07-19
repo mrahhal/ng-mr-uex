@@ -20,13 +20,13 @@
 					template = $element.html();
 
 				this.delegate = {
-					open: () => {
-						modal({
+					open: options => {
+						modal(angular.extend({
 							scope: $scope,
 							title: title,
 							class: classes,
 							template: template
-						});
+						}, options));
 					}
 				};
 
