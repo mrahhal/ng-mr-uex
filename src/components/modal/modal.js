@@ -12,7 +12,9 @@
 		function listenToEvents() {
 			$body.on('keydown', e => {
 				if (!e.isDefaultPrevented() && e.which === 27) {
-					dismissTopModal(e);
+					$rootScope.$apply(() => {
+						dismissTopModal(e);
+					});
 				}
 			});
 		}
@@ -32,7 +34,6 @@
 			e.preventDefault();
 			var top = instances[instances.length - 1];
 			top.dismiss();
-			top.scope.$applyAsync();
 		}
 
 		ensure();
