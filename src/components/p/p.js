@@ -18,9 +18,7 @@
 			errorInterval: 1000
 		};
 
-		this.$get = function () {
-			return this.opts;
-		};
+		this.$get = () => this.opts;
 	}
 
 	function uexP($parse, uexP) {
@@ -28,21 +26,24 @@
 			restrict: 'A',
 			scope: true,
 			controller: controller,
-			controllerAs: '$p',
-			link: link
+			controllerAs: '$uexP'
 		};
 
-		function controller($scope, $timeout, $q) {
-			var ctrl = this,
-				promise;
+		function controller($scope, $element, $attrs, $timeout, $q) {
+			var promise,
+				fn = $parse($attrs.uexP),
+				options = $scope.$eval($attrs.uexPOpts) || {},
+				$$promises = {};
 
-			this.$$fn = null;
-			this.$running = false;
-			this.$$promises = {};
+			this.running = false;
+			this.success = false;
+			this.error = false;
 
-			var running = function (value) {
-				ctrl.$running = value;
-			};
+			if ($element.is('form') && $attrs.uexPSrc === undefined) {
+				$element.on('submit', e => {
+					$scope.$apply(this.run(e));
+				});
+			}
 
 			function getLocals(args) {
 				if (!args || args.length === 0) {
@@ -53,42 +54,31 @@
 				};
 			}
 
-			var interpolate = function (name, interval) {
-				ctrl[name] = true;
-				var p = ctrl.$$promises[name] = $timeout(function () {
-					if (ctrl.$$promises[name] === p) {
-						ctrl[name] = false;
+			var interpolate = (name, interval) => {
+				this[name] = true;
+				var p = $$promises[name] = $timeout(() => {
+					if ($$promises[name] === p) {
+						this[name] = false;
 					}
 				}, interval);
 			};
 
-			this.run = function () {
-				var p = ctrl.$$fn($scope, getLocals(arguments));
+			this.run = () => {
+				var p = fn($scope, getLocals(arguments));
 				if (p && p.finally) {
 					promise = p;
-					running(true);
-					promise.then(function () {
-						interpolate('$success', ctrl.$$options.successInterval || uexP.successInterval);
-					}, function () {
-						interpolate('$error', ctrl.$$options.errorInterval || uexP.errorInterval);
+					this.running = true;
+					promise.then(() => {
+						interpolate('success', options.successInterval || uexP.successInterval);
+					}, () => {
+						interpolate('error', options.errorInterval || uexP.errorInterval);
 					});
-					promise.finally(function () {
+					promise.finally(() => {
 						if (p !== promise) return;
-						running(false);
+						this.running = false;
 					});
 				}
 			};
-		}
-
-		function link($scope, $element, $attrs, ctrl) {
-			ctrl.$$fn = $parse($attrs.uexP);
-			ctrl.$$options = $scope.$eval($attrs.uexPOpts) || {};
-
-			if ($element.is('form') && $attrs.uexPSrc === undefined) {
-				$element.on('submit', function (e) {
-					$scope.$apply(ctrl.run.call(ctrl, e));
-				});
-			}
 		}
 	}
 
@@ -105,8 +95,8 @@
 			scope: false,
 			link: function ($scope, $element, $attrs, ctrl) {
 				var event = determineEvent($element, $attrs.uexPSrc);
-				$element.on(event, function (e) {
-					$scope.$apply(ctrl.run.call(ctrl, e));
+				$element.on(event, e => {
+					$scope.$apply(ctrl.run(e));
 				});
 			}
 		};
@@ -121,9 +111,7 @@
 			template: '<div class="uex-p-' + kind + '" ng-show="shown" ng-transclude></div>',
 			link: function ($scope, $element, $attrs, ctrl) {
 				$element.addClass('uex-p-' + kind);
-				$scope.$watch(function () {
-					return ctrl['$' + kind];
-				}, function (n, o) {
+				$scope.$watch(() => ctrl[kind], (n, o) => {
 					$scope.shown = !!n;
 				});
 			}
@@ -153,9 +141,7 @@
 					errorText = $attrs.error || 'Error';
 				$scope.classes = '';
 
-				$scope.$watch(function () {
-					return ctrl.$success;
-				}, function (n, o) {
+				$scope.$watch(() => ctrl.success, (n, o) => {
 					$scope.success = n;
 					if (n) {
 						$scope.classes = 'uex-p-success';
@@ -163,9 +149,7 @@
 					}
 				});
 
-				$scope.$watch(function () {
-					return ctrl.$error;
-				}, function (n, o) {
+				$scope.$watch(() => ctrl.error, (n, o) => {
 					$scope.error = n;
 					if (n) {
 						$scope.classes = 'uex-p-error';
@@ -182,13 +166,11 @@
 			require: '^uexP',
 			link: function ($scope, $element, $attrs, ctrl) {
 				var isOneTime = $attrs.uexPBtn === 'onetime';
-				$scope.$watch(function () {
-					return ctrl.$running;
-				}, function (n, o) {
+				$scope.$watch(() => ctrl.running, (n, o) => {
 					if (n) {
 						$element.attr('disabled', 'disabled');
 					} else {
-						if (ctrl.$error || !isOneTime) {
+						if (ctrl.error || !isOneTime) {
 							$element.removeAttr('disabled');
 						}
 					}

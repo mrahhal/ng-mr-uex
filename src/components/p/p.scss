@@ -1,7 +1,7 @@
-$pAnimationInterval: .1s !default;
+$uexPAnimationInterval: .1s !default;
 
 .uex-p-status, .uex-p-running, .uex-p-success, .uex-p-error {
-  transition: opacity linear $pAnimationInterval;
+  transition: opacity linear $uexPAnimationInterval;
 
   &.ng-hide {
     opacity: 0;

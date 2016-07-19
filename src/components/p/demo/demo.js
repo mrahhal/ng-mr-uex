@@ -6,11 +6,9 @@
 		.controller('pCtrl', pCtrl);
 
 	function pCtrl($scope, $q, $timeout) {
-		var ctrl = this;
-
-		var defer = function (shouldError) {
+		var defer = shouldError => {
 			var deferred = $q.defer();
-			$timeout(function () {
+			$timeout(() => {
 				if (shouldError) {
 					deferred.reject();
 				} else {
@@ -20,16 +18,10 @@
 			return deferred.promise;
 		};
 
-		$scope.submit1 = function () {
-			return $timeout(2000);
-		};
+		$scope.submit1 = () => $timeout(2000);
 
-		$scope.submit2 = function () {
-			return defer(ctrl.shouldError);
-		};
+		$scope.submit2 = () => defer(this.shouldError);
 
-		$scope.submit3 = function () {
-			return defer(ctrl.shouldError2);
-		};
+		$scope.submit3 = () => defer(this.shouldError2);
 	}
 })();
