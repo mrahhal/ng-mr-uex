@@ -47,6 +47,9 @@ uex-icon[flexible] {
   display: flex;
   align-items: center; }
 
+.uex-modal-t-confirm-content {
+  font-size: 16px; }
+
 .uex-modal-t-confirm-actions {
   margin: -10px;
   margin-top: 10px;
@@ -60,30 +63,11 @@ uex-icon[flexible] {
 uex-modal {
   display: none; }
 
-.uex-modal-bd {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 10000;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity linear 0.1s; }
-  @media (max-width: 599px) {
-    .uex-modal-bd {
-      transition: none;
-      display: none; } }
-
 body.uex-modal-active {
   overflow: hidden !important; }
   @media (min-width: 960px) {
     body.uex-modal-active {
-      margin-right: 25px; } }
-  body.uex-modal-active .uex-modal-bd {
-    opacity: 1;
-    pointer-events: auto; }
+      margin-right: 17px; } }
 
 .uex-modal {
   z-index: 10001;
@@ -93,7 +77,8 @@ body.uex-modal-active {
   bottom: 0;
   left: 0;
   overflow-y: scroll;
-  transition: opacity linear 0.1s; }
+  transition: opacity linear 0.1s;
+  background: rgba(0, 0, 0, 0.4); }
   @media (max-width: 599px) {
     .uex-modal {
       overflow: hidden; } }
@@ -116,16 +101,9 @@ body.uex-modal-active {
 .uex-modal.ng-leave.ng-leave-active {
   opacity: 0; }
 
-.uex-modal-inner-bd {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: -1; }
-
 .uex-modal-container {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  position: relative;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
   width: 600px;
   margin: 20px auto;
   border-radius: 5px;
@@ -148,7 +126,7 @@ body.uex-modal-active {
   cursor: pointer;
   outline: none;
   background: none;
-  margin-top: 11px;
+  margin-top: 14px;
   margin-right: 5px; }
   .uex-modal-close:hover {
     opacity: 1; }
@@ -159,11 +137,11 @@ body.uex-modal-active {
   height: 100%;
   overflow-y: auto; }
 
-modal {
-  display: none; }
-
 @media (max-width: 599px) {
+  .uex-modal {
+    background: transparent; }
   .uex-modal-container {
+    box-shadow: none;
     width: 100%;
     height: 100%;
     margin: 0;
@@ -194,7 +172,7 @@ uex-pop {
   border: 1px solid rgba(0, 0, 0, 0.15);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.12);
   border-radius: 6px;
-  z-index: 10042;
+  z-index: 10001;
   display: flex;
   flex-flow: column nowrap;
   overflow: hidden; }
@@ -238,7 +216,7 @@ uex-poptip {
 .uex-poptip {
   position: absolute;
   pointer-events: none;
-  z-index: 10042; }
+  z-index: 10001; }
   .uex-poptip strong {
     color: #fff; }
   .uex-poptip.ng-enter {
@@ -532,6 +510,9 @@ uex-select {
 
 .tooltipped-sticky.tooltipped-multiline:after {
   display: table-cell; }
+
+body {
+  margin: 0; }
 
 .right {
   float: right !important; }

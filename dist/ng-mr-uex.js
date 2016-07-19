@@ -404,7 +404,7 @@ angular
 
 	angular
 		.module('mr.uex')
-		.factory('positioner', positioner);
+		.factory('uexPositioner', positioner);
 
 	function positioner() {
 		var $window,
@@ -607,7 +607,7 @@ angular
 
 	angular
 		.module('mr.uex')
-		.factory('positioningThrottler', positioningThrottler);
+		.factory('uexPositioningThrottler', positioningThrottler);
 
 	function now() {
 		return +new Date();
@@ -709,15 +709,13 @@ angular
 
 	angular
 		.module('mr.uex')
-		.factory('modal', modal);
+		.factory('uexModal', modal);
 
 	function modal($rootScope, $compile, $controller, $animate, $templateRequest, $q) {
 		var instances = [],
-			$body,
-			$bd;
+			$body;
 
 		function listenToEvents() {
-			$rootScope.$on('uex-modal-bd.clicked', handleBdClicked);
 			$body.on('keydown', e => {
 				if (!e.isDefaultPrevented() && e.which === 27) {
 					dismissTopModal(e);
@@ -726,20 +724,10 @@ angular
 		}
 
 		function ensure() {
-			if ($body) {
-				return;
-			}
+			if ($body) return;
 
-			$body = $(document.body); //jshint ignore: line
-			// The ng-click here might never fire
-			$bd = $('<div class="uex-modal-bd" ng-click="$root.$broadcast(\'uex-modal-bd.clicked\')" />');
-			$compile($bd)($rootScope);
-			$body.append($bd);
+			$body = $(document.body);
 			listenToEvents();
-		}
-
-		function handleBdClicked() {
-			dismissTopModal();
 		}
 
 		function dismissTopModal(e) {
@@ -759,8 +747,8 @@ angular
 			options.class ? ' ' + options.class : '';
 
 		var getModalContainerTemplate = options =>
-			'<div class="uex-modal' + getWrapperClasses(options) +'">\
-				<div class="uex-modal-container">\
+			'<div class="uex-modal' + getWrapperClasses(options) +'" ng-click="!$event.isDefaultPrevented() && $modal.dismiss()">\
+				<div class="uex-modal-container" ng-click="$event.preventDefault()">\
 					<div class="uex-modal-header">\
 						<button type="button" class="uex-modal-close" ng-click="$modal.dismiss()">\
 							<uex-icon icon="close"></uex-icon>\
@@ -861,8 +849,9 @@ angular
 			};
 
 			var ret = {
-				open: scope => {
-					var deferred = $q.defer();
+				open: parentScope => {
+					var deferred = $q.defer(),
+						scope = (parentScope || $rootScope).$new();
 					var instance = func({
 						title: options.title,
 						scope: angular.extend(scope, {
@@ -886,7 +875,10 @@ angular
 								</div>\
 							</div>'
 					});
-					instance.onDismiss(() => deferred.reject());
+					instance.onDismiss(() => {
+						scope.$destroy();
+						deferred.reject();
+					});
 					return deferred.promise;
 				},
 				title: v => {
@@ -937,7 +929,7 @@ angular
 		.module('mr.uex')
 		.directive('uexModal', modal);
 
-	function modal(modal) {
+	function modal(uexModal) {
 		return {
 			restrict: 'E',
 			terminal: true,
@@ -952,13 +944,13 @@ angular
 					template = $element.html();
 
 				this.delegate = {
-					open: () => {
-						modal({
+					open: options => {
+						uexModal(angular.extend({
 							scope: $scope,
 							title: title,
 							class: classes,
 							template: template
-						});
+						}, options));
 					}
 				};
 
@@ -1176,9 +1168,9 @@ angular
 
 	angular
 		.module('mr.uex')
-		.factory('pop', pop);
+		.factory('uexPop', pop);
 
-	function pop($rootScope, $compile, $animate, $templateRequest, $q, positioningThrottler, positioner) {
+	function pop($rootScope, $compile, $animate, $templateRequest, $q, uexPositioningThrottler, uexPositioner) {
 		var _instance,
 			$body;
 
@@ -1188,7 +1180,7 @@ angular
 					dismiss(e);
 				}
 			});
-			positioningThrottler.subscribe(context => {
+			uexPositioningThrottler.subscribe(context => {
 				if (_instance) _instance.position();
 			});
 		}
@@ -1202,11 +1194,9 @@ angular
 		}
 
 		function ensure() {
-			if ($body) {
-				return;
-			}
+			if ($body) return;
 
-			$body = $(document.body); //jshint ignore: line
+			$body = $(document.body);
 			listenToEvents();
 		}
 
@@ -1293,12 +1283,12 @@ angular
 					if (stub) {
 						o.stub = true;
 					}
-					var context = positioner(o);
+					var context = uexPositioner(o);
 					if (options.onPosition) {
 						options.onPosition(context);
 					}
 
-					positioner.apply(context);
+					uexPositioner.apply(context);
 				},
 				onDismiss: action => {
 					instance._delegates.push(action);
@@ -1375,7 +1365,7 @@ angular
 		};
 	}
 
-	function pop(pop) {
+	function pop(uexPop) {
 		return {
 			restrict: 'E',
 			terminal: true,
@@ -1394,7 +1384,7 @@ angular
 					on = $attrs.on || 'click';
 
 				var showPop = () => {
-					pop({
+					uexPop({
 						scope: $scope,
 						target: target,
 						placement: $attrs.placement,
@@ -1440,9 +1430,9 @@ angular
 
 	angular
 		.module('mr.uex')
-		.factory('poptip', poptip);
+		.factory('uexPoptip', poptip);
 
-	function poptip($rootScope, $animate, $compile, $timeout, positioner) {
+	function poptip($rootScope, $animate, $compile, uexPositioner) {
 		var $body;
 
 		function ensure() {
@@ -1500,8 +1490,8 @@ angular
 					stub: true
 				});
 
-				var context = positioner(o);
-				positioner.apply(context);
+				var context = uexPositioner(o);
+				uexPositioner.apply(context);
 
 				var v,
 					ep = context.ep,
@@ -1601,7 +1591,7 @@ angular
 		};
 	}
 
-	function poptip(poptip) {
+	function poptip(uexPoptip) {
 		return {
 			restrict: 'E',
 			terminal: true,
@@ -1616,7 +1606,7 @@ angular
 					var target = this.poptipContainer.getTarget(),
 						template = $element.html();
 
-					poptip({
+					uexPoptip({
 						scope: $scope,
 						target: target,
 						placement: $attrs.placement,
@@ -1658,7 +1648,7 @@ angular
 		};
 	}
 
-	function uexSelect($parse, $compile, $timeout, pop) {
+	function uexSelect($parse, $compile, $timeout, uexPop) {
 		function parse(exp) {
 			var match = exp.match(/^\s*([\s\S]+?)\s+in\s+([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+track\s+by\s+([\s\S]+?))?\s*$/);
 
@@ -1816,7 +1806,7 @@ angular
 
 				this.open = () => {
 					this.isOpen = true;
-					popInstance = pop({
+					popInstance = uexPop({
 						scope: $scope,
 						target: $button,
 						placement: 'bottom',
