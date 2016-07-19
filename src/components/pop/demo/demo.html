@@ -2,7 +2,7 @@
   <div>
     <button type="button" uex-pop-container uex-pop-target>
       Pop 1
-      <uex-pop delegate="$ctrl.p1" on="click" placement="bottom" align="center">
+      <uex-pop delegate="$ctrl.p1" on="click" placement="bottom center">
         <div>foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo
         </div>
         <div>foo</div>
@@ -18,7 +18,7 @@
     </button>
     <button type="button" uex-pop-container uex-pop-target>
       Pop 2
-      <uex-pop placement="right" align="start" class="pop-menu">
+      <uex-pop placement="right start" class="pop-menu">
         <ul style="list-style:none">
           <li>Something 1</li>
           <li>Something 2</li>
@@ -31,7 +31,7 @@
     <h1 ng-repeat="v in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]">
       <div style="display:inline-block;cursor:pointer" uex-pop-container uex-pop-target>
         foo {{v}}
-        <uex-pop placement="right" align="center" class="pop-menu-item">
+        <uex-pop placement="right center" class="pop-menu-item">
           <ul class="pop-menu">
             <li>Something 1</li>
             <li>Something 2</li>

@@ -18,6 +18,14 @@
 
 		ensure();
 
+		function parsePlacement(placement) {
+			var ret = {},
+				arr = placement.split(' ');
+			ret.place = arr[0];
+			ret.align = arr[1];
+			return ret;
+		}
+
 		function measure(element, fn) {
 			var el = element.clone(false);
 			el.css('visibility', 'hidden');
@@ -61,7 +69,7 @@
 		}
 
 		function computeOffset(context, options) {
-			var placement = options.placement,
+			var place = options.place,
 				align = options.align,
 				o = options.offset,
 				ep = context.ep,
@@ -72,7 +80,7 @@
 				left: 0
 			};
 
-			switch (placement) {
+			switch (place) {
 				case 'top':
 					offset.top = tp.top - ep.height - o;
 					computeLeftForVertical(tp, ep, offset, align);
@@ -141,17 +149,21 @@
 
 		// target: the target element
 		// element: the element to be positioned
-		// placement: top, right, bottom, left
-		// align: start, center, end
+		// placement: [top, right, bottom, left] [start, center, end]
 		// margin: the margin from the outer window
 		// offset: the offset from the target
 		// stub: true to stub the element before measuring, or the stub element itself
 		//
 		var func = options => {
-			options.placement = options.placement || 'bottom';
-			options.align = options.align || 'start';
 			options.margin = options.margin || 5;
 			options.offset = options.offset || 5;
+			if (options.placement) {
+				options.placementObject = parsePlacement(options.placement);
+				options.place = options.placementObject.place;
+				options.align = options.placementObject.align;
+			}
+			options.place = options.place || 'bottom';
+			options.align = options.align || 'start';
 
 			var target = options.target,
 				element = options.element,
@@ -196,6 +208,8 @@
 				element.css('max-height', offset.maxHeight);
 			}
 		};
+
+		func.parsePlacement = parsePlacement;
 
 		return func;
 	}

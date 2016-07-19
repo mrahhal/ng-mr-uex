@@ -27,8 +27,7 @@
 
 		// options:
 		//   scope
-		//   placement: top, right, bottom, left
-		//   align: start, center, end
+		//   placement: [top, right, bottom, left] [start, center, end]
 		//   offset
 		//   target
 		//   template
@@ -37,8 +36,7 @@
 		//   delay
 		//
 		var func = options => {
-			options.placement = options.placement || 'bottom';
-			options.align = options.align || 'center';
+			options.placement = options.placement || 'bottom center';
 			options.delay = options.delay || 0;
 			options.trigger = options.trigger || 'hover';
 
@@ -68,8 +66,9 @@
 
 				var v,
 					ep = context.ep,
-					tp = context.tp;
-				switch (options.placement) {
+					tp = context.tp,
+					p = uexPositioner.parsePlacement(options.placement);
+				switch (p.place) {
 					case 'top':
 					case 'bottom':
 						v = tp.left - ep.left + (tp.width / 2) - 5;

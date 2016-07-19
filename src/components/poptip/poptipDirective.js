@@ -59,7 +59,6 @@
 						scope: $scope,
 						target: target,
 						placement: $attrs.placement,
-						align: $attrs.align,
 						class: $attrs.class,
 						trigger: $attrs.trigger,
 						template: template

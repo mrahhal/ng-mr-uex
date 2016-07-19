@@ -61,8 +61,7 @@
 
 		// options:
 		//   scope
-		//   placement: top, right, bottom, left
-		//   align: start, center, end
+		//   placement: [top, right, bottom, left] [start, center, end]
 		//   offset
 		//   target
 		//   template - templateUrl

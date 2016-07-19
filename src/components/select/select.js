@@ -181,8 +181,7 @@
 					popInstance = uexPop({
 						scope: $scope,
 						target: $button,
-						placement: 'bottom',
-						align: 'start',
+						placement: 'bottom start',
 						class: 'uex-select-pop ' + classes,
 						template: createPopTemplate()
 					});
