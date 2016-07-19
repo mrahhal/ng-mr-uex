@@ -1,7 +1,7 @@
 (function () {
 	'use strict';
 
-	angular.module('app').controller('uexSelectCtrl', function ($scope, $timeout, $q) {
+	angular.module('app').controller('uexSelectCtrl', function ($scope, $timeout) {
 		this.items = [{
 			name: 'item1'
 		}, {

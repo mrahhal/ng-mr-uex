@@ -3,9 +3,9 @@
 
 	angular
 		.module('mr.uex')
-		.factory('poptip', poptip);
+		.factory('uexPoptip', poptip);
 
-	function poptip($rootScope, $animate, $compile, $timeout, positioner) {
+	function poptip($rootScope, $animate, $compile, uexPositioner) {
 		var $body;
 
 		function ensure() {
@@ -63,8 +63,8 @@
 					stub: true
 				});
 
-				var context = positioner(o);
-				positioner.apply(context);
+				var context = uexPositioner(o);
+				uexPositioner.apply(context);
 
 				var v,
 					ep = context.ep,

@@ -20,7 +20,7 @@
 		};
 	}
 
-	function uexSelect($parse, $compile, $timeout, pop) {
+	function uexSelect($parse, $compile, $timeout, uexPop) {
 		function parse(exp) {
 			var match = exp.match(/^\s*([\s\S]+?)\s+in\s+([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+track\s+by\s+([\s\S]+?))?\s*$/);
 
@@ -178,7 +178,7 @@
 
 				this.open = () => {
 					this.isOpen = true;
-					popInstance = pop({
+					popInstance = uexPop({
 						scope: $scope,
 						target: $button,
 						placement: 'bottom',

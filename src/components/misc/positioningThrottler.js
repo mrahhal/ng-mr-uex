@@ -3,7 +3,7 @@
 
 	angular
 		.module('mr.uex')
-		.factory('positioningThrottler', positioningThrottler);
+		.factory('uexPositioningThrottler', positioningThrottler);
 
 	function now() {
 		return +new Date();

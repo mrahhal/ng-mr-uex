@@ -5,7 +5,7 @@
 		.module('app')
 		.controller('popCtrl', popCtrl);
 
-	function popCtrl($scope, $q, $timeout, pop, modal) {
+	function popCtrl($scope) {
 		this.delete = v => {
 			this.m1.open({
 				locals: {

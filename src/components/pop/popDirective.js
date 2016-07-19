@@ -40,7 +40,7 @@
 		};
 	}
 
-	function pop(pop) {
+	function pop(uexPop) {
 		return {
 			restrict: 'E',
 			terminal: true,
@@ -59,7 +59,7 @@
 					on = $attrs.on || 'click';
 
 				var showPop = () => {
-					pop({
+					uexPop({
 						scope: $scope,
 						target: target,
 						placement: $attrs.placement,

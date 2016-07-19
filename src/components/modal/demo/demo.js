@@ -11,10 +11,10 @@
 			bindings: {
 				$modal: '<'
 			},
-			controller: function ($scope, modal) {
+			controller: function ($scope, uexModal) {
 				this.go = () => {
 					c++;
-					modal({
+					uexModal({
 						scope: $scope,
 						title: '' + c + '.',
 						template: '<modal-comp $modal="$modal"></modal-comp>'
@@ -23,9 +23,9 @@
 			}
 		});
 
-	function modalCtrl($scope, $q, $timeout, modal) {
+	function modalCtrl($scope, $q, $timeout, uexModal) {
 		this.open1 = () => {
-			modal({
+			uexModal({
 				scope: $scope,
 				classes: 'modal-foo',
 				template: '<modal-comp modal-instance="modalInstance"></modal-comp>'
@@ -37,12 +37,12 @@
 		};
 
 		this.confirm = () => {
-			modal.confirm().title('Are').danger().open($scope)
+			uexModal.confirm().title('Are').danger().open($scope)
 				.then(() => console.log('ok'), () => console.log('no'));
 		};
 
 		this.info = () => {
-			modal.info().title('Make sure to').open($scope)
+			uexModal.info().title('Make sure to').open($scope)
 				.then(() => console.log('ok'), () => console.log('no'));
 		};
 	}

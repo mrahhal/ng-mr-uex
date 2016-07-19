@@ -3,9 +3,9 @@
 
 	angular
 		.module('mr.uex')
-		.factory('pop', pop);
+		.factory('uexPop', pop);
 
-	function pop($rootScope, $compile, $animate, $templateRequest, $q, positioningThrottler, positioner) {
+	function pop($rootScope, $compile, $animate, $templateRequest, $q, uexPositioningThrottler, uexPositioner) {
 		var _instance,
 			$body;
 
@@ -15,7 +15,7 @@
 					dismiss(e);
 				}
 			});
-			positioningThrottler.subscribe(context => {
+			uexPositioningThrottler.subscribe(context => {
 				if (_instance) _instance.position();
 			});
 		}
@@ -29,11 +29,9 @@
 		}
 
 		function ensure() {
-			if ($body) {
-				return;
-			}
+			if ($body) return;
 
-			$body = $(document.body); //jshint ignore: line
+			$body = $(document.body);
 			listenToEvents();
 		}
 
@@ -120,12 +118,12 @@
 					if (stub) {
 						o.stub = true;
 					}
-					var context = positioner(o);
+					var context = uexPositioner(o);
 					if (options.onPosition) {
 						options.onPosition(context);
 					}
 
-					positioner.apply(context);
+					uexPositioner.apply(context);
 				},
 				onDismiss: action => {
 					instance._delegates.push(action);

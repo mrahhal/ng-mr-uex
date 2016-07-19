@@ -40,7 +40,7 @@
 		};
 	}
 
-	function poptip(poptip) {
+	function poptip(uexPoptip) {
 		return {
 			restrict: 'E',
 			terminal: true,
@@ -55,7 +55,7 @@
 					var target = this.poptipContainer.getTarget(),
 						template = $element.html();
 
-					poptip({
+					uexPoptip({
 						scope: $scope,
 						target: target,
 						placement: $attrs.placement,

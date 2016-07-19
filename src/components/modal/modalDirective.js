@@ -5,7 +5,7 @@
 		.module('mr.uex')
 		.directive('uexModal', modal);
 
-	function modal(modal) {
+	function modal(uexModal) {
 		return {
 			restrict: 'E',
 			terminal: true,
@@ -21,7 +21,7 @@
 
 				this.delegate = {
 					open: options => {
-						modal(angular.extend({
+						uexModal(angular.extend({
 							scope: $scope,
 							title: title,
 							class: classes,

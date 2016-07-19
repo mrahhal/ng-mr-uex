@@ -3,7 +3,7 @@
 
 	angular
 		.module('mr.uex')
-		.factory('positioner', positioner);
+		.factory('uexPositioner', positioner);
 
 	function positioner() {
 		var $window,

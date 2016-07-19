@@ -3,7 +3,7 @@
 
 	angular
 		.module('mr.uex')
-		.factory('modal', modal);
+		.factory('uexModal', modal);
 
 	function modal($rootScope, $compile, $controller, $animate, $templateRequest, $q) {
 		var instances = [],
@@ -18,9 +18,7 @@
 		}
 
 		function ensure() {
-			if ($body) {
-				return;
-			}
+			if ($body) return;
 
 			$body = $(document.body);
 			listenToEvents();
