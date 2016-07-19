@@ -7,8 +7,10 @@
 
 	function popCtrl($scope, $q, $timeout, pop, modal) {
 		this.delete = v => {
-			modal({
-				template: 'Value: ' + v
+			this.m1.open({
+				locals: {
+					v: v
+				}
 			});
 		};
 	}

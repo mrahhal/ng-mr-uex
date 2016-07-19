@@ -38,10 +38,26 @@
             <li>Something 3</li>
             <li>Something 4</li>
             <li>
-              <a class="plain" ng-click="$ctrl.delete(v);$pop.dismiss()">Delete - {{v}}</a>
+              <a class="plain" ng-click="$ctrl.delete(v);">Delete - {{v}}</a>
             </li>
           </ul>
         </uex-pop>
+        <uex-modal delegate="$ctrl.m1">
+          Value {{::v}}
+          <button type="button" uex-pop-container uex-pop-target>
+            GO
+            <uex-pop>
+              <div>here 1</div>
+              <div>here 2</div>
+            </uex-pop>
+          </button>
+          <button type="button" uex-poptip-container uex-poptip-target>
+            GO
+            <uex-poptip>
+              Here we <strong>go</strong>.
+            </uex-poptip>
+          </button>
+        </uex-modal>
       </div>
     </h1>
   </div>
