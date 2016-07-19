@@ -1,5 +1,6 @@
-<section ng-controller="popCtrl as $ctrl">
-  <div>
+<div id="component-pop-page" ng-controller="popCtrl as $ctrl">
+  <section>
+    <header>Basic</header>
     <button type="button" uex-pop-container uex-pop-target>
       Pop 1
       <uex-pop delegate="$ctrl.p1" on="click" placement="bottom center">
@@ -30,7 +31,8 @@
     </button>
     <h1 ng-repeat="v in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]">
       <div style="display:inline-block;cursor:pointer" uex-pop-container uex-pop-target>
-        foo {{v}}
+        foo
+        {{v}}
         <uex-pop placement="right center" class="pop-menu-item">
           <ul class="pop-menu">
             <li>Something 1</li>
@@ -38,12 +40,14 @@
             <li>Something 3</li>
             <li>Something 4</li>
             <li>
-              <a class="plain" ng-click="$ctrl.delete(v);">Delete - {{v}}</a>
+              <a class="plain" ng-click="$ctrl.delete(v);">Delete -
+                {{v}}</a>
             </li>
           </ul>
         </uex-pop>
         <uex-modal delegate="$ctrl.m1">
-          Value {{::v}}
+          Value
+          {{::v}}
           <button type="button" uex-pop-container uex-pop-target>
             GO
             <uex-pop>
@@ -54,11 +58,12 @@
           <button type="button" uex-poptip-container uex-poptip-target>
             GO
             <uex-poptip>
-              Here we <strong>go</strong>.
+              Here we
+              <strong>go</strong>.
             </uex-poptip>
           </button>
         </uex-modal>
       </div>
     </h1>
-  </div>
-</section>
+  </section>
+</div>
