@@ -3,6 +3,7 @@ uex-icon {
   fill: currentColor;
   height: $icon-size;
   width: $icon-size;
+  vertical-align: text-bottom;
 
   > svg {
     pointer-events: none;
