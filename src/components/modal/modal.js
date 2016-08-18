@@ -196,6 +196,10 @@
 					options.template = v;
 					return ret;
 				},
+				template: v => {
+					options.template = v;
+					return ret;
+				},
 				classes: v => {
 					options.classes = v;
 					return ret;
