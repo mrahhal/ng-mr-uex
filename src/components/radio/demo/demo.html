@@ -1,0 +1,65 @@
+<div ng-controller="uexRadioCtrl as $ctrl">
+  <section>
+    <header>
+      Basic
+    </header>
+
+    <uex-radio-group ng-model="$ctrl.m1">
+      <div>
+        <uex-radio value="val1">Value 1</uex-radio>
+      </div>
+      <div>
+        <uex-radio value="val2">Value 2</uex-radio>
+      </div>
+      <div>
+        <uex-radio value="val3" ng-disabled="true">Value 3 - Disabled</uex-radio>
+      </div>
+      <div>
+        <uex-radio value="val4">Value 4</uex-radio>
+      </div>
+    </uex-radio-group>
+
+    <div style="margin-top:10px;">
+      Value: {{$ctrl.m1}}
+    </div>
+  </section>
+
+  <section>
+    <header>
+      Text
+    </header>
+
+    <div>
+      <uex-radio-group ng-model="$ctrl.m2">
+        <div>
+          <uex-radio value="val1">
+            Value 1
+            <p>
+              This is a collection of services and components for angular.
+            </p>
+          </uex-radio>
+        </div>
+        <div>
+          <uex-radio value="val2">
+            Value 2
+            <p>
+              This is a collection of services and components for angular.
+            </p>
+          </uex-radio>
+        </div>
+        <div>
+          <uex-radio value="val3">
+            Value 3
+            <p>
+              This is a collection of services and components for angular.
+            </p>
+          </uex-radio>
+        </div>
+      </uex-radio-group>
+    </div>
+
+    <div style="margin-top:10px;">
+      Value: {{$ctrl.m2}}
+    </div>
+  </section>
+</div>

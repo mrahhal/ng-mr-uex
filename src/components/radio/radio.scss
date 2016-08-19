@@ -1,0 +1,66 @@
+uex-radio-group {
+  display: block;
+}
+
+uex-radio {
+  @extend .unselectable;
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  min-height: 20px;
+
+  ._uex-icon {
+    opacity: 0.8;
+    position: absolute;
+    transition: .1s;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+  }
+
+  ._uex-on {
+    background: $brand-primary;
+    transition: transform ease .1s;
+    transform: scale(0);
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+  }
+
+  &.checked {
+    ._uex-icon {
+      border-color: $brand-primary;
+    }
+
+    ._uex-on {
+      transform: scale(.5);
+    }
+  }
+
+  ._uex-label {
+    display: inline-block;
+    position: relative;
+    margin-left: 25px;
+
+    > p {
+      margin-top: 5px;
+      color: #888;
+      font-size: 14px
+    }
+  }
+
+  &:hover {
+    ._uex-icon {
+      opacity: 1;
+    }
+  }
+}
+
+uex-radio[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
