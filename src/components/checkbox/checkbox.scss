@@ -11,7 +11,7 @@ uex-checkbox {
     transition: .1s;
     width: 20px;
     height: 20px;
-    border: 2px solid rgba(0, 0, 0, 0.5);
+    border: 2px solid $color-border-focus;
     border-radius: 2px;
   }
 
@@ -44,7 +44,7 @@ uex-checkbox {
 
     > p {
       margin-top: 5px;
-      color: #888;
+      color: $color-text-2;
       font-size: 14px
     }
   }

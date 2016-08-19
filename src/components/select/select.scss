@@ -90,7 +90,7 @@ uex-select {
   .uex-select-no-items {
     padding: 5px;
     text-align: center;
-    color: $gray-light;
+    color: $color-text-2;
     font-style: italic;
   }
 
@@ -173,6 +173,10 @@ uex-select {
 
     > .uex-select-simple-content {
       flex: 1;
+    }
+
+    > uex-icon {
+      align-self: center;
     }
   }
 }

@@ -15,7 +15,7 @@ var webserver = require('gulp-webserver');
 var autoprefixer = require('gulp-autoprefixer');
 
 var jsSrc = ['src/core/**/*.js', 'src/components/*/*.js', '!src/components/*/*.spec.js'],
-	sassSrc = ['src/core/core.scss', 'src/components/*/*.scss'];
+	sassSrc = ['src/core/core.scss', 'src/core/sass/**/*.scss', 'src/components/*/*.scss'];
 
 function compileJs(dir) {
 	return gulp
