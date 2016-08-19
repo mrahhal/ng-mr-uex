@@ -3,11 +3,7 @@
   @return $multiplier * $font-size;
 }
 
-// variables
-@import "sass/variables.scss";
-
-// components
-@import "../components/*/*.scss";
+@import "imports.scss";
 
 body {
   margin: 0;
