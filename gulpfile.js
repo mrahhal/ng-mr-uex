@@ -12,6 +12,7 @@ var rename = require('gulp-rename');
 var watch = require('gulp-watch');
 var ejs = require("gulp-ejs");
 var webserver = require('gulp-webserver');
+var autoprefixer = require('gulp-autoprefixer');
 
 var jsSrc = ['src/core/**/*.js', 'src/components/*/*.js', '!src/components/*/*.spec.js'],
 	sassSrc = ['src/core/core.scss', 'src/components/*/*.scss'];
@@ -37,6 +38,7 @@ function compileCss(dir) {
 		.pipe(sassGlob())
 		.pipe(sass())
 		.pipe(concat('ng-mr-uex.css'))
+		.pipe(autoprefixer())
 		.pipe(gulp.dest(dir))
 		.pipe(cssmin())
 		.pipe(concat('ng-mr-uex.min.css'))
