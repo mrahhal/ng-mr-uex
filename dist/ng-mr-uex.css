@@ -13,7 +13,7 @@ uex-autocomplete {
     top: 100%;
     background: white;
     z-index: 100;
-    border: 1px solid rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 2px;
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15); }
     .uex-autocomplete > .uex-autocomplete-list > .uex-autocomplete-item {
@@ -22,6 +22,51 @@ uex-autocomplete {
       .uex-autocomplete > .uex-autocomplete-list > .uex-autocomplete-item.active {
         background: #3F51B5;
         color: white; }
+
+uex-checkbox {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  min-height: 20px; }
+  uex-checkbox ._uex-icon {
+    opacity: 0.8;
+    position: absolute;
+    -webkit-transition: .1s;
+    transition: .1s;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(0, 0, 0, 0.4);
+    border-radius: 2px; }
+  uex-checkbox.checked ._uex-icon {
+    background-color: #3F51B5;
+    border-color: #3F51B5; }
+    uex-checkbox.checked ._uex-icon:after {
+      -webkit-transform: rotate(45deg);
+              transform: rotate(45deg);
+      position: absolute;
+      left: 5px;
+      top: 0;
+      display: table;
+      width: 6.67px;
+      height: 13.33px;
+      border: 2px solid white;
+      border-top: 0;
+      border-left: 0;
+      content: ''; }
+  uex-checkbox ._uex-label {
+    display: inline-block;
+    position: relative;
+    margin-left: 25px; }
+    uex-checkbox ._uex-label > p {
+      margin-top: 5px;
+      color: #777;
+      font-size: 14px; }
+  uex-checkbox:hover ._uex-icon {
+    opacity: 1; }
+
+uex-checkbox[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed; }
 
 uex-icon {
   display: inline-block;
@@ -45,8 +90,12 @@ uex-icon[flexible] {
     width: 1em; }
 
 .uex-flexible-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center; }
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
 
 .uex-modal-t-confirm-content {
   font-size: 16px; }
@@ -55,9 +104,14 @@ uex-icon[flexible] {
   margin: -10px;
   margin-top: 10px;
   padding: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-flow: row nowrap;
-  justify-content: flex-end; }
+  -ms-flex-flow: row nowrap;
+      flex-flow: row nowrap;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
   .uex-modal-t-confirm-actions .yes-btn {
     margin-left: 5px; }
 
@@ -78,6 +132,7 @@ body.uex-modal-active {
   bottom: 0;
   left: 0;
   overflow-y: scroll;
+  -webkit-transition: opacity linear 0.1s;
   transition: opacity linear 0.1s;
   background: rgba(0, 0, 0, 0.4); }
   @media (max-width: 599px) {
@@ -93,11 +148,13 @@ body.uex-modal-active {
 .uex-modal.ng-enter {
   opacity: 0; }
   .uex-modal.ng-enter .uex-modal-container {
-    transform: translateY(-30px); }
+    -webkit-transform: translateY(-30px);
+            transform: translateY(-30px); }
   .uex-modal.ng-enter.ng-enter-active {
     opacity: 1; }
     .uex-modal.ng-enter.ng-enter-active .uex-modal-container {
-      transform: translateY(0); }
+      -webkit-transform: translateY(0);
+              transform: translateY(0); }
 
 .uex-modal.ng-leave.ng-leave-active {
   opacity: 0; }
@@ -109,7 +166,10 @@ body.uex-modal-active {
   margin: 20px auto;
   border-radius: 5px;
   overflow: hidden;
-  transition: transform ease-out 0.1s; }
+  -webkit-transition: -webkit-transform ease-out 0.1s;
+  transition: -webkit-transform ease-out 0.1s;
+  transition: transform ease-out 0.1s;
+  transition: transform ease-out 0.1s, -webkit-transform ease-out 0.1s; }
 
 .uex-modal-header {
   background: #eee;
@@ -148,12 +208,18 @@ body.uex-modal-active {
     margin: 0;
     border-radius: 0;
     box-shadow: none;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-flow: column nowrap; }
+    -ms-flex-flow: column nowrap;
+        flex-flow: column nowrap; }
   .uex-modal-content {
-    flex: 1; } }
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1; } }
 
 .uex-p-status, .uex-p-running, .uex-p-success, .uex-p-error {
+  -webkit-transition: opacity linear 0.1s;
   transition: opacity linear 0.1s; }
   .uex-p-status.ng-hide, .uex-p-running.ng-hide, .uex-p-success.ng-hide, .uex-p-error.ng-hide {
     opacity: 0; }
@@ -174,17 +240,22 @@ uex-pop {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.12);
   border-radius: 6px;
   z-index: 10001;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-flow: column nowrap;
+  -ms-flex-flow: column nowrap;
+      flex-flow: column nowrap;
   overflow: hidden; }
 
 .uex-pop.ng-enter {
+  -webkit-transition: opacity linear 0.1s;
   transition: opacity linear 0.1s;
   opacity: 0; }
   .uex-pop.ng-enter.ng-enter-active {
     opacity: 1; }
 
 .uex-pop.ng-leave {
+  -webkit-transition: opacity linear 0.1s;
   transition: opacity linear 0.1s;
   opacity: 1; }
   .uex-pop.ng-leave.ng-leave-active {
@@ -203,12 +274,16 @@ uex-pop {
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
-  flex: 1; }
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1; }
 
 .uex-poptip.poptip-nodelay.ng-enter {
+  -webkit-transition: none;
   transition: none; }
 
 .uex-poptip.poptip-nodelay.ng-leave {
+  -webkit-transition: none;
   transition: none; }
 
 uex-poptip {
@@ -221,11 +296,13 @@ uex-poptip {
   .uex-poptip strong {
     color: #fff; }
   .uex-poptip.ng-enter {
+    -webkit-transition: opacity linear .1s;
     transition: opacity linear .1s;
     opacity: 0; }
     .uex-poptip.ng-enter.ng-enter-active {
       opacity: 1; }
   .uex-poptip.ng-leave {
+    -webkit-transition: opacity linear .1s;
     transition: opacity linear .1s;
     opacity: 1; }
     .uex-poptip.ng-leave.ng-leave-active {
@@ -260,18 +337,74 @@ uex-poptip {
   border-left-color: black;
   right: -10px; }
 
+uex-radio-group {
+  display: block; }
+
+uex-radio {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  min-height: 20px; }
+  uex-radio ._uex-icon {
+    opacity: 0.8;
+    position: absolute;
+    -webkit-transition: .1s;
+    transition: .1s;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(0, 0, 0, 0.4);
+    border-radius: 50%; }
+  uex-radio ._uex-on {
+    background: #3F51B5;
+    -webkit-transition: -webkit-transform ease .1s;
+    transition: -webkit-transform ease .1s;
+    transition: transform ease .1s;
+    transition: transform ease .1s, -webkit-transform ease .1s;
+    -webkit-transform: scale(0);
+            transform: scale(0);
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%; }
+  uex-radio.checked ._uex-icon {
+    border-color: #3F51B5; }
+  uex-radio.checked ._uex-on {
+    -webkit-transform: scale(0.5);
+            transform: scale(0.5); }
+  uex-radio ._uex-label {
+    display: inline-block;
+    position: relative;
+    margin-left: 25px; }
+    uex-radio ._uex-label > p {
+      margin-top: 5px;
+      color: #777;
+      font-size: 14px; }
+  uex-radio:hover ._uex-icon {
+    opacity: 1; }
+
+uex-radio[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed; }
+
 uex-select {
   display: inline-block; }
 
 .uex-select {
   position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-flow: row nowrap;
-  align-items: center; }
+  -ms-flex-flow: row nowrap;
+      flex-flow: row nowrap;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
   .uex-select > .button {
     outline: none;
     background: none;
-    border: 1px solid rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.2);
     padding: 5px;
     cursor: pointer; }
     .uex-select > .button > uex-icon {
@@ -288,7 +421,7 @@ uex-select {
   width: 200px; }
   .uex-select-content > header {
     background-color: #f5f5f5;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     position: relative; }
     .uex-select-content > header > .header-text {
       font-size: 16px;
@@ -300,17 +433,21 @@ uex-select {
       margin-right: 5px; }
   .uex-select-content .uex-select-filters {
     background-color: #f5f5f5;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2); }
     .uex-select-content .uex-select-filters .uex-select-filter-container {
       padding: 5px;
+      display: -webkit-box;
+      display: -ms-flexbox;
       display: flex; }
       .uex-select-content .uex-select-filters .uex-select-filter-container > input {
         padding: 2px 4px;
-        flex: 1;
+        -webkit-box-flex: 1;
+            -ms-flex: 1;
+                flex: 1;
         outline: none;
-        border: 1px solid rgba(0, 0, 0, 0.15); }
+        border: 1px solid rgba(0, 0, 0, 0.2); }
         .uex-select-content .uex-select-filters .uex-select-filter-container > input:hover {
-          border-color: rgba(0, 0, 0, 0.3); }
+          border-color: rgba(0, 0, 0, 0.4); }
         .uex-select-content .uex-select-filters .uex-select-filter-container > input:active, .uex-select-content .uex-select-filters .uex-select-filter-container > input:focus {
           border-color: #3F51B5; }
   .uex-select-content .uex-select-loading {
@@ -319,12 +456,12 @@ uex-select {
   .uex-select-content .uex-select-no-items {
     padding: 5px;
     text-align: center;
-    color: #888;
+    color: #777;
     font-style: italic; }
   .uex-select-content .uex-selected {
     padding: 5px 10px;
     cursor: pointer;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2); }
     .uex-select-content .uex-selected .icon {
       width: 20px; }
     .uex-select-content .uex-selected:hover {
@@ -345,7 +482,7 @@ uex-select {
         background-color: #3F51B5;
         color: white; }
     .uex-select-content ul.options li:not(:last-of-type) {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2); }
   .uex-select-content .loading {
     text-align: center;
     padding: 10px 0; }
@@ -367,9 +504,16 @@ uex-select {
   display: block; }
 
 .uex-pop.uex-select-pop uex-select-simple {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex; }
   .uex-pop.uex-select-pop uex-select-simple > .uex-select-simple-content {
-    flex: 1; }
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1; }
+  .uex-pop.uex-select-pop uex-select-simple > uex-icon {
+    -ms-flex-item-align: center;
+        align-self: center; }
 
 .tooltipped {
   position: relative; }
@@ -456,13 +600,15 @@ uex-select {
   margin-right: -15px; }
 
 .tooltipped-s:after, .tooltipped-n:after {
-  transform: translate(50%, 0); }
+  -webkit-transform: translate(50%, 0);
+          transform: translate(50%, 0); }
 
 .tooltipped-w:after {
   right: 100%;
   bottom: 50%;
   margin-right: 5px;
-  transform: translate(0, 50%); }
+  -webkit-transform: translate(0, 50%);
+          transform: translate(0, 50%); }
 
 .tooltipped-w:before {
   top: 50%;
@@ -475,7 +621,8 @@ uex-select {
   bottom: 50%;
   left: 100%;
   margin-left: 5px;
-  transform: translate(0, 50%); }
+  -webkit-transform: translate(0, 50%);
+          transform: translate(0, 50%); }
 
 .tooltipped-e:before {
   top: 50%;
@@ -497,7 +644,8 @@ uex-select {
 .tooltipped-multiline.tooltipped-s:after, .tooltipped-multiline.tooltipped-n:after {
   right: auto;
   left: 50%;
-  transform: translate(-50%, 0); }
+  -webkit-transform: translate(-50%, 0);
+          transform: translate(-50%, 0); }
 
 .tooltipped-multiline.tooltipped-w:after, .tooltipped-multiline.tooltipped-e:after {
   right: 100%; }
@@ -514,6 +662,10 @@ uex-select {
 
 body {
   margin: 0; }
+
+*:after,
+*:before {
+  box-sizing: border-box; }
 
 .right {
   float: right !important; }
@@ -541,3 +693,10 @@ body {
   border-right-color: transparent;
   border-bottom-color: transparent;
   border-left-color: transparent; }
+
+.unselectable, uex-checkbox, uex-radio {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
