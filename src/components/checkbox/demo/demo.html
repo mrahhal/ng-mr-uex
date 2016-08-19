@@ -1,0 +1,32 @@
+<div ng-controller="uexCheckboxCtrl as $ctrl">
+  <section>
+    <header>
+      Basic
+    </header>
+
+    <div>
+      <uex-checkbox ng-model="$ctrl.check1">Check 1</uex-checkbox>
+    </div>
+    <div>
+      <uex-checkbox ng-model="$ctrl.check2">Check 2</uex-checkbox>
+    </div>
+    <div>
+      <uex-checkbox ng-model="$ctrl.check2" ng-disabled="true">Check 2 - Disabled</uex-checkbox>
+    </div>
+  </section>
+
+  <section>
+    <header>
+      Text
+    </header>
+
+    <div>
+      <uex-checkbox ng-model="$ctrl.check1">
+        Check 1
+        <p>
+          This is a collection of services and components for angular.
+        </p>
+      </uex-checkbox>
+    </div>
+  </section>
+</div>

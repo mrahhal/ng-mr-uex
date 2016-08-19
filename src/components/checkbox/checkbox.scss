@@ -1,0 +1,62 @@
+uex-checkbox {
+  @extend .unselectable;
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  min-height: 20px;
+
+  ._uex-icon {
+    opacity: 0.8;
+    position: absolute;
+    transition: .1s;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
+  }
+
+  &.checked {
+    ._uex-icon {
+      $ccc: $brand-primary;
+      background-color: $ccc;
+      border-color: $ccc;
+
+      &:after {
+        transform: rotate(45deg);
+        position: absolute;
+        left: 5px;
+        top: 0;
+        display: table;
+        width: 6.67px;
+        height: 13.33px;
+        border: 2px solid white;
+        border-top: 0;
+        border-left: 0;
+        content: '';
+      }
+    }
+  }
+
+  ._uex-label {
+    display: inline-block;
+    position: relative;
+    margin-left: 25px;
+
+    > p {
+      margin-top: 5px;
+      color: #888;
+      font-size: 14px
+    }
+  }
+
+  &:hover {
+    ._uex-icon {
+      opacity: 1;
+    }
+  }
+}
+
+uex-checkbox[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
