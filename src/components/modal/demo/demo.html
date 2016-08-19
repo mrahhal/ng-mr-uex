@@ -34,6 +34,9 @@
     <h1>foo</h1>
     <h1>foo</h1>
     <uex-modal delegate="vm.c1" title="Custom Modal 1" class="modal-c-1">
+      <form onsubmit="console.log('asd'); return false;">
+        <input type="submit" value="Submit" />
+      </form>
       Foo
       <button type="button" uex-pop-container uex-pop-target>
         GO

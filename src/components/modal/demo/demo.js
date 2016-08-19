@@ -7,9 +7,10 @@
 		.module('app')
 		.controller('modalCtrl', modalCtrl)
 		.component('modalComp', {
-			template: '<button type="button" ng-click="$ctrl.go()">Go</button><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1>',
+			template: '<button type="button" ng-click="$ctrl.go()">Go</button><button type="button" ng-click="$ctrl.cancel()">Cancel</button><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1>',
 			bindings: {
-				$modal: '<'
+				modal: '<',
+				modalCtrl: '<?'
 			},
 			controller: function ($scope, uexModal) {
 				this.go = () => {
@@ -17,8 +18,12 @@
 					uexModal({
 						scope: $scope,
 						title: '' + c + '.',
-						template: '<modal-comp $modal="$modal"></modal-comp>'
+						template: '<modal-comp modal="$modal"></modal-comp>'
 					});
+				};
+
+				this.cancel = () => {
+					this.modal.dismiss();
 				};
 			}
 		});
@@ -28,7 +33,10 @@
 			uexModal({
 				scope: $scope,
 				classes: 'modal-foo',
-				template: '<modal-comp modal-instance="modalInstance"></modal-comp>'
+				component: 'modal-comp',
+				locals: {
+					modalCtrl: this
+				}
 			});
 		};
 

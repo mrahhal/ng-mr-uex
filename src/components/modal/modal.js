@@ -5,7 +5,7 @@
 		.module('mr.uex')
 		.factory('uexModal', modal);
 
-	function modal($rootScope, $compile, $controller, $animate, $templateRequest, $q) {
+	function modal($rootScope, $compile, $controller, $animate, $templateRequest, $q, uexUtil) {
 		var instances = [],
 			$body;
 
@@ -42,19 +42,38 @@
 			options.class ? ' ' + options.class : '';
 
 		var getModalContainerTemplate = options =>
-			'<div class="uex-modal' + getWrapperClasses(options) +'" ng-click="!$event.isDefaultPrevented() && $modal.dismiss()">\
-				<div class="uex-modal-container" ng-click="$event.preventDefault()">\
+			'<div class="uex-modal' + getWrapperClasses(options) +'" ng-click="_tryDismiss($event)">\
+				<div class="uex-modal-container">\
 					<div class="uex-modal-header">\
 						<button type="button" class="uex-modal-close" ng-click="$modal.dismiss()">\
 							<uex-icon icon="close"></uex-icon>\
 						</button>\
-						<h2>{{::title}}</h2>\
+						<h2>{{::$title}}</h2>\
 					</div>\
 					<div class="uex-modal-content"></div>\
 				</div>\
 			</div>';
 
-		function getTemplatePromise(options) {
+		function templateForComponent(name, resolve) {
+			var t = '<' + name;
+			if (resolve) {
+				for (var p in resolve) {
+					var pName = uexUtil.camelToDash(p);
+					t += ' ' + pName + '="::$resolve.' + p + '"';
+				}
+			}
+			t += '></' + name + '>';
+			return t;
+		}
+
+		function getTemplatePromise(options, resolve) {
+			if (options.component) {
+				var componentName = uexUtil.camelToDash(options.component);
+				return $q.when(templateForComponent(
+					componentName,
+					resolve));
+			}
+
 			return options.template ? $q.when(options.template) :
 				$templateRequest(angular.isFunction(options.templateUrl) ?
 					options.templateUrl() : options.templateUrl);
@@ -63,6 +82,7 @@
 		// options:
 		//   scope
 		//   template - templateUrl
+		//   component
 		//   title
 		//   class
 		//   locals
@@ -108,15 +128,25 @@
 			};
 			instances.push(instance);
 
-			// Support options.component?
-			var templatePromise = getTemplatePromise(options);
+			var resolve = angular.extend(
+				{},
+				options.locals || {},
+				{ modal: instance });
+			var templatePromise = getTemplatePromise(options, resolve);
+
 			templatePromise.then(template => {
 				$element.find('.uex-modal-content').html(template);
 
 				$compile($element)(angular.extend(scope, {
-					title: options.title || 'Modal',
-					$modal: instance
-				}, options.locals || {}));
+					$title: options.title || 'Modal',
+					$modal: instance,
+					$resolve: resolve,
+					_tryDismiss: event => {
+						if ($(event.target).is('.uex-modal')) {
+							scope.$modal.dismiss();
+						}
+					}
+				}));
 
 				if (instances.length !== 1) {
 					for (var i = 0; i < instances.length - 1; i++) {
