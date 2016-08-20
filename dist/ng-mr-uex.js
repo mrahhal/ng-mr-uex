@@ -902,10 +902,15 @@ angular
 				}
 			};
 
-			var instance = {
+			var deferred = $q.defer(),
+				instance = {
 				_delegates: [],
 				scope: scope,
 				element: $element,
+				resolve: v => {
+					deferred.resolve(v);
+					instance.dismiss();
+				},
 				dismiss: () => {
 					var i = instances.indexOf(instance);
 					instances.splice(i, 1);
@@ -917,16 +922,18 @@ angular
 							destroyAndClean(instance);
 						});
 					} else {
-						instances[instances.length - 1].active(true);
+						instances[instances.length - 1]._active(true);
 						destroyAndClean(instance);
 					}
-				},
-				active: value => {
-					if (value) instance.element.removeClass('inactive');
-					else instance.element.addClass('inactive');
+
+					deferred.reject();
 				},
 				onDismiss: action => {
 					instance._delegates.push(action);
+				},
+				_active: value => {
+					if (value) instance.element.removeClass('inactive');
+					else instance.element.addClass('inactive');
 				}
 			};
 			instances.push(instance);
@@ -953,7 +960,7 @@ angular
 
 				if (instances.length !== 1) {
 					for (var i = 0; i < instances.length - 1; i++) {
-						instances[i].active(false);
+						instances[i]._active(false);
 					}
 				}
 
@@ -963,7 +970,13 @@ angular
 				destroyAndClean(instance);
 			});
 
-			return instance;
+			return {
+				_instance: instance,
+				promise: deferred.promise,
+				scope: instance.scope,
+				element: instance.$element,
+				dismiss: instance.dismiss
+			};
 		};
 
 		func.confirm = () => {
@@ -978,8 +991,7 @@ angular
 
 			var ret = {
 				open: parentScope => {
-					var deferred = $q.defer(),
-						scope = (parentScope || $rootScope).$new();
+					var scope = (parentScope || $rootScope).$new();
 					var instance = func({
 						title: options.title,
 						scope: angular.extend(scope, {
@@ -987,9 +999,8 @@ angular
 							yesText: options.yesText,
 							noText: options.noText,
 							info: options.info,
-							resolve: () => {
-								deferred.resolve();
-								instance.dismiss();
+							resolve: v => {
+								instance._instance.resolve(v);
 							}
 						}),
 						template:
@@ -1003,11 +1014,10 @@ angular
 								</div>\
 							</div>'
 					});
-					instance.onDismiss(() => {
+					instance.promise.then(null, () => {
 						scope.$destroy();
-						deferred.reject();
 					});
-					return deferred.promise;
+					return instance.promise;
 				},
 				title: v => {
 					options.title = v;
