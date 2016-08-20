@@ -21,7 +21,7 @@
 
 				this.delegate = {
 					open: options => {
-						uexModal(angular.extend({
+						return uexModal(angular.extend({
 							scope: $scope,
 							title: title,
 							class: classes,
