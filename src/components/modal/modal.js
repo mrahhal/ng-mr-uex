@@ -88,6 +88,7 @@
 		//   locals
 		//
 		var func = options => {
+			options = angular.isString(options) ? { component: options } : options;
 			var scope = (options.scope || $rootScope).$new();
 			var $element = $(getModalContainerTemplate(options));
 
