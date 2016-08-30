@@ -31,15 +31,11 @@
         })<% components.forEach(function(component){ %>
         .state('components.<%= component.name %>', {
           url: '/<%= component.name %>',
-          templateUrl: 'component-<%= component.name %>',
+          component: '<%= component.name %>Page',
           data: {
             name: '<%= component.name %>'
           }
         })<% }); %>;
-      }).run(function ($templateCache) {
-        <% components.forEach(function(component){ %>
-        $templateCache.put('component-<%= component.name %>', '<%- component.html %>');
-        <% }); %>
       });
     </script>
 

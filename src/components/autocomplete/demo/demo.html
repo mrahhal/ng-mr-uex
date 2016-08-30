@@ -1,8 +1,8 @@
-<div id="component-autocomplete-page" ng-controller="uexAutocompleteCtrl as vm">
+<div id="component-autocomplete-page">
   <section>
     <header>Basic</header>
     <div>
-      <uex-autocomplete exp="some in items as some.name" ng-model="vm.selected">
+      <uex-autocomplete exp="some in $ctrl.getItems(q) as some.name" ng-model="$ctrl.selected">
         <div class="someto">
           {{some.name}}
         </div>

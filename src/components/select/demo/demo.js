@@ -1,7 +1,12 @@
 (function () {
 	'use strict';
 
-	angular.module('app').controller('uexSelectCtrl', function ($scope, $timeout) {
+	angular.module('app').component('selectPage', {
+		templateUrl: '/src/components/select/demo/demo.html',
+		controller: $ctrl
+	});
+
+	function $ctrl($scope, $timeout) {
 		this.items = [{
 			name: 'item1'
 		}, {
@@ -19,5 +24,5 @@
 				return items;
 			}, 2000);
 		};
-	});
+	}
 })();

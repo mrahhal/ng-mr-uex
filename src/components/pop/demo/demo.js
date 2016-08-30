@@ -1,11 +1,12 @@
 (function () {
 	'use strict';
 
-	angular
-		.module('app')
-		.controller('popCtrl', popCtrl);
+	angular.module('app').component('popPage', {
+		templateUrl: '/src/components/pop/demo/demo.html',
+		controller: $ctrl
+	});
 
-	function popCtrl($scope) {
+	function $ctrl($scope) {
 		this.delete = v => {
 			this.m1.open({
 				locals: {

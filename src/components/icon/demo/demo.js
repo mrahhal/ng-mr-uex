@@ -1,6 +1,11 @@
 (function () {
 	'use strict';
 
+	angular.module('app').component('iconPage', {
+		templateUrl: '/src/components/icon/demo/demo.html',
+		controller: $ctrl
+	});
+
 	function process(icons) {
 		var ret = [];
 		for (var i = 0; i < icons.length; i++) {
@@ -13,13 +18,13 @@
 		return ret;
 	}
 
-	angular.module('app').controller('iconCtrl', function ($scope, uexIcons) {
-		$scope.icons = process(uexIcons);
+	function $ctrl($scope, uexIcons) {
+		this.icons = process(uexIcons);
 
-		new Clipboard('.icons uex-icon', {  // jshint ignore:line
-			text: function (trigger) {
+		new Clipboard('.icons uex-icon', { // jshint ignore:line
+			text: trigger => {
 				return trigger.getAttribute('data-clipboard-text');
 			}
 		});
-	});
+	}
 })();

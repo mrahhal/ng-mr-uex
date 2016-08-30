@@ -1,11 +1,12 @@
 (function () {
 	'use strict';
 
-	angular
-		.module('app')
-		.controller('pCtrl', pCtrl);
+	angular.module('app').component('pPage', {
+		templateUrl: '/src/components/p/demo/demo.html',
+		controller: $ctrl
+	});
 
-	function pCtrl($scope, $q, $timeout) {
+	function $ctrl($scope, $q, $timeout) {
 		var defer = shouldError => {
 			var deferred = $q.defer();
 			$timeout(() => {
@@ -18,14 +19,14 @@
 			return deferred.promise;
 		};
 
-		$scope.check4 = false;
+		this.check4 = false;
 
-		$scope.submit1 = () => $timeout(2000);
+		this.submit1 = () => $timeout(2000);
 
-		$scope.submit2 = () => defer(this.shouldError);
+		this.submit2 = () => defer(this.shouldError);
 
-		$scope.submit3 = () => defer(this.shouldError2);
+		this.submit3 = () => defer(this.shouldError2);
 
-		$scope.submit4 = () => defer().then(() => $scope.check4 = !$scope.check4);
+		this.submit4 = () => defer().then(() => this.check4 = !this.check4);
 	}
 })();

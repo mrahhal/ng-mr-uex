@@ -1,7 +1,7 @@
-<div id="component-p-page" ng-controller="pCtrl as vm">
+<div id="component-p-page">
   <section>
     <header>Basic</header>
-    <form uex-p="submit1()">
+    <form uex-p="$ctrl.submit1()">
       <div uex-p-running>
         Running...
       </div>
@@ -12,7 +12,7 @@
   </section>
   <section>
     <header>Options</header>
-    <form uex-p="submit2()" uex-p-opts="{ successInterval: 2000, errorInterval: 1000 }">
+    <form uex-p="$ctrl.submit2()" uex-p-opts="{ successInterval: 2000, errorInterval: 1000 }">
       <div uex-p-running>
         Running...
       </div>
@@ -24,7 +24,7 @@
       </div>
       <uex-p-status success="Success!!"></uex-p-status>
       <div class="form-group">
-        <input type="checkbox" name="cb" ng-model="vm.shouldError"> Should error
+        <input type="checkbox" name="cb" ng-model="$ctrl.shouldError"> Should error
       </div>
       <div class="form-group">
         <input type="submit" name="name" value="Submit" uex-p-btn>
@@ -33,7 +33,7 @@
   </section>
   <section>
     <header>uex-p-btn with one time</header>
-    <form uex-p="submit3()">
+    <form uex-p="$ctrl.submit3()">
       <div uex-p-running>
         Running...
       </div>
@@ -44,7 +44,7 @@
         Error!!
       </div>
       <div class="form-group">
-        <input type="checkbox" name="cb" ng-model="vm.shouldError2"> Should error
+        <input type="checkbox" name="cb" ng-model="$ctrl.shouldError2"> Should error
       </div>
       <div class="form-group">
         <input type="submit" name="name" value="Submit" uex-p-btn="onetime">
@@ -53,7 +53,7 @@
   </section>
   <section>
     <header>uex-p-btn with one time</header>
-    <div uex-p="submit4()">
+    <div uex-p="$ctrl.submit4()">
       <div uex-p-running>
         Running...
       </div>
@@ -63,7 +63,7 @@
       <div uex-p-error>
         Error!!
       </div>
-      <uex-checkbox ng-model="check4" uex-p-src>
+      <uex-checkbox ng-model="$ctrl.check4" uex-p-src>
         Some checkbox
       </uex-checkbox>
     </div>

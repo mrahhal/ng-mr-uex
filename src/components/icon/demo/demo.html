@@ -1,8 +1,8 @@
 <div id="component-icon-page">
-  <section ng-controller="iconCtrl">
+  <section>
     <header>Icons</header>
     <div class="icons">
-      <uex-icon ng-repeat="icon in ::icons"
+      <uex-icon ng-repeat="icon in ::$ctrl.icons"
                 icon="{{::icon.name}}"
                 uex-poptip-container uex-poptip-target
                 data-clipboard-text="{{::icon.name}}">

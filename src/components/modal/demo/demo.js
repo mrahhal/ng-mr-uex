@@ -1,34 +1,12 @@
 (function () {
 	'use strict';
 
-	var c = 0;
+	angular.module('app').component('modalPage', {
+		templateUrl: '/src/components/modal/demo/demo.html',
+		controller: $ctrl
+	});
 
-	angular
-		.module('app')
-		.controller('modalCtrl', modalCtrl)
-		.component('modalComp', {
-			template: '<button type="button" ng-click="$ctrl.go()">Go</button><button type="button" ng-click="$ctrl.cancel()">Cancel</button><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1>',
-			bindings: {
-				modal: '<',
-				modalCtrl: '<?'
-			},
-			controller: function ($scope, uexModal) {
-				this.go = () => {
-					c++;
-					uexModal({
-						scope: $scope,
-						title: '' + c + '.',
-						template: '<modal-comp modal="$modal"></modal-comp>'
-					});
-				};
-
-				this.cancel = () => {
-					this.modal.dismiss();
-				};
-			}
-		});
-
-	function modalCtrl($scope, $q, $timeout, uexModal) {
+	function $ctrl($scope, $q, $timeout, uexModal) {
 		this.open1 = () => {
 			uexModal({
 				scope: $scope,
@@ -54,4 +32,30 @@
 				.then(() => console.log('ok'), () => console.log('no'));
 		};
 	}
+
+	var c = 0;
+
+	angular
+		.module('app')
+		.component('modalComp', {
+			template: '<button type="button" ng-click="$ctrl.go()">Go</button><button type="button" ng-click="$ctrl.cancel()">Cancel</button><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1><h1>Here you go</h1>',
+			bindings: {
+				modal: '<',
+				modalCtrl: '<?'
+			},
+			controller: function ($scope, uexModal) {
+				this.go = () => {
+					c++;
+					uexModal({
+						scope: $scope,
+						title: '' + c + '.',
+						template: '<modal-comp modal="$modal"></modal-comp>'
+					});
+				};
+
+				this.cancel = () => {
+					this.modal.dismiss();
+				};
+			}
+		});
 })();
