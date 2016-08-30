@@ -64,6 +64,10 @@
 			};
 
 			this.run = e => {
+				if (e.isDefaultPrevented()) {
+					return;
+				}
+
 				e.preventDefault();
 				var p = fn($scope, getLocals(arguments));
 				if (p && p.finally) {
@@ -97,6 +101,10 @@
 			link: function ($scope, $element, $attrs, ctrl) {
 				var event = determineEvent($element, $attrs.uexPSrc);
 				$element.on(event, e => {
+					if ($element.attr('disabled')) {
+						return;
+					}
+
 					$scope.$apply(ctrl.run(e));
 				});
 			}
