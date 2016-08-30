@@ -99,7 +99,7 @@ gulp.task('build:demo', function () {
 
 	gulp.src(['src/demo/app.js', 'src/components/*/demo/demo.js'])
 		.pipe(concat('demo.js'))
-		.pipe(insert.wrap('(function (window, angular, $, undefined) {\n', '\n})(window, window.angular, window.jQuery);'))
+		.pipe(babel())
 		.pipe(gulp.dest('demo/'));
 
 	gulp.src('src/components/*/demo/demo.html')
