@@ -39,7 +39,7 @@
 		$scope.$watch(() => this.uexRadioGroupCtrl.model, render);
 
 		var clickListener = e => {
-			if ($element.attr('disabled')) {
+			if (e.isDefaultPrevented() || $element.attr('disabled')) {
 				return;
 			}
 
