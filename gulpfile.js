@@ -93,8 +93,8 @@ gulp.task('build:demo', function () {
 
 	gulp.src(['src/demo/layout.scss', 'src/components/*/demo/demo.scss'])
 		.pipe(sassGlob())
-		.pipe(sass())
 		.pipe(concat('demo.css'))
+		.pipe(sass())
 		.pipe(gulp.dest('demo/'));
 
 	gulp.src(['src/demo/app.js', 'src/components/*/demo/demo.js'])
