@@ -239,7 +239,7 @@ angular
 		$scope.$watch(() => this.model, render);
 
 		var clickListener = e => {
-			if ($element.attr('disabled')) {
+			if (e.isDefaultPrevented() || $element.attr('disabled')) {
 				return;
 			}
 
@@ -877,7 +877,7 @@ angular
 					resolve));
 			}
 
-			return options.template ? $q.when(options.template) :
+			return options.template ? $q.when(options.template.trim()) :
 				$templateRequest(angular.isFunction(options.templateUrl) ?
 					options.templateUrl() : options.templateUrl);
 		}
@@ -1171,7 +1171,12 @@ angular
 				}, interval);
 			};
 
-			this.run = () => {
+			this.run = e => {
+				if (e.isDefaultPrevented()) {
+					return;
+				}
+
+				e.preventDefault();
 				var p = fn($scope, getLocals(arguments));
 				if (p && p.finally) {
 					promise = p;
@@ -1204,6 +1209,10 @@ angular
 			link: function ($scope, $element, $attrs, ctrl) {
 				var event = determineEvent($element, $attrs.uexPSrc);
 				$element.on(event, e => {
+					if ($element.attr('disabled')) {
+						return;
+					}
+
 					$scope.$apply(ctrl.run(e));
 				});
 			}
@@ -1788,7 +1797,7 @@ angular
 		$scope.$watch(() => this.uexRadioGroupCtrl.model, render);
 
 		var clickListener = e => {
-			if ($element.attr('disabled')) {
+			if (e.isDefaultPrevented() || $element.attr('disabled')) {
 				return;
 			}
 
