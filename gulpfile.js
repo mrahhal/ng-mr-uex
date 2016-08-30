@@ -76,7 +76,7 @@ gulp.task('test', ['build'], function () {
 gulp.task('default', ['build', 'test']);
 
 gulp.task('webserver', function () {
-	watch(['src/demo/*', 'src/components/*/demo/*'], function () {
+	watch(['src/demo/*', 'src/components/*/demo/*', 'src/components/**/*.scss'], function () {
 		gulp.start('build:demo');
 	});
 	gulp.src('.')
