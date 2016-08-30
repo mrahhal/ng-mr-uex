@@ -1,3 +1,26 @@
+@mixin uex-poptip-color($bg, $color: white) {
+  .uex-poptip-content {
+    background: $bg;
+    color: $color;
+  }
+
+  &.uex-poptip-p-top .uex-poptip-arrow {
+    border-top-color: $bg;
+  }
+
+  &.uex-poptip-p-right .uex-poptip-arrow {
+    border-right-color: $bg;
+  }
+
+  &.uex-poptip-p-bottom .uex-poptip-arrow {
+    border-bottom-color: $bg;
+  }
+
+  &.uex-poptip-p-left .uex-poptip-arrow {
+    border-left-color: $bg;
+  }
+}
+
 uex-poptip {
   display: none;
 }
