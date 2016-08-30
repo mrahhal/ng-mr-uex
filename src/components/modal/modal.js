@@ -74,7 +74,7 @@
 					resolve));
 			}
 
-			return options.template ? $q.when(options.template) :
+			return options.template ? $q.when(options.template.trim()) :
 				$templateRequest(angular.isFunction(options.templateUrl) ?
 					options.templateUrl() : options.templateUrl);
 		}
