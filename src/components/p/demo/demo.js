@@ -18,10 +18,14 @@
 			return deferred.promise;
 		};
 
+		$scope.check4 = false;
+
 		$scope.submit1 = () => $timeout(2000);
 
 		$scope.submit2 = () => defer(this.shouldError);
 
 		$scope.submit3 = () => defer(this.shouldError2);
+
+		$scope.submit4 = () => defer().then(() => $scope.check4 = !$scope.check4);
 	}
 })();

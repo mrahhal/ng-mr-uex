@@ -63,7 +63,8 @@
 				}, interval);
 			};
 
-			this.run = () => {
+			this.run = e => {
+				e.preventDefault();
 				var p = fn($scope, getLocals(arguments));
 				if (p && p.finally) {
 					promise = p;
