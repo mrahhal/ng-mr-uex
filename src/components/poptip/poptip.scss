@@ -84,3 +84,13 @@ uex-poptip {
   border-left-color: black;
   right: -10px;
 }
+
+.uex-poptip.poptip-noanimate {
+  &.ng-enter {
+    transition: none;
+  }
+
+  &.ng-leave {
+    transition: none;
+  }
+}
