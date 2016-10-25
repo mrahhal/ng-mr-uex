@@ -247,7 +247,7 @@ angular
 				var viewValue = !this.model;
 				this.ngModelCtrl.$setViewValue(viewValue);
 			});
-		}
+		};
 
 		this.$postLink = () => {
 			$element.on('click', clickListener);
@@ -1910,7 +1910,7 @@ angular
 			scope: true,
 			bindToController: {
 				exp: '@',
-				title: '@',
+				originalTitle: '@title',
 				header: '@',
 				class: '@'
 			},
@@ -1923,7 +1923,7 @@ angular
 				validate($attrs);
 
 				var scopes = [],
-					originalTitle = this.title,
+					originalTitle = this.originalTitle,
 					options = parse(this.exp),
 					keyName = options.keyName,
 					asyncMode = this.asyncMode = options.asyncMode,
@@ -1945,6 +1945,7 @@ angular
 					$element.attr('title', null);
 				}
 
+				this.title = this.originalTitle;
 				this.selected = null;
 
 				this.$populateScope = scope => {
@@ -2003,7 +2004,7 @@ angular
 				};
 
 				if (!this.header) {
-					this.header = angular.copy(this.title);
+					this.header = angular.copy(this.originalTitle);
 				}
 
 				var createPopTemplate = () => {
