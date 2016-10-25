@@ -24,5 +24,16 @@
 				return items;
 			}, 2000);
 		};
+
+		this.items4 = [{
+			name: 'item1'
+		}, {
+			name: 'item2'
+		}];
+		this.loading = true;
+		$timeout(() => {
+			this.selected4 = this.items4[0];
+			this.loading = false;
+		}, 100);
 	}
 })();

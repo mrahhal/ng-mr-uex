@@ -76,7 +76,7 @@
 			scope: true,
 			bindToController: {
 				exp: '@',
-				title: '@',
+				originalTitle: '@title',
 				header: '@',
 				class: '@'
 			},
@@ -89,7 +89,7 @@
 				validate($attrs);
 
 				var scopes = [],
-					originalTitle = this.title,
+					originalTitle = this.originalTitle,
 					options = parse(this.exp),
 					keyName = options.keyName,
 					asyncMode = this.asyncMode = options.asyncMode,
@@ -111,6 +111,7 @@
 					$element.attr('title', null);
 				}
 
+				this.title = this.originalTitle;
 				this.selected = null;
 
 				this.$populateScope = scope => {
@@ -169,7 +170,7 @@
 				};
 
 				if (!this.header) {
-					this.header = angular.copy(this.title);
+					this.header = angular.copy(this.originalTitle);
 				}
 
 				var createPopTemplate = () => {

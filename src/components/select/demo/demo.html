@@ -25,4 +25,10 @@
       <uex-select-simple>{{item}}</uex-select-simple>
     </uex-select>
   </section>
+  <section ng-if="!$ctrl.loading">
+    <header>Simple test</header>
+    <uex-select exp="item in $ctrl.items4 as item.name" ng-model="$ctrl.selected4" title="Selected">
+      <uex-select-simple>{{item.name}}</uex-select-simple>
+    </uex-select>
+  </section>
 </div>
