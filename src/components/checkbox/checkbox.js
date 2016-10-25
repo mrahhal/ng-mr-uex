@@ -35,7 +35,7 @@
 				var viewValue = !this.model;
 				this.ngModelCtrl.$setViewValue(viewValue);
 			});
-		}
+		};
 
 		this.$postLink = () => {
 			$element.on('click', clickListener);
