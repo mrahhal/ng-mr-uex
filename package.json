@@ -1,6 +1,6 @@
 {
   "name": "ng-mr-uex",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Contains a collection of components for angularjs.",
   "main": "dist/ng-mr-uex.js",
   "author": "Mohammad Rahhal <m.r992@hotmail.com>",
