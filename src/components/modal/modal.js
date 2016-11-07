@@ -109,7 +109,10 @@
 					deferred.resolve(v);
 					instance.dismiss();
 				},
-				dismiss: () => {
+				reject: reason => {
+					instance.dismiss(reason);
+				},
+				dismiss: reason => {
 					var i = instances.indexOf(instance);
 					instances.splice(i, 1);
 					var leaving = $animate.leave($element);
@@ -124,7 +127,7 @@
 						destroyAndClean(instance);
 					}
 
-					deferred.reject();
+					deferred.reject(reason);
 				},
 				onDismiss: action => {
 					instance._delegates.push(action);

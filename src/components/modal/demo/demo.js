@@ -50,11 +50,11 @@
 						scope: $scope,
 						title: '' + c + '.',
 						template: '<modal-comp modal="$modal"></modal-comp>'
-					});
+					}).promise.then(null, reason => console.log(reason));
 				};
 
 				this.cancel = () => {
-					this.modal.dismiss();
+					this.modal.reject('rejected because');
 				};
 			}
 		});
