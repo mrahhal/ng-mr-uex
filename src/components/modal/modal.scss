@@ -9,6 +9,32 @@ body.uex-modal-active {
   }
 }
 
+.uex-modal-bd {
+  z-index: 10000;
+  background: rgba(0,0,0,0.4);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0,0,0,0.4);
+  transition: opacity linear 0.1s;
+
+  &.ng-enter {
+    opacity: 0;
+
+    &.ng-enter-active {
+      opacity: 1;
+    }
+  }
+
+  &.ng-leave {
+    &.ng-leave-active {
+      opacity: 0;
+    }
+  }
+}
+
 .uex-modal {
   z-index: 10001;
   position: fixed;
@@ -18,7 +44,6 @@ body.uex-modal-active {
   left: 0;
   overflow-y: scroll;
   transition: opacity linear 0.1s;
-  background: rgba(0,0,0,0.4);
   @media (max-width: $layout-bp-xp-max) {
     overflow: hidden;
   }

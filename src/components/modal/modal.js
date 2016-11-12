@@ -7,7 +7,8 @@
 
 	function modal($rootScope, $compile, $controller, $animate, $templateRequest, $q, uexUtil) {
 		var instances = [],
-			$body;
+			$body,
+			$bd = angular.element('<div class="uex-modal-bd" />');
 
 		function listenToEvents() {
 			$body.on('keydown', e => {
@@ -128,6 +129,7 @@
 
 					if (instances.length === 0) {
 						leaving.then(() => {
+							$animate.leave($bd);
 							$body.removeClass('uex-modal-active');
 							destroyAndClean(instance);
 						});
@@ -175,7 +177,13 @@
 				}
 
 				$body.addClass('uex-modal-active');
-				$animate.enter($element, $body, $body.children().last());
+				var bdEntering;
+				if (instances.length === 1) {
+					bdEntering = $animate.enter($bd, $body, $body.children().last());
+				}
+				(bdEntering || $q.when()).then(() => {
+					$animate.enter($element, $body, $body.children().last());
+				});
 			}, () => {
 				destroyAndClean(instance);
 			});
