@@ -14,10 +14,8 @@
 					source = parts[0],
 					dest = parts[1];
 
-				$scope.$watch(function () {
-					return $scope.$eval(source);
-				}, function (value) {
-					$scope[dest] = value;
+				$scope.$watch(() => $scope.$eval(source), (n, o) => {
+					$scope[dest] = n;
 				});
 			}
 		};

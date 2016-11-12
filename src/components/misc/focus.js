@@ -9,10 +9,8 @@
 		return {
 			restrict: 'A',
 			link: function ($scope, $element, $attrs) {
-				$scope.$on('uex.focus', function () {
-					$timeout(function () {
-						$element.focus();
-					});
+				$scope.$on('uex.focus', () => {
+					$timeout($element.focus);
 				});
 			}
 		};
