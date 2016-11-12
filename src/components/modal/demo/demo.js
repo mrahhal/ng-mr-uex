@@ -11,7 +11,7 @@
 			uexModal({
 				scope: $scope,
 				classes: 'modal-foo',
-				component: 'modal-comp',
+				component: 'modalComp',
 				locals: {
 					modalCtrl: this
 				}
@@ -44,6 +44,8 @@
 				modalCtrl: '<?'
 			},
 			controller: function ($scope, uexModal) {
+				this.modal.title('some');
+
 				this.go = () => {
 					c++;
 					uexModal({

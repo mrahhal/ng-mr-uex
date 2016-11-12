@@ -48,7 +48,7 @@
 						<button type="button" class="uex-modal-close" ng-click="$modal.dismiss()">\
 							<uex-icon icon="close"></uex-icon>\
 						</button>\
-						<h2>{{::$title}}</h2>\
+						<h2>{{$title}}</h2>\
 					</div>\
 					<div class="uex-modal-content"></div>\
 				</div>\
@@ -105,6 +105,9 @@
 				_delegates: [],
 				scope: scope,
 				element: $element,
+				title: v => {
+					scope.$title = v;
+				},
 				resolve: v => {
 					deferred.resolve(v);
 					instance.dismiss();
