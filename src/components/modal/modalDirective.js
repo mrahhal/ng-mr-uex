@@ -16,7 +16,7 @@
 			controllerAs: '$uexModalCtrl',
 			controller: function ($scope, $element, $attrs) {
 				var title = $attrs.title,
-					classes = $attrs.class,
+					classes = $attrs['class'],
 					template = $element.html();
 
 				this.delegate = {
@@ -24,7 +24,7 @@
 						return uexModal(angular.extend({
 							scope: $scope,
 							title: title,
-							class: classes,
+							classes: classes,
 							template: template
 						}, options));
 					}
@@ -48,7 +48,7 @@
 			controllerAs: '$uexModalConfirmCtrl',
 			controller: function ($scope, $element, $attrs) {
 				var title = $attrs.title,
-					classes = $attrs.class,
+					classes = $attrs['class'],
 					template = $element.html();
 
 				this.delegate = {

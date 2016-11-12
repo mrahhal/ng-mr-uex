@@ -16,8 +16,14 @@
 
 		ensure();
 
-		var getWrapperClasses = options =>
-			options.class ? ' ' + options.class : '';
+		function getClassesOption(options) {
+			return options.classes || options['class'];
+		}
+
+		var getWrapperClasses = options => {
+			var classes = getClassesOption(options);
+			return classes ? ' ' + classes : '';
+		};
 
 		var getPoptipTemplate = options =>
 			'<div class="uex-poptip' + getWrapperClasses(options) + '">\
@@ -31,7 +37,7 @@
 		//   offset
 		//   target
 		//   template
-		//   class
+		//   classes
 		//   locals
 		//   delay
 		//

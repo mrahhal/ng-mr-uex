@@ -38,8 +38,14 @@
 
 		ensure();
 
-		var getWrapperClasses = options =>
-			options.class ? ' ' + options.class : '';
+		function getClassesOption(options) {
+			return options.classes || options['class'];
+		}
+
+		var getWrapperClasses = options => {
+			var classes = getClassesOption(options);
+			return classes ? ' ' + classes : '';
+		};
 
 		var getModalContainerTemplate = options =>
 			'<div class="uex-modal' + getWrapperClasses(options) +'" ng-click="_tryDismiss($event)">\
@@ -84,7 +90,7 @@
 		//   template - templateUrl
 		//   component
 		//   title
-		//   class
+		//   classes
 		//   locals
 		//
 		var func = options => {

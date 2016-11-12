@@ -54,7 +54,7 @@
 			controllerAs: '$uexPopCtrl',
 			controller: function ($scope, $element, $attrs) {
 				var target,
-					classes = $attrs.class,
+					classes = $attrs['class'],
 					template = $element.html(),
 					on = $attrs.on || 'click';
 
@@ -63,7 +63,7 @@
 						scope: $scope,
 						target: target,
 						placement: $attrs.placement,
-						class: classes,
+						classes: classes,
 						template: template
 					});
 				};

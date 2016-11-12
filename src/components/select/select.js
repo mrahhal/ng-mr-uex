@@ -78,7 +78,7 @@
 				exp: '@',
 				originalTitle: '@title',
 				header: '@',
-				class: '@'
+				classes: '@'
 			},
 			require: {
 				uexSelectCtrl: '^uexSelect',
@@ -93,7 +93,7 @@
 					options = parse(this.exp),
 					keyName = options.keyName,
 					asyncMode = this.asyncMode = options.asyncMode,
-					classes = this.class,
+					classes = this.classes,
 					promise,
 					popInstance;
 
@@ -183,7 +183,7 @@
 						scope: $scope,
 						target: $button,
 						placement: 'bottom start',
-						class: 'uex-select-pop ' + classes,
+						classes: 'uex-select-pop ' + classes,
 						template: createPopTemplate()
 					});
 					popInstance.onDismiss(() => this.isOpen = false);

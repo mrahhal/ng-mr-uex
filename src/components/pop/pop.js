@@ -37,8 +37,14 @@
 
 		ensure();
 
-		var getWrapperClasses = options =>
-			options.class ? ' ' + options.class : '';
+		function getClassesOption(options) {
+			return options.classes || options['class'];
+		}
+
+		var getWrapperClasses = options => {
+			var classes = getClassesOption(options);
+			return classes ? ' ' + classes : '';
+		};
 
 		var getPopTemplate = options =>
 			'<div class="uex-pop' + getWrapperClasses(options) + '">\
@@ -65,7 +71,7 @@
 		//   offset
 		//   target
 		//   template - templateUrl
-		//   class
+		//   classes
 		//   locals
 		//   onPosition
 		//
