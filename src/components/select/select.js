@@ -130,19 +130,22 @@
 
 		this.open = () => {
 			this.opened = true;
-			popInstance = uexPop({
-				scope: $scope,
-				target: $button,
-				placement: 'bottom start',
-				classes: 'uex-select-pop ' + classes,
-				template: getTemplatePop(content)
-			});
-			popInstance.onDismiss(() => this.opened = false);
+			if (!popInstance) {
+				popInstance = uexPop({
+					scope: $scope,
+					target: $button,
+					placement: 'bottom start',
+					classes: 'uex-select-pop ' + classes,
+					template: getTemplatePop(content)
+				});
+				popInstance.onDismiss(() => this.opened = false);
+			} else {
+				popInstance.open();
+			}
 		};
 
 		this.close = () => {
 			if (popInstance) popInstance.dismiss();
-			popInstance = null;
 		};
 
 		this.clear = () => this.select(null);
@@ -231,10 +234,7 @@
 			transclude: true,
 			template: '\
 				<div class="uex-select-simple-content" ng-transclude></div>\
-				<uex-icon icon="check" ng-if="$selected"></uex-icon>',
-			link: function ($scope) {
-				$scope.$pop.position();
-			}
+				<uex-icon icon="check" ng-if="$selected"></uex-icon>'
 		};
 	}
 })();
