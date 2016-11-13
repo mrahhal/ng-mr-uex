@@ -1,33 +1,30 @@
-<style>
-  .section {
-    display: inline-block;
-    margin: 20px;
-  }
-</style>
 
 <div>
   <section>
     <header>Basic</header>
-    <uex-select exp="item in $ctrl.items as item.name" ng-model="$ctrl.selected1" title="Selected" class="select-check">
+    <uex-select exp="item in $ctrl.items as item.name" ng-model="$ctrl.selected1" text="Selected" header="Select by" class="select-check">
       {{item.name}}
       <uex-icon icon="check" ng-if="$selected"></uex-icon>
     </uex-select>
   </section>
-  <section>
-    <header>Async</header>
-    <uex-select exp="item in $ctrl.getItems(q) as item.name" ng-model="$ctrl.selected2" title="Selected">
-      {{item.name}}
-    </uex-select>
-  </section>
+
   <section>
     <header>Simple select</header>
-    <uex-select exp="item in ['Foo', 'Bar', 'Baz']" ng-model="$ctrl.selected3" title="Selected">
+    <uex-select exp="item in ['Foo', 'Bar', 'Baz']" ng-model="$ctrl.selected2" text="Selected">
       <uex-select-simple>{{item}}</uex-select-simple>
     </uex-select>
   </section>
+
+  <section>
+    <header>Not clearable</header>
+    <uex-select exp="item in $ctrl.items as item.name" ng-model="$ctrl.selected4" text="Selected" clearable="false">
+      <uex-select-simple>{{item.name}}</uex-select-simple>
+    </uex-select>
+  </section>
+
   <section ng-if="!$ctrl.loading">
     <header>Simple test</header>
-    <uex-select exp="item in $ctrl.items4 as item.name" ng-model="$ctrl.selected4" title="Selected">
+    <uex-select exp="item in $ctrl.items as item.name" ng-model="$ctrl.selected3" text="Selected">
       <uex-select-simple>{{item.name}}</uex-select-simple>
     </uex-select>
   </section>

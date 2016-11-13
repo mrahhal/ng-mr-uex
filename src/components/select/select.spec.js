@@ -1,6 +1,6 @@
 /*jshint -W043 */
 
-describe('uexSelect', function () {
+/*describe('uexSelect', function () {
 	beforeEach(module('mr.uex'));
 
 	var $controller,
@@ -109,5 +109,38 @@ describe('uexSelect', function () {
 			var $inner = $body.find('.uex-pop.uex-select-pop ul > li').first().find('.inner');
 			$inner.hasClass('selected').should.be.true();
 		});
+	});
+});*/
+
+describe('uexSelect', function () {
+	var component, $element, scope, $componentController, $compile;
+
+	beforeEach(module('mr.uex'));
+
+	beforeEach(inject(function ($rootScope, _$componentController_, _$compile_) {
+		scope = $rootScope.$new();
+		scope.$f = {
+			items: getItems()
+		};
+		$componentController = _$componentController_;
+		$compile = _$compile_;
+	}));
+
+	function getItems() {
+		return [
+		{
+			name: 'item1'
+		}, {
+			name: 'item2'
+		}];
+	}
+
+	it('should not be opened by default', function () {
+		$element = angular.element('<uex-select exp="item in $f.items" ng-model="$f.item">{{item.name}}</uex-select>');
+
+    	$compile($element)(scope);
+
+		component = $element.controller('uexSelect');
+		component.opened.should.be.false();
 	});
 });

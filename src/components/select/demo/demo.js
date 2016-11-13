@@ -13,27 +13,12 @@
 			name: 'item2'
 		}];
 
-		this.getItems = q => {
-			return $timeout(() => {
-				var items = [];
-				for (var i = 0; i < this.items.length; i++) {
-					if (!q || this.items[i].name.indexOf(q) > -1) {
-						items.push(this.items[i]);
-					}
-				}
-				return items;
-			}, 2000);
-		};
+		this.selected4 = this.items[0];
 
-		this.items4 = [{
-			name: 'item1'
-		}, {
-			name: 'item2'
-		}];
 		this.loading = true;
 		$timeout(() => {
-			this.selected4 = this.items4[0];
+			this.selected3 = this.items[0];
 			this.loading = false;
-		}, 100);
+		}, 500);
 	}
 })();
