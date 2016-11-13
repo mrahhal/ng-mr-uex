@@ -45,15 +45,20 @@
 			restrict: 'E',
 			terminal: true,
 			scope: false,
+			template: ($element, $attrs) => {
+				$attrs.$html = $element.html();
+				$element.empty();
+			},
 			bindToController: true,
 			require: {
 				poptipContainer: '^uexPoptipContainer'
 			},
 			controllerAs: '$uexPoptipCtrl',
-			controller: function ($scope, $element, $attrs, $transclude) {
+			controller: function ($scope, $element, $attrs) {
+				var template = $attrs.$html;
+
 				this.$onInit = () => {
-					var target = this.poptipContainer.getTarget(),
-						template = $element.html();
+					var target = this.poptipContainer.getTarget();
 
 					uexPoptip({
 						scope: $scope,
@@ -63,11 +68,6 @@
 						trigger: $attrs.trigger,
 						template: template
 					});
-				};
-
-				this.$postLink = () => {
-					$element.removeClass();
-					$element.empty();
 				};
 			}
 		};

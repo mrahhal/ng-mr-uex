@@ -6,30 +6,7 @@
 		.factory('uexPoptip', poptip);
 
 	function poptip($rootScope, $animate, $compile, uexPositioner) {
-		var $body;
-
-		function ensure() {
-			if ($body) return;
-
-			$body = $(document.body);
-		}
-
-		ensure();
-
-		function getClassesOption(options) {
-			return options.classes || options['class'];
-		}
-
-		var getWrapperClasses = options => {
-			var classes = getClassesOption(options);
-			return classes ? ' ' + classes : '';
-		};
-
-		var getPoptipTemplate = options =>
-			'<div class="uex-poptip' + getWrapperClasses(options) + '">\
-				<div class="uex-poptip-arrow"></div>\
-				<div class="uex-poptip-content"></div>\
-			</div>';
+		var $body = $(document.body);
 
 		// options:
 		//   scope
@@ -48,16 +25,12 @@
 
 			var scope = options.scope || $rootScope,
 				target = options.target,
-				element = $(getPoptipTemplate(options)),
+				element = $(getTemplatePoptip(options)),
 				animateEnter,
 				animateLeave,
-				$content = element.find('.uex-poptip-content'),
 				$arrow = element.find('.uex-poptip-arrow'),
 				eventIn  = options.trigger === 'hover' ? 'mouseenter' : 'focusin',
 				eventOut = options.trigger === 'hover' ? 'mouseleave' : 'focusout';
-
-			$content.html(options.template);
-			element.addClass('uex-poptip-p-' + options.placement);
 
 			var position = () => {
 				var o = angular.extend(options, {
@@ -116,6 +89,7 @@
 					addToDOM();
 				});
 			});
+
 			target.on(eventOut, () => {
 				scope.$apply(() => {
 					removeFromDOM();
@@ -124,5 +98,24 @@
 		};
 
 		return func;
+
+		//------------------------------------------------------------------------------
+
+		function getClassesOption(options) {
+			return options.classes || options['class'];
+		}
+
+		function getWrapperClasses(options) {
+			var classes = getClassesOption(options);
+			return classes ? ' ' + classes : '';
+		}
+
+		function getTemplatePoptip(options) {
+			return  '\
+<div class="uex-poptip uex-poptip-p-' + options.placement + getWrapperClasses(options) + '">\
+	<div class="uex-poptip-arrow"></div>\
+	<div class="uex-poptip-content">' + options.template + '</div>\
+</div>';
+		}
 	}
 })();
