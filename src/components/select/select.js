@@ -21,7 +21,6 @@
 				ngModelCtrl: 'ngModel'
 			},
 			bindings: {
-				model: '<ngModel',
 				exp: '@',
 				originalText: '@text',
 				header: '@?',
