@@ -4,7 +4,6 @@ var concat = require('gulp-concat');
 var insert = require('gulp-insert');
 var cssmin = require('gulp-cssmin');
 var sass = require('gulp-sass');
-var sassGlob = require('gulp-sass-glob');
 var babel = require("gulp-babel");
 var ngAnnotate = require('gulp-ng-annotate');
 var uglify = require('gulp-uglify');
@@ -12,6 +11,7 @@ var rename = require('gulp-rename');
 var watch = require('gulp-watch');
 var ejs = require("gulp-ejs");
 var webserver = require('gulp-webserver');
+var sourcemaps = require('gulp-sourcemaps');
 var autoprefixer = require('gulp-autoprefixer');
 
 var jsSrc = ['src/core/**/*.js', 'src/components/*/*.js', '!src/components/*/*.spec.js'],
@@ -20,25 +20,25 @@ var jsSrc = ['src/core/**/*.js', 'src/components/*/*.js', '!src/components/*/*.s
 function compileJs(dir) {
 	return gulp
 		.src(jsSrc)
+		.pipe(sourcemaps.init())
 		.pipe(concat('ng-mr-uex.js'))
-		.pipe(insert.wrap('(function (window, angular, $, undefined) {\n', '\n})(window, window.angular, window.jQuery);'))
+		.pipe(sourcemaps.write({ sourceRoot: '/components' }))
 		.pipe(gulp.dest(dir))
 		.pipe(babel())
 		.pipe(ngAnnotate())
 		.pipe(uglify())
-		.pipe(rename({
-			suffix: '.min'
-		}))
+		.pipe(rename({ suffix: '.min' }))
 		.pipe(gulp.dest(dir));
 }
 
 function compileCss(dir) {
 	return gulp
 		.src('src/core/core.scss')
-		.pipe(sassGlob())
+		.pipe(sourcemaps.init())
 		.pipe(sass())
 		.pipe(concat('ng-mr-uex.css'))
 		.pipe(autoprefixer())
+		.pipe(sourcemaps.write({ sourceRoot: '/components' }))
 		.pipe(gulp.dest(dir))
 		.pipe(cssmin())
 		.pipe(concat('ng-mr-uex.min.css'))
@@ -76,9 +76,8 @@ gulp.task('test', ['build'], function () {
 gulp.task('default', ['build', 'test']);
 
 gulp.task('webserver', function () {
-	watch(['src/demo/*', 'src/components/*/demo/*', 'src/components/**/*.scss'], function () {
-		gulp.start('build:demo');
-	});
+	watch(['src/demo/*', 'src/components/*/demo/**/*'], () => gulp.start('build:demo'));
+	gulp.start('watch');
 	gulp.src('.')
 		.pipe(webserver({
 			livereload: true,
@@ -91,23 +90,23 @@ gulp.task('webserver', function () {
 gulp.task('build:demo', function () {
 	var components = [];
 
-	gulp.src(['src/demo/layout.scss', 'src/components/*/demo/demo.scss'])
-		.pipe(sassGlob())
+	gulp.src(['src/demo/layout.scss', 'src/components/*/demo/**/*.scss'])
+		.pipe(sourcemaps.init())
 		.pipe(concat('demo.css'))
 		.pipe(sass())
+		.pipe(sourcemaps.write({ sourceRoot: '/components' }))
 		.pipe(gulp.dest('demo/'));
 
-	gulp.src(['src/demo/app.js', 'src/components/*/demo/demo.js'])
+	gulp.src(['src/demo/app.js', 'src/components/*/demo/**/*.js'])
+		.pipe(sourcemaps.init())
 		.pipe(concat('demo.js'))
 		.pipe(babel())
+		.pipe(sourcemaps.write({ sourceRoot: '/components' }))
 		.pipe(gulp.dest('demo/'));
 
 	gulp.src('src/components/*/demo/demo.html')
 		.pipe(insert.transform(function (contents, file) {
-			contents = contents.replace(/\r?\n|\r/g, ""); // Remove newlines.
-			contents = contents.replace(/[\\$'"]/g, "\\$&"); // Escape quotes.
-			//contents = contents.replace(/<\/script>/g, '<\\/script>');
-			return contents;
+			return escapeContent(contents);
 		}))
 		.on('data', function (data) {
 			var path = data.path.replace(/\\/g, '/');
@@ -129,8 +128,13 @@ gulp.task('build:demo', function () {
 });
 
 gulp.task('watch', function () {
-	var src = jsSrc.concat(sassSrc);
-	watch(src, function () {
-		gulp.start('build');
-	});
+	watch(jsSrc, () => gulp.start('build:js'));
+	watch(sassSrc, () => gulp.start('build:css'));
 });
+
+function escapeContent(content) {
+	return content
+		.replace(/[\r\n]/g, ' ') // Collapse newlines
+		.replace(/[ \t]+/g, ' ') // Collapse whitespace
+		.replace(/[\\']/g, '\\$&'); // Escape
+}
