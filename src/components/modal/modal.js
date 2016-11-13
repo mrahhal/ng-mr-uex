@@ -7,84 +7,16 @@
 
 	function modal($rootScope, $compile, $controller, $animate, $templateRequest, $q, uexUtil) {
 		var instances = [],
-			$body,
+			$body = $(document.body),
 			$bd = angular.element('<div class="uex-modal-bd" />');
 
-		function listenToEvents() {
-			$body.on('keydown', e => {
-				if (!e.isDefaultPrevented() && e.which === 27) {
-					$rootScope.$apply(() => {
-						dismissTopModal(e);
-					});
-				}
-			});
-		}
-
-		function ensure() {
-			if ($body) return;
-
-			$body = $(document.body);
-			listenToEvents();
-		}
-
-		function dismissTopModal(e) {
-			if (instances.length === 0) {
-				return;
+		$body.on('keydown', e => {
+			if (!e.isDefaultPrevented() && e.which === 27) {
+				$rootScope.$apply(() => {
+					dismissTopModal(e);
+				});
 			}
-
-			e.preventDefault();
-			var top = instances[instances.length - 1];
-			top.dismiss();
-		}
-
-		ensure();
-
-		function getClassesOption(options) {
-			return options.classes || options['class'];
-		}
-
-		var getWrapperClasses = options => {
-			var classes = getClassesOption(options);
-			return classes ? ' ' + classes : '';
-		};
-
-		var getModalContainerTemplate = options =>
-			'<div class="uex-modal' + getWrapperClasses(options) +'" ng-click="_tryDismiss($event)">\
-				<div class="uex-modal-container">\
-					<div class="uex-modal-header">\
-						<button type="button" class="uex-modal-close" ng-click="$modal.dismiss()">\
-							<uex-icon icon="close"></uex-icon>\
-						</button>\
-						<h2>{{$title}}</h2>\
-					</div>\
-					<div class="uex-modal-content"></div>\
-				</div>\
-			</div>';
-
-		function templateForComponent(name, resolve) {
-			var t = '<' + name;
-			if (resolve) {
-				for (var p in resolve) {
-					var pName = uexUtil.camelToDash(p);
-					t += ' ' + pName + '="::$resolve.' + p + '"';
-				}
-			}
-			t += '></' + name + '>';
-			return t;
-		}
-
-		function getTemplatePromise(options, resolve) {
-			if (options.component) {
-				var componentName = uexUtil.camelToDash(options.component);
-				return $q.when(templateForComponent(
-					componentName,
-					resolve));
-			}
-
-			return options.template ? $q.when(options.template.trim()) :
-				$templateRequest(angular.isFunction(options.templateUrl) ?
-					options.templateUrl() : options.templateUrl);
-		}
+		});
 
 		// options:
 		//   scope
@@ -96,8 +28,8 @@
 		//
 		var func = options => {
 			options = angular.isString(options) ? { component: options } : options;
-			var scope = (options.scope || $rootScope).$new();
-			var $element = $(getModalContainerTemplate(options));
+			var scope = (options.scope || $rootScope).$new(),
+				$element = $(getTemplateModalContainer(options));
 
 			var destroyAndClean = instance => {
 				instance.scope.$destroy();
@@ -209,8 +141,8 @@
 
 			var ret = {
 				open: parentScope => {
-					var scope = (parentScope || $rootScope).$new();
-					var instance = func({
+					var scope = (parentScope || $rootScope).$new(),
+						instance = func({
 						title: options.title,
 						scope: angular.extend(scope, {
 							danger: options.danger,
@@ -222,19 +154,21 @@
 							}
 						}),
 						template:
-							'<div class="uex-modal-t-confirm">\
-								<div class="uex-modal-t-confirm-content">' +
-								options.template + '\
-								</div>\
-								<div class="uex-modal-t-confirm-actions">\
-									<button type="button" class="btn btn-default no-btn" ng-click="$modal.dismiss()" ng-if="::!info">{{::noText}}</button>\
-									<button type="button" class="btn yes-btn" ng-click="resolve()" ng-class="{danger: danger, \'btn-danger\': danger, \'btn-primary\': !danger}">{{::yesText}}</button>\
-								</div>\
-							</div>'
+'<div class="uex-modal-t-confirm">\
+	<div class="uex-modal-t-confirm-content">' +
+	options.template + '\
+	</div>\
+	<div class="uex-modal-t-confirm-actions">\
+		<button type="button" class="btn btn-default no-btn" ng-click="$modal.dismiss()" ng-if="::!info">{{::noText}}</button>\
+		<button type="button" class="btn yes-btn" ng-click="resolve()" ng-class="{danger: danger, \'btn-danger\': danger, \'btn-primary\': !danger}">{{::yesText}}</button>\
+	</div>\
+</div>'
 					});
+
 					instance.promise.then(null, () => {
 						scope.$destroy();
 					});
+
 					return instance.promise;
 				},
 				title: v => {
@@ -279,5 +213,66 @@
 		};
 
 		return func;
+
+		//------------------------------------------------------------------------------
+
+		function dismissTopModal(e) {
+			if (instances.length === 0) {
+				return;
+			}
+
+			e.preventDefault();
+			var top = instances[instances.length - 1];
+			top.dismiss();
+		}
+
+		function getClassesOption(options) {
+			return options.classes || options['class'];
+		}
+
+		function getWrapperClasses(options) {
+			var classes = getClassesOption(options);
+			return classes ? ' ' + classes : '';
+		}
+
+		function getTemplateModalContainer(options) {
+			return '\
+<div class="uex-modal' + getWrapperClasses(options) +'" ng-click="_tryDismiss($event)">\
+	<div class="uex-modal-container">\
+		<div class="uex-modal-header">\
+			<button type="button" class="uex-modal-close" ng-click="$modal.dismiss()">\
+				<uex-icon icon="close"></uex-icon>\
+			</button>\
+			<h2>{{$title}}</h2>\
+		</div>\
+		<div class="uex-modal-content"></div>\
+	</div>\
+</div>';
+		}
+
+		function templateForComponent(name, resolve) {
+			var t = '<' + name;
+			if (resolve) {
+				for (var p in resolve) {
+					var pName = uexUtil.camelToDash(p);
+					t += ' ' + pName + '="::$resolve.' + p + '"';
+				}
+			}
+			t += '></' + name + '>';
+			return t;
+		}
+
+		function getTemplatePromise(options, resolve) {
+			if (options.component) {
+				var componentName = uexUtil.camelToDash(options.component);
+				return $q.when(templateForComponent(
+					componentName,
+					resolve));
+			}
+
+			return options.template ? $q.when(options.template.trim()) :
+				$templateRequest(angular.isFunction(options.templateUrl) ?
+					options.templateUrl() : options.templateUrl);
+		}
 	}
 })();
