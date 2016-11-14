@@ -10,6 +10,10 @@
 		return {
 			restrict: 'E',
 			scope: true,
+			template: ($element, $attrs) => {
+				$attrs.$html = $element.html();
+				$element.empty();
+			},
 			bindToController: {
 				delegate: '='
 			},
@@ -17,7 +21,7 @@
 			controller: function ($scope, $element, $attrs) {
 				var title = $attrs.title,
 					classes = $attrs['class'],
-					template = $element.html();
+					template = $attrs.$html;
 
 				this.delegate = {
 					open: options => {
@@ -29,11 +33,6 @@
 						}, options));
 					}
 				};
-
-				this.$postLink = () => {
-					$element.removeClass();
-					$element.empty();
-				};
 			}
 		};
 	}
@@ -42,6 +41,10 @@
 		return {
 			restrict: 'E',
 			scope: true,
+			template: ($element, $attrs) => {
+				$attrs.$html = $element.html();
+				$element.empty();
+			},
 			bindToController: {
 				delegate: '='
 			},
@@ -49,7 +52,7 @@
 			controller: function ($scope, $element, $attrs) {
 				var title = $attrs.title,
 					classes = $attrs['class'],
-					template = $element.html();
+					template = $attrs.$html;
 
 				this.delegate = {
 					open: () => {
@@ -59,11 +62,6 @@
 							.template(template)
 							.open($scope);
 					}
-				};
-
-				this.$postLink = () => {
-					$element.removeClass();
-					$element.empty();
 				};
 			}
 		};
