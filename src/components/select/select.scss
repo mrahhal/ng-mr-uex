@@ -27,147 +27,70 @@ uex-select {
       background-color: $color-background;
     }
   }
+
+  &.opened {
+    > .button {
+      border-color: $brand-primary;
+    }
+  }
 }
 
 .uex-pop.uex-select-pop {
   .uex-pop-content {
     padding: 0;
-  }
-}
+    width: 200px;
+    display: flex;
+    flex-flow: column nowrap;
 
-.uex-select-content {
-  width: 200px;
+    > header {
+      background-color: $color-background;
+      border-bottom: 1px solid $color-border;
+      position: relative;
 
-  > header {
-    background-color: $color-background;
-    border-bottom: 1px solid $color-border;
-    position: relative;
+      > .header-text {
+        font-size: 16px;
+        padding: 5px 10px;
+        overflow: hidden;
+      }
 
-    > .header-text {
-      font-size: 16px;
-      padding: 5px 10px;
-      overflow: hidden;
+      > .close-btn {
+        float: right;
+        margin-top: 5px;
+        margin-right: 5px;
+      }
     }
 
-    > .close-btn {
-      float: right;
-      margin-top: 5px;
-      margin-right: 5px;
+    > div {
+      overflow-y: auto;
     }
-  }
 
-  .uex-select-filters {
-    background-color: $color-background;
-    border-bottom: 1px solid $color-border;
+    ul.options {
+      max-height: 350px;
+      overflow-y: auto;
+      margin: 0;
+      list-style: none;
+      padding: 0;
 
-    .uex-select-filter-container {
-      padding: 5px;
-      display: flex;
+      li {
+        padding: 5px 10px;
+        cursor: pointer;
 
-      > input {
-        padding: 2px 4px;
-        flex: 1;
-        outline: none;
-        border: 1px solid $color-border;
+        .icon {
+          width: 20px;
+        }
 
         &:hover {
-          border-color: $color-border-focus;
-        }
-
-        &:active,
-        &:focus {
-          border-color: $brand-primary;
+          background-color: $brand-primary;
+          color: white;
         }
       }
-    }
-  }
 
-  .uex-select-loading {
-    text-align: center;
-    padding: 5px;
-  }
-
-  .uex-select-no-items {
-    padding: 5px;
-    text-align: center;
-    color: $color-text-2;
-    font-style: italic;
-  }
-
-  .uex-selected {
-    padding: 5px 10px;
-    cursor: pointer;
-    border-bottom: 1px solid $color-border;
-
-    .icon {
-      width: 20px;
-    }
-
-    &:hover {
-      background-color: $brand-primary;
-      color: white;
-    }
-  }
-
-  ul.options {
-    max-height: 350px;
-    overflow-y: auto;
-    margin: 0;
-    list-style: none;
-    padding: 0;
-
-    li {
-      padding: 5px 10px;
-      cursor: pointer;
-
-      .icon {
-        width: 20px;
-      }
-
-      &:hover {
-        background-color: $brand-primary;
-        color: white;
+      li:not(:last-of-type) {
+        border-bottom: 1px solid $color-border;
       }
     }
-
-    li:not(:last-of-type) {
-      border-bottom: 1px solid $color-border;
-    }
   }
 
-  .loading {
-    text-align: center;
-    padding: 10px 0;
-  }
-
-  .selected-item {
-    padding: 5px 10px;
-    margin-bottom: 10px;
-    background-color: $brand-primary;
-    color: white;
-
-    .icon {
-      width: 20px;
-    }
-  }
-
-  .no-items {
-    padding: 15px 10px;
-    text-align: center;
-  }
-}
-
-.uex-select.open {
-  .button {
-    border-color: $brand-primary;
-  }
-}
-
-.uex-select-content {
-  display: block;
-}
-
-.uex-pop.uex-select-pop {
   uex-select-simple {
     display: flex;
 

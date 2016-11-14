@@ -213,16 +213,14 @@
 
 		function getTemplatePop(content) {
 			return '\
-<div class="uex-select-content">\
-	<header>\
-		<uex-icon icon="close" class="close-btn btn-plain btn-dim" ng-click="$pop.dismiss()"></uex-icon>\
-		<div class="header-text">{{::$ctrl.header}}</div>\
-	</header>\
-	<div>\
-		<ul class="options no-margin">\
-			<li ng-repeat="item in $ctrl.items()" ng-click="$ctrl.select(item)" uex-select-transclude>' + content + '</li>\
-		</ul>\
-	</div>\
+<header>\
+	<uex-icon icon="close" class="close-btn btn-plain btn-dim" ng-click="$pop.dismiss()"></uex-icon>\
+	<div class="header-text">{{::$ctrl.header}}</div>\
+</header>\
+<div class="_uex-content">\
+	<ul class="options no-margin">\
+		<li ng-repeat="item in $ctrl.items()" ng-click="$ctrl.select(item)" uex-select-transclude>' + content + '</li>\
+	</ul>\
 </div>';
 		}
 	}
