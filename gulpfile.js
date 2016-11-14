@@ -4,6 +4,7 @@ var concat = require('gulp-concat');
 var insert = require('gulp-insert');
 var cssmin = require('gulp-cssmin');
 var sass = require('gulp-sass');
+var sassGlob = require('gulp-sass-glob');
 var babel = require("gulp-babel");
 var ngAnnotate = require('gulp-ng-annotate');
 var uglify = require('gulp-uglify');
@@ -75,22 +76,11 @@ gulp.task('test', ['build'], function () {
 
 gulp.task('default', ['build', 'test']);
 
-gulp.task('webserver', function () {
-	watch(['src/demo/*', 'src/components/*/demo/**/*'], () => gulp.start('build:demo'));
-	gulp.start('watch');
-	gulp.src('.')
-		.pipe(webserver({
-			livereload: true,
-			fallback: 'demo/demo.html',
-			port: '64123',
-			open: true
-		}));
-});
-
 gulp.task('build:demo', function () {
 	var components = [];
 
-	gulp.src(['src/demo/layout.scss', 'src/components/*/demo/**/*.scss'])
+	gulp.src(['src/demo/layout.scss'])
+		.pipe(sassGlob())
 		.pipe(sourcemaps.init())
 		.pipe(concat('demo.css'))
 		.pipe(sass())
@@ -127,10 +117,39 @@ gulp.task('build:demo', function () {
 		});
 });
 
-gulp.task('watch', function () {
+gulp.task('watch:js', function () {
 	watch(jsSrc, () => gulp.start('build:js'));
+});
+
+gulp.task('watch:css', function () {
 	watch(sassSrc, () => gulp.start('build:css'));
 });
+
+gulp.task('watch', ['watch:js', 'watch:css']);
+
+gulp.task('watch:demo', function () {
+	var srcFiles = [
+		'src/demo/*',
+		'src/components/*/demo/**/*'
+	];
+	srcFiles = srcFiles.concat(sassSrc);
+	watch(srcFiles, () => gulp.start('build:demo'));
+});
+
+gulp.task('webserver', function () {
+	gulp.start('watch:js'); // css will be built when building the demo
+	gulp.start('watch:demo');
+
+	gulp.src('.')
+		.pipe(webserver({
+			livereload: true,
+			fallback: 'demo/demo.html',
+			port: '64123',
+			open: true
+		}));
+});
+
+//------------------------------------------------------------------------------
 
 function escapeContent(content) {
 	return content

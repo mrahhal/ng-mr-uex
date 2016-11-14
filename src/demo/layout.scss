@@ -1,6 +1,7 @@
 $brand-primary: #3F51B5;
 
 @import "../core/core.scss";
+@import "../components/*/demo/**/*.scss";
 
 * {
   box-sizing: border-box;
