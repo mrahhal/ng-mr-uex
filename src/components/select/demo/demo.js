@@ -6,6 +6,16 @@
 		controller: $ctrl
 	});
 
+	angular.module('app').component('selectCompTest1', {
+		template: '{{$ctrl.some}}',
+		bindings: {
+			u: '<'
+		},
+		controller: function ($scope, $attrs) {
+			this.some = this.u;
+		}
+	});
+
 	function $ctrl($scope, $timeout) {
 		this.items = [{
 			name: 'item1'

@@ -36,15 +36,19 @@
 	function uexSelectTransclude() {
 		return {
 			restrict: 'A',
-			link: function ($scope, $element, $attrs) {
-				var ctrl = $scope.$ctrl;
-				ctrl._populateScope($scope);
+			compile: function () {
+				return {
+					pre: function ($scope, $element, $attrs) {
+						var ctrl = $scope.$ctrl;
+						ctrl._populateScope($scope);
 
-				$scope.$evalAsync(() => ctrl.pop().position());
+						$scope.$evalAsync(() => ctrl.pop().position());
 
-				$scope.$on('$destroy', function () {
-					ctrl._removeScope($scope);
-				});
+						$scope.$on('$destroy', function () {
+							ctrl._removeScope($scope);
+						});
+					}
+				};
 			}
 		};
 	}
