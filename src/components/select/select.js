@@ -5,6 +5,8 @@
 		.module('mr.uex')
 		.component('uexSelect', {
 			template: ($element, $attrs) => {
+				'ngInject';
+
 				$attrs.$html = $element.html();
 				$element.empty();
 
