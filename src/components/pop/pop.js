@@ -5,7 +5,7 @@
 		.module('mr.uex')
 		.factory('uexPop', pop);
 
-	function pop($rootScope, $compile, $animate, $templateRequest, $q, uexPositioningThrottler, uexPositioner) {
+	function pop($rootScope, $compile, $animate, $templateRequest, $q, uexPositioningThrottler, uexPositioner, $timeout) {
 		var _instance,
 			$body = $(document.body);
 
@@ -77,8 +77,8 @@
 
 							instance.target.addClass('uex-pop-open');
 							$body.addClass('uex-pop-active');
-							instance.position(true);
 							$animate.enter($clone, $body, $body.children().last());
+							scope.$evalAsync(() => instance.position());
 						});
 					});
 				},

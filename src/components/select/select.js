@@ -39,6 +39,9 @@
 			link: function ($scope, $element, $attrs) {
 				var ctrl = $scope.$ctrl;
 				ctrl._populateScope($scope);
+
+				$scope.$evalAsync(() => ctrl.pop().position());
+
 				$scope.$on('$destroy', function () {
 					ctrl._removeScope($scope);
 				});
@@ -176,6 +179,8 @@
 		};
 
 		this.items = () => getItems();
+
+		this.pop = () => popInstance;
 
 		//------------------------------------------------------------------------------
 
