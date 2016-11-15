@@ -77,8 +77,8 @@
 
 							instance.target.addClass('uex-pop-open');
 							$body.addClass('uex-pop-active');
+							instance.position(true);
 							$animate.enter($clone, $body, $body.children().last());
-							scope.$applyAsync(() => instance.position(true));
 						});
 					});
 				},
