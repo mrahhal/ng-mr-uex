@@ -242,7 +242,7 @@
 			transclude: true,
 			template: '\
 				<div class="uex-select-simple-content" ng-transclude></div>\
-				<uex-icon icon="check" ng-if="$selected"></uex-icon>'
+				<uex-icon icon="check" ng-class="{shown: $selected}"></uex-icon>'
 		};
 	}
 })();

@@ -108,6 +108,12 @@ uex-select {
 
     > uex-icon {
       align-self: center;
+      opacity: 0;
+      margin-left: 5px;
+
+      &.shown {
+        opacity: 1;
+      }
     }
   }
 }
