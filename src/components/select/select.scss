@@ -1,5 +1,13 @@
 uex-select {
   display: inline-block;
+
+  &.ng-empty {
+    .uex-select > .button {
+      border: 1px dashed rgba(0, 0, 0, 0.2);
+      color: #666;
+      font-style: italic;
+    }
+  }
 }
 
 .uex-select {
