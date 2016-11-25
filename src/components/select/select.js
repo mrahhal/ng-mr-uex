@@ -60,7 +60,7 @@
 			originalText = this.originalText,
 			options = parse(this.exp),
 			keyName = options.keyName,
-			classes = this.classes,
+			classes = this.classes || '',
 			popInstance;
 
 		var content = $attrs.$html,

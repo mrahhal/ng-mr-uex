@@ -2,7 +2,7 @@
 <div>
   <section>
     <header>Basic</header>
-    <uex-select exp="item in $ctrl.items as item.name" ng-model="$ctrl.selected1" text="Selected" header="Select by" class="select-check">
+    <uex-select exp="item in $ctrl.items as item.name" ng-model="$ctrl.selected1" text="Selected" header="Select by" classes="select-check">
       {{item.name}}
       <uex-icon icon="check" ng-if="$selected"></uex-icon>
     </uex-select>
