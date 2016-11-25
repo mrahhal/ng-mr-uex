@@ -33,6 +33,11 @@ body.uex-modal-active {
       opacity: 0;
     }
   }
+
+  @media (max-width: $layout-bp-xp-max) {
+    transition: none;
+    display: none;
+  }
 }
 
 .uex-modal {
