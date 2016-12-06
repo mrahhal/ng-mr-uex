@@ -125,7 +125,7 @@
 			 ng-class="{ active: $index == $uexAutocompleteCtrl.activeIndex }"\
 			 ng-mouseover="$uexAutocompleteCtrl.mouseover(item, $index)"\
 			 uex-alias="item {{::$uexAutocompleteCtrl.keyName}}">' +
-			 getItemTemplate() + '\
+					getItemTemplate() + '\
 		</div>\
 	</div>\
 </div>';
