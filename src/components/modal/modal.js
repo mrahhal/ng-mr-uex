@@ -25,9 +25,13 @@
 		//   title
 		//   classes
 		//   locals
+		//   canBeDismissedFromBD
 		//
 		var func = options => {
-			options = angular.isString(options) ? { component: options } : options;
+			options = angular.isString(options) ? {
+				component: options
+			} : options;
+			// options.canBeDismissedFromBD = options.canBeDismissedFromBD === undefined ? false : true;
 			var scope = (options.scope || $rootScope).$new(),
 				$element = $(getTemplateModalContainer(options));
 
@@ -41,51 +45,52 @@
 
 			var deferred = $q.defer(),
 				instance = {
-				_delegates: [],
-				scope: scope,
-				element: $element,
-				title: v => {
-					scope.$title = v;
-				},
-				resolve: v => {
-					deferred.resolve(v);
-					instance.dismiss();
-				},
-				reject: reason => {
-					instance.dismiss(reason);
-				},
-				dismiss: reason => {
-					var i = instances.indexOf(instance);
-					instances.splice(i, 1);
-					var leaving = $animate.leave($element);
+					_delegates: [],
+					scope: scope,
+					element: $element,
+					canBeDismissedFromBD: options.canBeDismissedFromBD,
+					title: v => {
+						scope.$title = v;
+					},
+					resolve: v => {
+						deferred.resolve(v);
+						instance.dismiss();
+					},
+					reject: reason => {
+						instance.dismiss(reason);
+					},
+					dismiss: reason => {
+						var i = instances.indexOf(instance);
+						instances.splice(i, 1);
+						var leaving = $animate.leave($element);
 
-					if (instances.length === 0) {
-						leaving.then(() => {
-							$animate.leave($bd);
-							$body.removeClass('uex-modal-active');
+						if (instances.length === 0) {
+							leaving.then(() => {
+								$animate.leave($bd);
+								$body.removeClass('uex-modal-active');
+								destroyAndClean(instance);
+							});
+						} else {
+							instances[instances.length - 1]._active(true);
 							destroyAndClean(instance);
-						});
-					} else {
-						instances[instances.length - 1]._active(true);
-						destroyAndClean(instance);
-					}
+						}
 
-					deferred.reject(reason);
-				},
-				onDismiss: action => {
-					instance._delegates.push(action);
-				},
-				_active: value => {
-					if (value) instance.element.removeClass('inactive');
-					else instance.element.addClass('inactive');
-				}
-			};
+						deferred.reject(reason);
+					},
+					onDismiss: action => {
+						instance._delegates.push(action);
+					},
+					_active: value => {
+						if (value) instance.element.removeClass('inactive');
+						else instance.element.addClass('inactive');
+					}
+				};
 			instances.push(instance);
 
-			var resolve = angular.extend(
-				{},
-				options.locals || {},
-				{ modal: instance });
+			var resolve = angular.extend({},
+				options.locals || {}, {
+					modal: instance
+				});
 			var templatePromise = getTemplatePromise(options, resolve);
 
 			templatePromise.then(template => {
@@ -96,7 +101,7 @@
 					$modal: instance,
 					$resolve: resolve,
 					_tryDismiss: event => {
-						if ($(event.target).is('.uex-modal')) {
+						if (scope.$modal.canBeDismissedFromBD && $(event.target).is('.uex-modal')) {
 							scope.$modal.dismiss();
 						}
 					}
@@ -143,27 +148,25 @@
 				open: parentScope => {
 					var scope = (parentScope || $rootScope).$new(),
 						instance = func({
-						title: options.title,
-						scope: angular.extend(scope, {
-							danger: options.danger,
-							yesText: options.yesText,
-							noText: options.noText,
-							info: options.info,
-							resolve: v => {
-								instance._instance.resolve(v);
-							}
-						}),
-						template:
-'<div class="uex-modal-t-confirm">\
-	<div class="uex-modal-t-confirm-content">' +
-	options.template + '\
+							title: options.title,
+							scope: angular.extend(scope, {
+								danger: options.danger,
+								yesText: options.yesText,
+								noText: options.noText,
+								info: options.info,
+								resolve: v => {
+									instance._instance.resolve(v);
+								}
+							}),
+							template: '<div class="uex-modal-t-confirm">\
+	<div class="uex-modal-t-confirm-content">' + options.template + '\
 	</div>\
 	<div class="uex-modal-t-confirm-actions">\
 		<button type="button" class="btn btn-default no-btn" ng-click="$modal.dismiss()" ng-if="::!info">{{::noText}}</button>\
 		<button type="button" class="btn yes-btn" ng-click="resolve()" ng-class="{danger: danger, \'btn-danger\': danger, \'btn-primary\': !danger}">{{::yesText}}</button>\
 	</div>\
 </div>'
-					});
+						});
 
 					instance.promise.then(null, () => {
 						scope.$destroy();
@@ -237,7 +240,7 @@
 
 		function getTemplateModalContainer(options) {
 			return '\
-<div class="uex-modal' + getWrapperClasses(options) +'" ng-click="_tryDismiss($event)">\
+<div class="uex-modal' + getWrapperClasses(options) + '" ng-click="_tryDismiss($event)">\
 	<div class="uex-modal-container">\
 		<div class="uex-modal-header">\
 			<button type="button" class="uex-modal-close" ng-click="$modal.dismiss()">\

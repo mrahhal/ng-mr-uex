@@ -14,7 +14,8 @@
 				component: 'modalComp',
 				locals: {
 					modalCtrl: this
-				}
+				},
+				canBeDismissedFromBD: true
 			});
 		};
 
