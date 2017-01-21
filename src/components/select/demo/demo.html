@@ -1,4 +1,3 @@
-
 <div>
   <section>
     <header>Basic</header>
@@ -20,6 +19,13 @@
   <section>
     <header>Not clearable</header>
     <uex-select exp="item in $ctrl.items as item.name" ng-model="$ctrl.selected4" text="Selected" clearable="false">
+      <uex-select-simple>{{item.name}}</uex-select-simple>
+    </uex-select>
+  </section>
+
+  <section>
+    <header>Readonly</header>
+    <uex-select exp="item in $ctrl.items as item.name" ng-model="$ctrl.selected3" text="Selected" ng-readonly="true">
       <uex-select-simple>{{item.name}}</uex-select-simple>
     </uex-select>
   </section>
