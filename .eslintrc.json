@@ -1,0 +1,47 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "globals": {
+    "$": true,
+    "angular": true,
+    "describe": true,
+    "it": true,
+    "before": true,
+    "beforeEach": true,
+    "after": true,
+    "afterEach": true,
+    "inject": true,
+    "expect": true,
+    "should": true,
+    "module": true,
+    "window": true,
+    "document": true
+  },
+  "extends": "eslint:recommended",
+  "rules": {
+    "indent": [
+      "off",
+      "tab",
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "linebreak-style": [
+      "error",
+      "windows"
+    ],
+    "quotes": [
+      "warn",
+      "single"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "no-unused-vars": [
+      "off"
+    ]
+  }
+}

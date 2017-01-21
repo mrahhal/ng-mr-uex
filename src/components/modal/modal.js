@@ -158,7 +158,8 @@
 									instance._instance.resolve(v);
 								}
 							}),
-							template: '<div class="uex-modal-t-confirm">\
+							template: '\
+<div class="uex-modal-t-confirm">\
 	<div class="uex-modal-t-confirm-content">' + options.template + '\
 	</div>\
 	<div class="uex-modal-t-confirm-actions">\
