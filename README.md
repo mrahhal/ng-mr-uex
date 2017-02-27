@@ -5,3 +5,10 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 Contains a collection of components for angularjs.
+
+### Run the demo
+```
+npm install
+bower install
+gulp webserver
+```
