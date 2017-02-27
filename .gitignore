@@ -1,6 +1,6 @@
-.vs/
 bower_components/
 node_modules/
 dist-temp/
 demo/
 *.dat
+debug.log

@@ -5,12 +5,12 @@ var insert = require('gulp-insert');
 var cssmin = require('gulp-cssmin');
 var sass = require('gulp-sass');
 var sassGlob = require('gulp-sass-glob');
-var babel = require("gulp-babel");
+var babel = require('gulp-babel');
 var ngAnnotate = require('gulp-ng-annotate');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var watch = require('gulp-watch');
-var ejs = require("gulp-ejs");
+var ejs = require('gulp-ejs');
 var webserver = require('gulp-webserver');
 var sourcemaps = require('gulp-sourcemaps');
 var autoprefixer = require('gulp-autoprefixer');
@@ -108,12 +108,12 @@ gulp.task('build:demo', function () {
 		})
 		.on('end', function () {
 			console.log('demo components being built: ' + components.length);
-			gulp.src("src/demo/layout.html")
+			gulp.src('src/demo/layout.html')
 				.pipe(ejs({
 					components: components
 				}))
 				.pipe(rename('demo.html'))
-				.pipe(gulp.dest("demo/"));
+				.pipe(gulp.dest('demo/'));
 		});
 });
 
