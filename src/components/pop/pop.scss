@@ -11,7 +11,6 @@ uex-pop {
   z-index: 10000;
   display: flex;
   flex-flow: column nowrap;
-  overflow: hidden;
 }
 
 .uex-pop.ng-enter {
@@ -44,9 +43,7 @@ uex-pop {
 .uex-pop-content {
   padding: 10px;
   position: relative;
-  overflow-x: hidden;
   overflow-y: auto;
-  flex: 1;
 }
 
 // poptip extensions
