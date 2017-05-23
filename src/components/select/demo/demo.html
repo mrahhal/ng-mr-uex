@@ -36,4 +36,12 @@
       <uex-select-simple>{{item.name}}</uex-select-simple>
     </uex-select>
   </section>
+
+  <section>
+    <header>Different placement</header>
+    <uex-select exp="item in $ctrl.items as item.name" ng-model="$ctrl.selected3" text="Selected"
+                placement="bottom end">
+      <uex-select-simple>{{item.name}}</uex-select-simple>
+    </uex-select>
+  </section>
 </div>

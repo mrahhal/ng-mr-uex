@@ -27,7 +27,8 @@
 				originalText: '@text',
 				header: '@?',
 				classes: '@?',
-				clearable: '<?'
+				clearable: '<?',
+				placement: '@?'
 			}
 		})
 		.directive('uexSelectTransclude', uexSelectTransclude)
@@ -142,7 +143,7 @@
 				popInstance = uexPop({
 					scope: $scope,
 					target: $button,
-					placement: 'bottom start',
+					placement: this.placement || 'bottom start',
 					classes: 'uex-select-pop ' + classes,
 					template: getTemplatePop(content)
 				});
