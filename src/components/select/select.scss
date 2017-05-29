@@ -82,12 +82,11 @@ uex-select {
     }
 
     > div {
+      max-height: 350px;
       overflow-y: auto;
     }
 
     ul.options {
-      max-height: 350px;
-      overflow-y: auto;
       margin: 0;
       list-style: none;
       padding: 0;
